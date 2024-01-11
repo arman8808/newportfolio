@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function Contact() {
@@ -53,7 +54,7 @@ function Contact() {
             </span>
             <div className="contact_info_info flex flex-col items-start">
               <h3>Mail</h3>
-              <p>armanal@gmail.com</p>
+              <p><Link href='mailto:armanal3066@gmail.com' >armanal3066@gmail.com</Link></p>
             </div>
           </div>
         </div>
