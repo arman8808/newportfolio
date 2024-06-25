@@ -16,15 +16,15 @@ import { GitHub, LinkedIn } from "@mui/icons-material";
 function Hero() {
   return (
     <section
-      className="hero w-full flex items-center flex-col justify-center gap-20"
+      className="hero w-full flex items-center flex-col justify-center gap-20 py-4 h-screen"
       id="home"
     >
       <div className="hero_div flex flex-col">
         <div className="hero_top ">
           <div className="hero_top_text">
-            <h1>Front-End React Developer</h1>
+            <h1>Full-Stack Mern Developer</h1>
             <p>
-              Hi, I'm Arman Ali. A passionate Front-end React Developer based in
+              Hi, I'm Arman Ali. A passionate Full-Stack Mern Developer based in
               Lucknow, India. 📍
             </p>
             <span className="flex gap-2">
