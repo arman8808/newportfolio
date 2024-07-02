@@ -3,7 +3,10 @@ import React from "react";
 
 function Contact() {
   return (
-    <section className="contact flex items-center justify-center " id="contact">
+    <section
+      className="contact flex items-center justify-center pb-4"
+      id="contact"
+    >
       <div className="flex items-start justify-center flex-col gap-2">
         <p>CONTACT</p>
         <h3>Don't be shy! Hit me up! 👇</h3>
@@ -54,7 +57,11 @@ function Contact() {
             </span>
             <div className="contact_info_info flex flex-col items-start">
               <h3>Mail</h3>
-              <p><Link href='mailto:armanal3066@gmail.com' >armanal3066@gmail.com</Link></p>
+              <p>
+                <Link href="mailto:armanal3066@gmail.com">
+                  armanal3066@gmail.com
+                </Link>
+              </p>
             </div>
           </div>
         </div>
