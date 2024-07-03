@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function ProjectCard() {
   return (
-    <div className="project_card flex items-center justify-between gap-3">
+    <div className="project_card flex items-center justify-between gap-3 min-w-[100%]">
       <div className="project_card_img">
         <Image
           src={projectImage}
