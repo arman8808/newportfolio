@@ -28,10 +28,13 @@ function Hero() {
               Lucknow, India. 📍
             </p>
             <span className="flex gap-2">
-              <Link href="#">
+              <Link
+                href="https://www.linkedin.com/in/arman-ali-0b7480147/"
+                target="_blank"
+              >
                 <LinkedIn style={{ fontSize: "2.5rem" }} />
               </Link>
-              <Link href="#">
+              <Link href="https://github.com/arman8808" target="_blank">
                 <GitHub style={{ fontSize: "2.5rem" }} />
               </Link>
             </span>

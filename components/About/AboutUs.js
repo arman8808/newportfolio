@@ -1,5 +1,6 @@
+import { OpenInNew } from "@mui/icons-material";
+import Link from "next/link";
 import React from "react";
-
 function AboutUs() {
   return (
     <section
@@ -47,6 +48,23 @@ function AboutUs() {
                 <span className="about__achievement text-[#555]">
                   Projects Completed
                 </span>
+              </div>
+              <div className="flex flex-col items-center justify-center  w-[50%]">
+                <strong
+                  className=" text text-[2.2rem] text-[#147efb] font-semibold"
+                  style={{ visibility: "hidden" }}
+                >
+                  1.5+
+                </strong>
+                <Link
+                  href="/Asset/ArmanAliResmue.pdf"
+                  target="_blank"
+                  passHref
+                  className="about__achievement text-[#555] download_button"
+                >
+                  Resume
+                  <OpenInNew className="redirect_icon" />
+                </Link>
               </div>
             </div>
           </div>
