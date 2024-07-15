@@ -12,6 +12,9 @@ function ProjectCard({ image, title, subDesc, techStack }) {
           width={0}
           height={0}
           style={{ width: "100%", height: "auto" }}
+          alt={image ? image : projectImage}
+          placeholder="blur"
+          layout="responsive"
         />
       </div>
       <div className="project_card_text flex items-center justify-center flex-col gap-3">
@@ -21,9 +24,9 @@ function ProjectCard({ image, title, subDesc, techStack }) {
             ? subDesc
             : " A car rental website is an online platform that allows users to rent cars for personal or business use. The website provides an interface for searching, comparing, and reserving cars."}
         </p>
-        <div className="project_card_text_tech flex gap-3">
-          {techStack?.map(() => (
-            <p>React Js</p>
+        <div className="project_card_text_tech flex gap-3 flex-wrap">
+          {techStack?.map((item) => (
+            <p className="min-w-fit">{item}</p>
           ))}
         </div>
         {/* <div className="project_card_text_share flex gap-3">
