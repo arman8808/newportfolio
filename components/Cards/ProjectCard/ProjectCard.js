@@ -3,27 +3,28 @@ import React from "react";
 import projectImage from "../../../public/Asset/images/car-rental-full.c58b37da333d73238fdd.webp";
 import Link from "next/link";
 
-function ProjectCard() {
+function ProjectCard({ image, title, subDesc, techStack }) {
   return (
     <div className="project_card flex items-center justify-between gap-3 min-w-[100%]">
       <div className="project_card_img">
         <Image
-          src={projectImage}
+          src={image ? image : projectImage}
           width={0}
           height={0}
           style={{ width: "100%", height: "auto" }}
         />
       </div>
       <div className="project_card_text flex items-center justify-center flex-col gap-3">
-        <h3>New Project</h3>
+        <h3>{title ? title : "New Project"}</h3>
         <p>
-          A car rental website is an online platform that allows users to rent
-          cars for personal or business use. The website provides an interface
-          for searching, comparing, and reserving cars.
+          {subDesc
+            ? subDesc
+            : " A car rental website is an online platform that allows users to rent cars for personal or business use. The website provides an interface for searching, comparing, and reserving cars."}
         </p>
         <div className="project_card_text_tech flex gap-3">
-          <p>React Js</p>
-          <p>Node Js</p>
+          {techStack?.map(() => (
+            <p>React Js</p>
+          ))}
         </div>
         {/* <div className="project_card_text_share flex gap-3">
           <Link href="#" className="flex items-center justify-center">

@@ -12,11 +12,11 @@ import NextJs from "../../public/Asset/images/next-js.svg";
 
 import Link from "next/link";
 import { GitHub, LinkedIn } from "@mui/icons-material";
-
+import backGround from "../../public/Asset/images/background.png";
 function Hero() {
   return (
     <section
-      className="hero w-full flex items-center flex-col justify-center gap-20 py-4 h-screen"
+      className="hero w-full flex items-center flex-col justify-center gap-20 py-4 h-screen bg"
       id="home"
     >
       <div className="hero_div flex flex-col">

@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import { Pagination } from "swiper/modules";
-
+import { projectInfo } from "../../components/projectInfo";
 function Projects() {
   return (
     <section className="project flex items-center justify-center" id="project">
@@ -22,12 +22,16 @@ function Projects() {
             ))}
         </div> */}
         <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-          <SwiperSlide>
-            <ProjectCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProjectCard />
-          </SwiperSlide>
+          {projectInfo?.map((item) => (
+            <SwiperSlide key={item?.title}>
+              <ProjectCard
+                image={item?.image}
+                title={item?.title}
+                subDesc={item?.subDesc}
+                techStack={item?.techStack}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </section>
