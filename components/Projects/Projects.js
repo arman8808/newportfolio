@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import { Pagination } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { projectInfo } from "../../components/projectInfo";
 function Projects() {
   return (
@@ -21,7 +22,13 @@ function Projects() {
               </div>
             ))}
         </div> */}
-        <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+        <Swiper
+          pagination={true}
+          modules={[Pagination, Autoplay]}
+          className="mySwiper"
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          loop={true}
+        >
           {projectInfo?.map((item) => (
             <SwiperSlide key={item?.title}>
               <ProjectCard

@@ -39,7 +39,7 @@ export const projectInfo = [
   },
   {
     image: startyfyZone,
-    title: "Detailing Brats",
+    title: "Startify Zone",
     subDesc: "",
     techStack: ["React Js", "Node Js", "MongoDb", "Express Js"],
   },

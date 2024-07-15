@@ -9,6 +9,7 @@ import Nodejs from "../../public/Asset/images/icons8-node-js-240.png";
 import TailWind from "../../public/Asset/images/icons8-tailwind-css-400.png";
 import React from "../../public/Asset/images/icons8-react-400.png";
 import NextJs from "../../public/Asset/images/next-js.svg";
+import Docker from "../../public/Asset/images/docker-svgrepo-com.svg";
 
 import Link from "next/link";
 import { GitHub, LinkedIn } from "@mui/icons-material";
@@ -106,6 +107,14 @@ function Hero() {
               <li>
                 <Image
                   src={NextJs}
+                  width={65}
+                  height={45}
+                  className="rounded-sm"
+                />
+              </li>
+              <li>
+                <Image
+                  src={Docker}
                   width={65}
                   height={45}
                   className="rounded-sm"
