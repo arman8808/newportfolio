@@ -1,6 +1,8 @@
 import { OpenInNew } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
+import AboutImg from "../../public/Asset/images/about.webp";
+import Image from "next/image";
 function AboutUs() {
   return (
     <section
@@ -69,12 +71,12 @@ function AboutUs() {
             </div>
           </div>
         </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1579591919791-0e3737ae3808?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTMwMzY1NzZ8&ixlib=rb-4.0.3&q=85"
-          alt=""
-          className="about__img"
-        />
+        <div className="flex items-center justify-center w-full">
+          <Image
+            src={AboutImg}
+            className="rounded-2xl w-[90%] h-[85%] object-contain"
+          />
+        </div>
       </div>
     </section>
   );
