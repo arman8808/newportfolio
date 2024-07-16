@@ -19,11 +19,7 @@ function ProjectCard({ image, title, subDesc, techStack }) {
       </div>
       <div className="project_card_text flex items-center justify-center flex-col gap-3">
         <h3>{title ? title : "New Project"}</h3>
-        <p>
-          {subDesc
-            ? subDesc
-            : " A car rental website is an online platform that allows users to rent cars for personal or business use. The website provides an interface for searching, comparing, and reserving cars."}
-        </p>
+        <p>{subDesc && subDesc}</p>
         <div className="project_card_text_tech flex gap-3 flex-wrap">
           {techStack?.map((item) => (
             <p className="min-w-fit">{item}</p>

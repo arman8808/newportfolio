@@ -14,13 +14,15 @@ export const projectInfo = [
   {
     image: CasPian,
     title: "CasPian Health Care",
-    subDesc: "",
+    subDesc:
+      "it's a medical e-commerce platform along with doctor chat and video call options and lab test option",
     techStack: ["React Js", "TailWind Css", "Laravel", "Firebase", "MySql"],
   },
   {
     image: MySatGuide,
     title: "My Sat Guide",
-    subDesc: "",
+    subDesc:
+      "it's an Eduction Platform for Sat , student can purchase the course,and do preparation online",
     techStack: [
       "React Js",
       "TailWind Css",
@@ -34,7 +36,7 @@ export const projectInfo = [
   {
     image: detailingDrats,
     title: "Detailing Brats",
-    subDesc: "",
+    subDesc: "it's a ShowCase Website For Car Wash And Car accessories ",
     techStack: ["React Js", "TailWind Css"],
   },
   {
@@ -46,13 +48,15 @@ export const projectInfo = [
   {
     image: cityHospital,
     title: "City Hospital",
-    subDesc: "",
+    subDesc:
+      "it's a Hospital website that showcases hospital facility and doctor details along with the story of patients before and after Treatment.",
     techStack: ["React Js", "Node Js", "MongoDb", "Express Js"],
   },
   {
     image: tanujPunia,
     title: "Tanuj Punia",
-    subDesc: "",
+    subDesc:
+      "it's a Politician's website for showcase to show about his election manifesto.",
     techStack: ["React Js", "TypeScript", "Tailwind Css"],
   },
   {
