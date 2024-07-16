@@ -1,7 +1,21 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 function NavBar() {
+  const comRef = useRef();
+  useEffect(() => {
+    let handler = (e) => {
+      if (!comRef.current.contains(e.target)) {
+        document.getElementById("menu__toggle").checked = false;
+      }
+    };
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, []);
   return (
     <nav className="w-full px-20 py-2 bg-white flex items-center justify-between z-10">
       <Link href="/">
@@ -51,7 +65,7 @@ function NavBar() {
         </svg>
       </Link>
 
-      <ul className="flex items-center gap-4">
+      <ul className="flex items-center gap-4 mobile:hidden">
         <li className="cursor-pointer">
           <Link href="#home" className="nav_link">
             Home
@@ -73,6 +87,58 @@ function NavBar() {
           </Link>
         </li>
       </ul>
+      <div className="hamburger-menu hidden mobile:flex tablet:flex">
+        <input id="menu__toggle" type="checkbox" />
+        <label className="menu__btn" for="menu__toggle">
+          <span></span>
+        </label>
+        <ul className="menu__box px-4" ref={comRef}>
+          <li className="cursor-pointer pl-[2rem] pb-2">
+            <Link
+              href="#home"
+              className="nav_link"
+              onClick={() =>
+                (document.getElementById("menu__toggle").checked = false)
+              }
+            >
+              Home
+            </Link>
+          </li>
+          <li className="cursor-pointer pl-[2rem] pb-2">
+            <Link
+              href="#aboutus"
+              className="nav_link"
+              onClick={() =>
+                (document.getElementById("menu__toggle").checked = false)
+              }
+            >
+              About
+            </Link>
+          </li>
+          <li className="cursor-pointer pl-[2rem] pb-2">
+            <Link
+              href="#project"
+              className="nav_link"
+              onClick={() =>
+                (document.getElementById("menu__toggle").checked = false)
+              }
+            >
+              Projects
+            </Link>
+          </li>
+          <li className="cursor-pointer pl-[2rem] pb-2">
+            <Link
+              href="#contact"
+              className="nav_link"
+              onClick={() =>
+                (document.getElementById("menu__toggle").checked = false)
+              }
+            >
+              Contact
+            </Link>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }

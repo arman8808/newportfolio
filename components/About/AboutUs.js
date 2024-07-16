@@ -1,7 +1,7 @@
 import { OpenInNew } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
-import AboutImg from "../../public/Asset/images/about.webp";
+import AboutImg from "../../public/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp";
 import Image from "next/image";
 function AboutUs() {
   return (
@@ -11,8 +11,8 @@ function AboutUs() {
     >
       <h2 className="font-semibold text-[#555]">About me</h2>
 
-      <div className="grid grid-cols-2 gap-4 w-9/12">
-        <div className="about__data bd-grid">
+      <div className="grid grid-cols-2 gap-4 w-9/12 mobile:flex mobile:flex-col-reverse">
+        <div className="about__data bd-grid mobile:text-start">
           <div className="flex items-start justify-start flex-col gap-1">
             <span className="text-[1.6rem] font-semibold text-[#147efb]">
               Hello, I am <br />
