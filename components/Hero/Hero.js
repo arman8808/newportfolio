@@ -17,7 +17,7 @@ import backGround from "../../public/Asset/images/background.png";
 function Hero() {
   return (
     <section
-      className="hero w-full flex items-center flex-col justify-center gap-20 py-4 h-screen bg"
+      className="hero w-full flex items-center flex-col justify-center gap-20 py-4 h-screen bg mobile:h-[70vh]"
       id="home"
     >
       <div className="hero_div flex flex-col">
@@ -40,7 +40,7 @@ function Hero() {
               </Link>
             </span>
           </div>
-          <div className="hero_top_image">
+          <div className="hero_top_image mobile:hidden">
             <Image src={homeimg} width={500} height={400} />
           </div>
         </div>

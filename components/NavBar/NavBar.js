@@ -17,7 +17,7 @@ function NavBar() {
     };
   }, []);
   return (
-    <nav className="w-full px-20 py-2 bg-white flex items-center justify-between z-10">
+    <nav className="w-full px-20 py-2 bg-white flex items-center justify-between z-10 mobile:pl-[1rem]">
       <Link href="/">
         <svg
           width="159"

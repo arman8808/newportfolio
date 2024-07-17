@@ -471,4 +471,23 @@ footer {
   .footer {
     max-width: 80vw;
   }
+
+  .contact_info {
+    width: 100% !important;
+  }
+  .project_contianer {
+    width: 90%;
+  }
+  .contact div {
+    width: 90%;
+  }
+  .hero_div {
+    width: 90%;
+  }
+  .hero_top_text > h1 {
+    font-size: 3rem;
+  }
+  .hero_top_text {
+    flex: 1;
+  }
 }

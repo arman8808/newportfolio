@@ -10,8 +10,8 @@ function Contact() {
       <div className="flex items-start justify-center flex-col gap-2">
         <p>CONTACT</p>
         <h3>Don't be shy! Hit me up! 👇</h3>
-        <div className="contact_info flex items-center mobile:flex-col mt-3">
-          <div className="flex items-center gap-4">
+        <div className="contact_info flex items-center mobile:flex-col mt-3 mobile:justify-start mobile:items-start">
+          <div className="flex items-center gap-4 w-full">
             <span className="flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ function Contact() {
               <p>Lucknow, India</p>
             </div>
           </div>{" "}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full">
             <span className="flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

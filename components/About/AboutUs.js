@@ -11,7 +11,7 @@ function AboutUs() {
     >
       <h2 className="font-semibold text-[#555]">About me</h2>
 
-      <div className="grid grid-cols-2 gap-4 w-9/12 mobile:flex mobile:flex-col-reverse">
+      <div className="grid grid-cols-2 gap-4 w-9/12 mobile:flex mobile:flex-col-reverse mobile:w-11/12">
         <div className="about__data bd-grid mobile:text-start">
           <div className="flex items-start justify-start flex-col gap-1">
             <span className="text-[1.6rem] font-semibold text-[#147efb]">
