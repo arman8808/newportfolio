@@ -59,7 +59,7 @@ function AboutUs() {
                   1.5+
                 </strong>
                 <Link
-                  href="/Asset/ArmanAliResmue.pdf"
+                  href="/Asset/Arman Ali.pdf"
                   target="_blank"
                   passHref
                   className="about__achievement text-[#555] download_button"

@@ -195,7 +195,7 @@ footer {
 }
 
 .project_card_img > img:hover {
-  transform: translateY(-83%);
+  transform: translateY(-85%);
   cursor: pointer;
 }
 
