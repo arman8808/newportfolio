@@ -19,7 +19,7 @@ function AboutUs() {
             </span>
             <p className="about__description text-[#555] text-[1.1rem] font-medium">
               Arman Ali, a passionate and dedicated MERN stack developer with
-              1.5 years of hands-on experience in building dynamic and
+              1.7+ years of hands-on experience in building dynamic and
               responsive web applications. My journey in web development began
               with a fascination for creating user-friendly interfaces and
               scalable backend systems. Over time, I've honed my skills in
@@ -56,7 +56,7 @@ function AboutUs() {
                   className=" text text-[2.2rem] text-[#147efb] font-semibold"
                   style={{ visibility: "hidden" }}
                 >
-                  1.5+
+                  1.7+
                 </strong>
                 <Link
                   href="/Asset/Arman Ali.pdf"
