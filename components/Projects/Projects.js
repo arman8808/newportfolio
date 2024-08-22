@@ -1,7 +1,7 @@
 "use client";
 import ProjectCard from "@components/Cards/ProjectCard/ProjectCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { useRouter } from "next/navigation";
 // Import Swiper styles
 import "swiper/css";
 import { Pagination } from "swiper/modules";
@@ -13,7 +13,7 @@ function Projects() {
       <div className="project_contianer flex items-start justify-start flex-col ">
         <p>PORTFOLIO</p>
         <h3 className="mobile:text-[1.5rem]">
-          Each project is a unique piece of development 🧩
+          Each project is a Unique Piece of Development 🧩
         </h3>
         {/* <div style={{ overflow: "hidden", display: "flex" }}>
           {Array(1)
@@ -35,7 +35,10 @@ function Projects() {
           }}
         >
           {projectInfo?.map((item) => (
-            <SwiperSlide key={item?.title}>
+            <SwiperSlide
+              key={item?.title}
+              onClick={() => router.push("/SingleProjectPage")}
+            >
               <ProjectCard
                 image={item?.image}
                 title={item?.title}
