@@ -38,7 +38,7 @@ function Projects() {
           {projectInfo?.map((item) => (
             <SwiperSlide
               key={item?.title}
-              onClick={() => router.push("/SingleProjectPage")}
+              onClick={() => router.push("Projects/SingleProjectPage")}
             >
               <ProjectCard
                 image={item?.image}

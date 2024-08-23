@@ -1,15 +1,16 @@
 import Gallery from "@components/Gallery/Gallery";
-import gallery from "../../public/Asset/images/about.webp";
-import gallery1 from "../../public/Asset/images/about.webp";
-import gallery2 from "../../public/Asset/images/about.webp";
-import gallery3 from "../../public/Asset/images/about.webp";
-import gallery4 from "../../public/Asset/images/about.webp";
-import gallery5 from "../../public/Asset/images/about.webp";
-import gallery6 from "../../public/Asset/images/about.webp";
-import gallery7 from "../../public/Asset/images/about.webp";
-import gallery8 from "../../public/Asset/images/about.webp";
-import poster from "../../public/Asset/video/3048179-uhd_2560_1440_24fps-0.jpg";
-export default function SingleProjectPage() {
+import gallery from "../../../public/Asset/images/about.webp";
+import gallery1 from "../../../public/Asset/images/about.webp";
+import gallery2 from "../../../public/Asset/images/about.webp";
+import gallery3 from "../../../public/Asset/images/about.webp";
+import gallery4 from "../../../public/Asset/images/about.webp";
+import gallery5 from "../../../public/Asset/images/about.webp";
+import gallery6 from "../../../public/Asset/images/about.webp";
+import gallery7 from "../../../public/Asset/images/about.webp";
+import gallery8 from "../../../public/Asset/images/about.webp";
+import poster from "../../../public/Asset/video/3048179-uhd_2560_1440_24fps-0.jpg";
+export default function SingleProjectPage({ params }) {
+  const { slug } = params;
   const itemData = [
     { img: gallery },
     { img: gallery1 },
