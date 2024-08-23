@@ -8,6 +8,7 @@ import { Pagination } from "swiper/modules";
 import { Autoplay, Mousewheel } from "swiper/modules";
 import { projectInfo } from "../../components/projectInfo";
 function Projects() {
+  const router = useRouter();
   return (
     <section className="project flex items-center justify-center" id="project">
       <div className="project_contianer flex items-start justify-start flex-col ">
