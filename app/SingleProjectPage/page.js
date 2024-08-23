@@ -8,6 +8,7 @@ import gallery5 from "../../public/Asset/images/about.webp";
 import gallery6 from "../../public/Asset/images/about.webp";
 import gallery7 from "../../public/Asset/images/about.webp";
 import gallery8 from "../../public/Asset/images/about.webp";
+import poster from "../../public/Asset/video/3048179-uhd_2560_1440_24fps-0.jpg";
 export default function SingleProjectPage() {
   const itemData = [
     { img: gallery },
@@ -38,7 +39,7 @@ export default function SingleProjectPage() {
           autoPlay={true}
           loop
           muted
-          poster=""
+          poster={poster}
           className="w-full h-full rounded-md"
         >
           <source
