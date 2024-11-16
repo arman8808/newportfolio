@@ -4,6 +4,28 @@ import React from "react";
 import AboutImg from "../../public/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp";
 import Image from "next/image";
 function AboutUs() {
+  function getExperienceYears(startDate) {
+    let today = new Date();
+    let start = new Date(startDate);
+
+    let years = today.getFullYear() - start.getFullYear();
+    let months = today.getMonth() - start.getMonth();
+    let days = today.getDate() - start.getDate();
+    if (months < 0 || (months === 0 && days < 0)) {
+      years--;
+      months += 12;
+    }
+    if (days < 0) {
+      months--;
+      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    }
+
+    return `${years}.${months}`;
+  }
+
+  const experienceStartDate = "2023-02-01";
+  let experience = getExperienceYears(experienceStartDate);
+
   return (
     <section
       className=" w-full flex items-center flex-col justify-center gap-4 about section "
@@ -19,12 +41,13 @@ function AboutUs() {
             </span>
             <p className="about__description text-[#555] text-[1.1rem] font-medium">
               Arman Ali, a passionate and dedicated MERN stack developer with
-              1.7+ years of hands-on experience in building dynamic and
-              responsive web applications. My journey in web development began
-              with a fascination for creating user-friendly interfaces and
-              scalable backend systems. Over time, I've honed my skills in
-              MongoDB, Express.js, React.js, and Node.js, allowing me to develop
-              full-stack applications that are both efficient and innovative.
+              &nbsp;{experience}+ years of hands-on experience in building
+              dynamic and responsive web applications. My journey in web
+              development began with a fascination for creating user-friendly
+              interfaces and scalable backend systems. Over time, I've honed my
+              skills in MongoDB, Express.js, React.js, and Node.js, allowing me
+              to develop full-stack applications that are both efficient and
+              innovative.
             </p>
             <p className="about__description text-[#555] text-[1.1rem] font-medium">
               Throughout my career, I've had the opportunity to work on various
@@ -37,7 +60,7 @@ function AboutUs() {
             <div className="flex gap-4 pt-3 w-full items-center">
               <div className="flex flex-col items-center justify-center  w-[50%]">
                 <strong className=" text text-[2.2rem] text-[#147efb] font-semibold">
-                  1.5+
+                  {experience}+
                 </strong>
                 <span className="about__achievement text-[#555]">
                   Years of Experience

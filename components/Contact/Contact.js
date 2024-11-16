@@ -4,7 +4,7 @@ import React from "react";
 function Contact() {
   return (
     <section
-      className="contact flex items-center justify-center pb-4"
+      className="contact flex items-center justify-center pb-4 mb-4"
       id="contact"
     >
       <div className="flex items-start justify-center flex-col gap-2">
@@ -23,7 +23,7 @@ function Contact() {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="tabler-icon tabler-icon-map-search"
+                className="tabler-icon tabler-icon-map-search"
               >
                 <path d="M11 18l-2 -1l-6 3v-13l6 -3l6 3l6 -3v7.5"></path>
                 <path d="M9 4v13"></path>
@@ -49,7 +49,7 @@ function Contact() {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="tabler-icon tabler-icon-mail"
+                className="tabler-icon tabler-icon-mail"
               >
                 <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path>
                 <path d="M3 7l9 6l9 -6"></path>
