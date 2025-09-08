@@ -106,30 +106,38 @@ function Hero() {
             </span>
           </div>
           <div className="hero_top_image mobile:hidden">
-            <motion.img
+            <motion.div
               variants={imageVariant}
               initial="hidden"
               animate="visible"
-              src={homeimg.src}
-              width={500}
-              height={400}
-            />
+            >
+              <Image
+                src={homeimg}
+                alt="Arman Ali - Full Stack Developer"
+                width={500}
+                height={400}
+              />
+            </motion.div>
           </div>
         </div>
         <div className="hero_bottom flex items-center">
           <p className="pr-6 mr-3 ">Tech Stack</p>
           <span>
             <ul className="flex items-center gap-2">
-              {techStack?.map((img) => (
-                <li>
-                  <motion.img
-                    src={img?.src}
-                    width={70}
-                    height={50}
-                    className="rounded-sm"
+              {techStack?.map((img, index) => (
+                <li key={index}>
+                  <motion.div
                     whileHover="hover"
                     variants={iconVariant}
-                  />
+                    className="rounded-sm"
+                  >
+                    <Image
+                      src={img}
+                      alt={`Tech stack icon ${index + 1}`}
+                      width={70}
+                      height={50}
+                    />
+                  </motion.div>
                 </li>
               ))}
             </ul>
