@@ -112,7 +112,7 @@ function Hero() {
               animate="visible"
             >
               <Image
-                src={homeimg}
+                src={homeimg.src}
                 alt="Arman Ali - Full Stack Developer"
                 width={500}
                 height={400}
@@ -132,7 +132,7 @@ function Hero() {
                     className="rounded-sm"
                   >
                     <Image
-                      src={img}
+                      src={img.src}
                       alt={`Tech stack icon ${index + 1}`}
                       width={70}
                       height={50}
