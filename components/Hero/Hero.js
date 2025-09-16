@@ -1,18 +1,7 @@
 "use client";
 import Image from "next/image";
-import homeimg from "../../public/Asset/images/Frame.png";
-import Html from "../../public/Asset/images/icons8-html-logo-480.png";
-import Css from "../../public/Asset/images/icons8-css-logo-400.png";
-import Javascript from "../../public/Asset/images/icons8-javascript-480.png";
-import Typescript from "../../public/Asset/images/icons8-typescript-480.png";
-import Nodejs from "../../public/Asset/images/icons8-node-js-240.png";
-import TailWind from "../../public/Asset/images/icons8-tailwind-css-400.png";
-import React from "../../public/Asset/images/icons8-react-400.png";
-import NextJs from "../../public/Asset/images/next-js.svg";
-import Docker from "../../public/Asset/images/docker-svgrepo-com.svg";
 import Link from "next/link";
 import { GitHub, LinkedIn } from "@mui/icons-material";
-import backGround from "../../public/Asset/images/background.png";
 import { motion } from "framer-motion";
 const heroVariant = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -62,15 +51,15 @@ const imageVariant = {
 };
 function Hero() {
   const techStack = [
-    Html,
-    Css,
-    Javascript,
-    Typescript,
-    Nodejs,
-    TailWind,
-    React,
-    NextJs,
-    Docker,
+    "/Asset/images/icons8-html-logo-480.png",
+    "/Asset/images/icons8-css-logo-400.png",
+    "/Asset/images/icons8-javascript-480.png",
+    "/Asset/images/icons8-typescript-480.png",
+    "/Asset/images/icons8-node-js-240.png",
+    "/Asset/images/icons8-tailwind-css-400.png",
+    "/Asset/images/icons8-react-400.png",
+    "/Asset/images/next-js.svg",
+    "/Asset/images/docker-svgrepo-com.svg",
   ];
   return (
     <section
@@ -112,7 +101,7 @@ function Hero() {
               animate="visible"
             >
               <Image
-                src={homeimg.src}
+                src="/Asset/images/Frame.png"
                 alt="Arman Ali - Full Stack Developer"
                 width={500}
                 height={400}
