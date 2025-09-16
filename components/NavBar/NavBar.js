@@ -77,7 +77,7 @@ function NavBar() {
           </Link>
         </li>
         <li className="cursor-pointer">
-          <Link href="#project" className="nav_link">
+          <Link href="#projects" className="nav_link">
             Projects
           </Link>
         </li>
