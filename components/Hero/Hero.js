@@ -132,7 +132,7 @@ function Hero() {
                     className="rounded-sm"
                   >
                     <Image
-                      src={img.src}
+                      src={img}
                       alt={`Tech stack icon ${index + 1}`}
                       width={70}
                       height={50}
