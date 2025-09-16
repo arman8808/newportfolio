@@ -1,8 +1,9 @@
+"use client";
 import { OpenInNew } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
-import AboutImg from "../../public/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp";
 import Image from "next/image";
+import { motion } from "framer-motion";
 function AboutUs() {
   function getExperienceYears(startDate) {
     let today = new Date();
@@ -26,20 +27,29 @@ function AboutUs() {
   const experienceStartDate = "2023-02-01";
   let experience = getExperienceYears(experienceStartDate);
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 12 },
+    visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.15 * i } })
+  };
+
+  const skills = ["MERN", "REST APIs", "JWT/Auth", "Docker", "CI/CD", "SSR/Next.js", "TailwindCSS"];
+
   return (
     <section
       className=" w-full flex items-center flex-col justify-center gap-4 about section "
       id="aboutus"
     >
-      <h2 className="font-semibold text-[#555]">About me</h2>
+      <motion.h2 className="font-semibold text-[#555]" variants={fadeUp} initial="hidden" animate="visible">
+        About me
+      </motion.h2>
 
       <div className="grid grid-cols-2 gap-4 w-9/12 mobile:flex mobile:flex-col-reverse mobile:w-11/12">
         <div className="about__data bd-grid mobile:text-start">
           <div className="flex items-start justify-start flex-col gap-1">
-            <span className="text-[1.6rem] font-semibold text-[#147efb]">
+            <motion.span className="text-[1.6rem] font-semibold text-[#147efb]" variants={fadeUp} initial="hidden" animate="visible" custom={1}>
               Hello, I am <br />
-            </span>
-            <p className="about__description text-[#555] text-[1.1rem] font-medium">
+            </motion.span>
+            <motion.p className="about__description text-[#555] text-[1.1rem] font-medium" variants={fadeUp} initial="hidden" animate="visible" custom={2}>
               Arman Ali, a passionate and dedicated MERN stack developer with
               &nbsp;{experience}+ years of hands-on experience in building
               dynamic and responsive web applications. My journey in web
@@ -48,17 +58,26 @@ function AboutUs() {
               skills in MongoDB, Express.js, React.js, and Node.js, allowing me
               to develop full-stack applications that are both efficient and
               innovative.
-            </p>
-            <p className="about__description text-[#555] text-[1.1rem] font-medium">
+            </motion.p>
+            <motion.p className="about__description text-[#555] text-[1.1rem] font-medium" variants={fadeUp} initial="hidden" animate="visible" custom={3}>
               Throughout my career, I've had the opportunity to work on various
               projects that have challenged me to think creatively and push the
               boundaries of what's possible with web technology. My commitment
               to continuous learning and staying updated with the latest
               industry trends ensures that I am always at the forefront of
               modern web development practices.
-            </p>
-            <div className="flex gap-4 pt-3 w-full items-center">
-              <div className="flex flex-col items-center justify-center  w-[50%]">
+            </motion.p>
+
+            <motion.div className="mt-2 flex w-full flex-wrap gap-2" variants={fadeUp} initial="hidden" animate="visible" custom={4}>
+              {skills.map((s) => (
+                <span key={s} className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-600">
+                  {s}
+                </span>
+              ))}
+            </motion.div>
+
+            <motion.div className="flex gap-4 pt-4 w-full items-stretch" variants={fadeUp} initial="hidden" animate="visible" custom={5}>
+              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
                 <strong className=" text text-[2.2rem] text-[#147efb] font-semibold">
                   {experience}+
                 </strong>
@@ -66,7 +85,7 @@ function AboutUs() {
                   Years of Experience
                 </span>
               </div>
-              <div className="flex flex-col items-center justify-center  w-[50%]">
+              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
                 <strong className=" text text-[2.2rem] text-[#147efb] font-semibold">
                   10+
                 </strong>
@@ -74,35 +93,126 @@ function AboutUs() {
                   Projects Completed
                 </span>
               </div>
-              <div className="flex flex-col items-center justify-center  w-[50%]">
-                <strong
-                  className=" text text-[2.2rem] text-[#147efb] font-semibold"
-                  style={{ visibility: "hidden" }}
-                >
-                  1.7+
-                </strong>
+              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
                 <Link
                   href="/Asset/Arman Ali.pdf"
                   target="_blank"
                   passHref
-                  className="about__achievement text-[#555] download_button"
+                  className="about__achievement text-[#555] download_button flex items-center gap-1 text-cyan-600 hover:text-cyan-700"
                 >
                   Resume
                   <OpenInNew className="redirect_icon" />
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-        <div className="flex items-center justify-center w-full">
+        <motion.div className="flex items-center justify-center w-full" variants={fadeUp} initial="hidden" animate="visible" custom={2}>
           <Image
-            src={AboutImg}
+            src="/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp"
+            alt="Arman Ali portrait"
+            width={600}
+            height={700}
             className="rounded-2xl w-[90%] h-[85%] object-contain"
+            priority
           />
-        </div>
+        </motion.div>
       </div>
+
+      <motion.h3
+        className="mt-10 text-3xl font-semibold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={6}
+      >
+        Timeline
+      </motion.h3>
+
+      <Timeline />
     </section>
   );
 }
 
 export default AboutUs;
+
+function Timeline() {
+  const items = [
+    {
+      title: "Frontend Developer Intern • Branding 360 Neo Pvt Ltd",
+      date: "Jul 2022 • Dec 2022",
+      desc:
+        "Built pixel‑perfect pages, component libraries, and responsive layouts while learning production workflows.",
+    },
+    {
+      title: "React Developer • Branding 360 Neo Pvt Ltd",
+      date: "Feb 2023 • Sep 2023",
+      desc:
+        "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
+    },
+    {
+      title: "Full‑Stack MERN Developer • Branding 360 Neo Pvt Ltd",
+      date: "Sep 2023 • Mar 2025",
+      desc:
+        "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
+    },
+    {
+      title: "Software Developer • WebSultanate Software Technology Pvt Ltd",
+      date: "Apr 2025 • Aug 2025",
+      desc:
+        "Contributed to product modules, API integrations, and CI/CD improvements.",
+    },
+    {
+      title: "Product Developer • umwelt.ai",
+      date: "Aug 2025 • Present",
+      desc:
+        "Building product features collaboratively with a focus on usability, reliability, and speed.",
+    },
+  ];
+
+  return (
+    <div className="relative w-11/12 max-w-6xl py-14">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-gradient-to-b from-cyan-400 via-blue-500/70 to-cyan-400/30" />
+
+      <div className="grid grid-cols-2 gap-14 mobile:grid-cols-1">
+        {items.map((item, idx) => {
+          const isLeft = idx % 2 === 0;
+          return (
+            <motion.article
+              key={item.title + idx}
+              className={
+                "relative " + (isLeft ? "pr-12 mobile:pr-0" : "pl-12 mobile:pl-0")
+              }
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div
+                className={
+                  "absolute top-1 left-1/2 h-5 w-5 -translate-x-1/2 rounded-full bg-white shadow " +
+                  "ring-2 ring-cyan-400 after:absolute after:inset-0 after:rounded-full after:bg-cyan-400/30 after:blur-md"
+                }
+              />
+
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="rounded-2xl border border-white/20 bg-white/60 p-6 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+              >
+                <h4 className="text-xl font-semibold text-slate-800">
+                  <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">{item.title}</span>
+                </h4>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                <div className="mt-4">
+                  <span className="inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-medium text-white shadow-lg shadow-cyan-500/30">
+                    {item.date}
+                  </span>
+                </div>
+              </motion.div>
+            </motion.article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

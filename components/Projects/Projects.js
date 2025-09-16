@@ -10,7 +10,7 @@ import { projectInfo } from "../../components/projectInfo";
 function Projects() {
   const router = useRouter();
   return (
-    <section className="project flex items-center justify-center" id="project">
+    <section className="project flex items-center justify-center" id="projects">
       <div className="project_contianer flex items-start justify-start flex-col ">
         <p>PORTFOLIO</p>
         <h3 className="mobile:text-[1.5rem]">
