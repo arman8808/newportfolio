@@ -2,7 +2,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GitHub, LinkedIn } from "@mui/icons-material";
-import { AnimatePresence, motion, useMotionValue, useTransform, useReducedMotion, useAnimationControls } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+  useAnimationControls,
+} from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 const heroVariant = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -71,24 +78,67 @@ function Hero() {
     return () => clearInterval(id);
   }, []);
 
-  const handleMouseMove = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - (rect.left + rect.width / 2);
-    const y = e.clientY - (rect.top + rect.height / 2);
-    mouseX.set(Math.max(-50, Math.min(50, x / 5)));
-    mouseY.set(Math.max(-50, Math.min(50, y / 5)));
-  }, [mouseX, mouseY]);
+  const handleMouseMove = useCallback(
+    (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - (rect.left + rect.width / 2);
+      const y = e.clientY - (rect.top + rect.height / 2);
+      mouseX.set(Math.max(-50, Math.min(50, x / 5)));
+      mouseY.set(Math.max(-50, Math.min(50, y / 5)));
+    },
+    [mouseX, mouseY]
+  );
   const techStack = [
-    { src: "/Asset/images/icons8-html-logo-480.png", name: "HTML", url: "https://developer.mozilla.org/docs/Web/HTML" },
-    { src: "/Asset/images/icons8-css-logo-400.png", name: "CSS", url: "https://developer.mozilla.org/docs/Web/CSS" },
-    { src: "/Asset/images/icons8-javascript-480.png", name: "JavaScript", url: "https://developer.mozilla.org/docs/Web/JavaScript" },
-    { src: "/Asset/images/icons8-typescript-480.png", name: "TypeScript", url: "https://www.typescriptlang.org/" },
-    { src: "/Asset/images/icons8-node-js-240.png", name: "Node.js", url: "https://nodejs.org/" },
-    { src: "/Asset/images/icons8-tailwind-css-400.png", name: "TailwindCSS", url: "https://tailwindcss.com/" },
-    { src: "/Asset/images/icons8-react-400.png", name: "React", url: "https://react.dev/" },
-    { src: "/Asset/images/next-js.svg", name: "Next.js", url: "https://nextjs.org/" },
-    { src: "/Asset/images/docker-svgrepo-com.svg", name: "Docker", url: "https://www.docker.com/" },
-    { src: "/Asset/images/nestjs.png", name: "NestJS", url: "https://nestjs.com/" },
+    {
+      src: "/Asset/images/icons8-html-logo-480.png",
+      name: "HTML",
+      url: "https://developer.mozilla.org/docs/Web/HTML",
+    },
+    {
+      src: "/Asset/images/icons8-css-logo-400.png",
+      name: "CSS",
+      url: "https://developer.mozilla.org/docs/Web/CSS",
+    },
+    {
+      src: "/Asset/images/icons8-javascript-480.png",
+      name: "JavaScript",
+      url: "https://developer.mozilla.org/docs/Web/JavaScript",
+    },
+    {
+      src: "/Asset/images/icons8-typescript-480.png",
+      name: "TypeScript",
+      url: "https://www.typescriptlang.org/",
+    },
+    {
+      src: "/Asset/images/icons8-node-js-240.png",
+      name: "Node.js",
+      url: "https://nodejs.org/",
+    },
+    {
+      src: "/Asset/images/icons8-tailwind-css-400.png",
+      name: "TailwindCSS",
+      url: "https://tailwindcss.com/",
+    },
+    {
+      src: "/Asset/images/icons8-react-400.png",
+      name: "React",
+      url: "https://react.dev/",
+    },
+    {
+      src: "/Asset/images/next-js.svg",
+      name: "Next.js",
+      url: "https://nextjs.org/",
+    },
+    {
+      src: "/Asset/images/docker-svgrepo-com.svg",
+      name: "Docker",
+      url: "https://www.docker.com/",
+    },
+    {
+      src: "/Asset/images/nestjs.png",
+      name: "NestJS",
+      url: "https://nestjs.com/",
+    },
   ];
   return (
     <section
@@ -110,7 +160,11 @@ function Hero() {
       <div className="hero_div flex flex-col">
         <div className="hero_top ">
           <div className="hero_top_text">
-            <motion.h1 variants={textVariant} initial="hidden" animate="visible">
+            <motion.h1
+              variants={textVariant}
+              initial="hidden"
+              animate="visible"
+            >
               <AnimatePresence mode="wait">
                 <motion.span
                   key={titleIndex}
@@ -126,8 +180,8 @@ function Hero() {
             </motion.h1>
 
             <motion.p variants={textVariant} initial="hidden" animate="visible">
-              Hi, I'm Arman Ali. A passionate Full-Stack Mern Developer based in
-              Lucknow, India. 📍
+              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in
+              India. 📍
             </motion.p>
 
             <div className="mt-4 flex items-center gap-3">
@@ -161,7 +215,10 @@ function Hero() {
               </Link>
             </span>
           </div>
-          <div className="hero_top_image mobile:hidden" onMouseMove={handleMouseMove}>
+          <div
+            className="hero_top_image mobile:hidden"
+            onMouseMove={handleMouseMove}
+          >
             <motion.div
               variants={imageVariant}
               initial="hidden"
@@ -180,14 +237,20 @@ function Hero() {
                 className="pointer-events-none absolute inset-0 rounded-2xl"
                 style={{
                   background:
-                    "radial-gradient(120px 120px at calc(50% + " + mouseX.get() + "px) calc(50% + " + mouseY.get() + "px), rgba(34,211,238,0.25), transparent 60%)",
+                    "radial-gradient(120px 120px at calc(50% + " +
+                    mouseX.get() +
+                    "px) calc(50% + " +
+                    mouseY.get() +
+                    "px), rgba(34,211,238,0.25), transparent 60%)",
                 }}
               />
             </motion.div>
           </div>
         </div>
         <div className="hero_bottom mt-6 flex w-full max-w-4xl flex-col gap-3">
-          <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80">Tech Stack</p>
+          <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80">
+            Tech Stack
+          </p>
           <TechMarquee tech={techStack} reduce={shouldReduceMotion} />
         </div>
       </div>
@@ -210,20 +273,82 @@ function TechMarquee({ tech, reduce }) {
   const row2 = [...tech, ...tech];
   const controls1 = useAnimationControls();
   const controls2 = useAnimationControls();
+  const [isMobile, setIsMobile] = useState(false);
 
-  const pause = () => { controls1.stop(); controls2.stop(); };
+  const pause = () => {
+    controls1.stop();
+    controls2.stop();
+  };
   const play = () => {
-    if (reduce) return;
-    controls1.start({ x: ["0%", "-100%"], transition: { duration: 20, repeat: Infinity, ease: "linear" } });
-    controls2.start({ x: ["-100%", "0%"], transition: { duration: 22, repeat: Infinity, ease: "linear" } });
+    if (reduce || isMobile) return;
+    controls1.start({
+      x: ["0%", "-100%"],
+      transition: { duration: 20, repeat: Infinity, ease: "linear" },
+    });
+    controls2.start({
+      x: ["-100%", "0%"],
+      transition: { duration: 22, repeat: Infinity, ease: "linear" },
+    });
   };
 
-  useEffect(() => { play(); }, [reduce]);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener
+      ? mq.addEventListener("change", update)
+      : mq.addListener(update);
+    return () => {
+      mq.removeEventListener
+        ? mq.removeEventListener("change", update)
+        : mq.removeListener(update);
+    };
+  }, []);
+
+  useEffect(() => {
+    play();
+  }, [reduce, isMobile]);
+
+  if (isMobile) {
+    return (
+      <div className="relative w-full min-h-[120px]">
+        <div className="grid grid-cols-5 gap-3 sm:gap-4">
+          {tech.map((t, index) => (
+            <a
+              key={`tms-${index}`}
+              href={t.url}
+              target="_blank"
+              rel="noreferrer"
+              className="group relative flex flex-col items-center justify-center cursor-pointer p-2 rounded-lg hover:bg-cyan-50/50 transition-colors"
+            >
+              <motion.div
+                whileHover="hover"
+                variants={iconVariant}
+                className="rounded-sm mb-1"
+              >
+                <Image
+                  src={t.src}
+                  alt={t.name}
+                  width={0}
+                  height={0}
+                  sizes="48px"
+                  className="h-auto w-12"
+                />
+              </motion.div>
+              <span className="text-xs text-slate-600 text-center leading-tight">
+                {t.name}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full overflow-hidden min-h-[64px]">
       <motion.div
-        className="flex items-center gap-6"
+        className="flex items-center gap-6 min-h-[56px] md:min-h-[64px]"
         animate={controls1}
         onMouseEnter={pause}
         onMouseLeave={play}
@@ -232,9 +357,26 @@ function TechMarquee({ tech, reduce }) {
         dragElastic={0.1}
       >
         {row1.map((t, index) => (
-          <a key={`tm1-${index}`} href={t.url} target="_blank" rel="noreferrer" className="group relative block cursor-pointer">
-            <motion.div whileHover="hover" variants={iconVariant} className="rounded-sm">
-              <Image src={t.src} alt={t.name} width={72} height={48} />
+          <a
+            key={`tm1-${index}`}
+            href={t.url}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative block cursor-pointer"
+          >
+            <motion.div
+              whileHover="hover"
+              variants={iconVariant}
+              className="rounded-sm"
+            >
+              <Image
+                src={t.src}
+                alt={t.name}
+                width={0}
+                height={0}
+                sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
+                className="h-auto w-16 sm:w-20 md:w-24"
+              />
             </motion.div>
             <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded bg-black/70 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
               {t.name}
@@ -243,7 +385,7 @@ function TechMarquee({ tech, reduce }) {
         ))}
       </motion.div>
       <motion.div
-        className="mt-3 flex items-center gap-6 opacity-80"
+        className="mt-3 flex items-center gap-6 opacity-80 min-h-[52px] md:min-h-[60px]"
         animate={controls2}
         onMouseEnter={pause}
         onMouseLeave={play}
@@ -252,9 +394,26 @@ function TechMarquee({ tech, reduce }) {
         dragElastic={0.1}
       >
         {row2.map((t, index) => (
-          <a key={`tm2-${index}`} href={t.url} target="_blank" rel="noreferrer" className="group relative block cursor-pointer">
-            <motion.div whileHover="hover" variants={iconVariant} className="rounded-sm">
-              <Image src={t.src} alt={t.name} width={100} height={75} />
+          <a
+            key={`tm2-${index}`}
+            href={t.url}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative block cursor-pointer"
+          >
+            <motion.div
+              whileHover="hover"
+              variants={iconVariant}
+              className="rounded-sm"
+            >
+              <Image
+                src={t.src}
+                alt={t.name}
+                width={0}
+                height={0}
+                sizes="(max-width: 640px) 56px, (max-width: 1024px) 72px, 88px"
+                className="h-auto w-14 sm:w-18 md:w-22"
+              />
             </motion.div>
             <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded bg-black/70 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
               {t.name}
