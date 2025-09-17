@@ -24,7 +24,7 @@ function AboutUs() {
     return `${years}.${months}`;
   }
 
-  const experienceStartDate = "2023-02-01";
+  const experienceStartDate = "2022-07-01";
   let experience = getExperienceYears(experienceStartDate);
 
   const fadeUp = {
@@ -126,7 +126,7 @@ function AboutUs() {
         animate="visible"
         custom={6}
       >
-        Timeline
+        Work Journey
       </motion.h3>
 
       <Timeline />
@@ -170,49 +170,73 @@ function Timeline() {
     },
   ];
 
-  return (
-    <div className="relative w-11/12 max-w-6xl py-14">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-gradient-to-b from-cyan-400 via-blue-500/70 to-cyan-400/30" />
+  const container = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: 0.22 }
+    }
+  };
 
-      <div className="grid grid-cols-2 gap-14 mobile:grid-cols-1">
+  const itemLeft = {
+    hidden: { opacity: 0, x: -40, scale: 0.96 },
+    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" } }
+  };
+  const itemRight = {
+    hidden: { opacity: 0, x: 40, scale: 0.96 },
+    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" } }
+  };
+
+  return (
+    <motion.div
+      className="relative w-11/12 max-w-6xl py-14"
+      variants={container}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <div className="pointer-events-none absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-gradient-to-b from-cyan-400 via-blue-500/70 to-cyan-400/30 mobile:hidden" />
+
+      <div className="flex flex-col gap-10">
         {items.map((item, idx) => {
           const isLeft = idx % 2 === 0;
           return (
-            <motion.article
-              key={item.title + idx}
-              className={
-                "relative " + (isLeft ? "pr-12 mobile:pr-0" : "pl-12 mobile:pl-0")
-              }
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div
-                className={
-                  "absolute top-1 left-1/2 h-5 w-5 -translate-x-1/2 rounded-full bg-white shadow " +
-                  "ring-2 ring-cyan-400 after:absolute after:inset-0 after:rounded-full after:bg-cyan-400/30 after:blur-md"
-                }
-              />
-
-              <motion.div
-                whileHover={{ y: -4 }}
-                className="rounded-2xl border border-white/20 bg-white/60 p-6 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-              >
-                <h4 className="text-xl font-semibold text-slate-800">
-                  <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">{item.title}</span>
-                </h4>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
-                <div className="mt-4">
-                  <span className="inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-medium text-white shadow-lg shadow-cyan-500/30">
-                    {item.date}
-                  </span>
-                </div>
-              </motion.div>
-            </motion.article>
+            <motion.div key={item.title + idx} variants={isLeft ? itemLeft : itemRight}>
+              <div className={(isLeft ? "mr-auto pr-12" : "ml-auto pl-12") + " relative max-w-[640px] mobile:max-w-full mobile:pl-0 mobile:pr-0"}>
+                {/* connector arm to center line */}
+                <div
+                  className={
+                    "absolute top-1/2 h-[2px] w-10 -translate-y-1/2 bg-gradient-to-r mobile:hidden " +
+                    (isLeft ? "from-transparent to-cyan-400 right-0" : "from-cyan-400 to-transparent left-0")
+                  }
+                />
+                {/* center marker dot */}
+                <div
+                  className={
+                    "absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow ring-2 ring-cyan-400 mobile:hidden " +
+                    (isLeft ? "-right-[22px]" : "-left-[22px]")
+                  }
+                />
+                <motion.article
+                  whileHover={{ y: -4 }}
+                  className="relative overflow-hidden rounded-2xl border border-white/30 bg-white/15 p-6 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] ring-1 ring-white/20"
+                >
+                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-cyan-200/10 to-transparent" />
+                  <div aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-white/20 blur-2xl" />
+                  <h4 className="relative text-xl font-semibold text-slate-800">
+                    <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">{item.title}</span>
+                  </h4>
+                  <p className="relative mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                  <div className="relative mt-4">
+                    <span className="inline-block rounded-full bg-cyan-500/90 px-4 py-1.5 text-xs font-medium text-white shadow-lg shadow-cyan-500/30">
+                      {item.date}
+                    </span>
+                  </div>
+                </motion.article>
+              </div>
+            </motion.div>
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }
