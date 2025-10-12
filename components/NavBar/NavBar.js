@@ -17,7 +17,7 @@ function NavBar() {
     };
   }, []);
   return (
-    <nav className="w-full px-20 py-2 bg-white flex items-center justify-between z-10 mobile:pl-[1rem]">
+    <nav className="w-full px-20 py-2 bg-white flex items-center justify-between z-10 mobile:pl-[1rem] ">
       <Link href="/">
         <svg
           width="159"
@@ -67,22 +67,30 @@ function NavBar() {
 
       <ul className="flex items-center gap-4 mobile:hidden">
         <li className="cursor-pointer">
-          <Link href="#home" className="nav_link">
+          <Link href="/#home" className="nav_link">
+            {" "}
+            {/* Add / before # */}
             Home
           </Link>
         </li>
         <li className="cursor-pointer">
-          <Link href="#aboutus" className="nav_link">
+          <Link href="/#aboutus" className="nav_link">
+            {" "}
+            {/* Add / before # */}
             About
           </Link>
         </li>
         <li className="cursor-pointer">
-          <Link href="#projects" className="nav_link">
+          <Link href="/#projects" className="nav_link">
+            {" "}
+            {/* Add / before # */}
             Projects
           </Link>
         </li>
         <li className="cursor-pointer">
-          <Link href="#contact" className="nav_link">
+          <Link href="/#contact" className="nav_link">
+            {" "}
+            {/* Add / before # */}
             Contact
           </Link>
         </li>
@@ -95,7 +103,7 @@ function NavBar() {
         <ul className="menu__box px-4" ref={comRef}>
           <li className="cursor-pointer pl-[2rem] pb-2">
             <Link
-              href="#home"
+              href="/#home"
               className="nav_link"
               onClick={() =>
                 (document.getElementById("menu__toggle").checked = false)
@@ -106,7 +114,7 @@ function NavBar() {
           </li>
           <li className="cursor-pointer pl-[2rem] pb-2">
             <Link
-              href="#aboutus"
+              href="/#aboutus"
               className="nav_link"
               onClick={() =>
                 (document.getElementById("menu__toggle").checked = false)
@@ -117,7 +125,7 @@ function NavBar() {
           </li>
           <li className="cursor-pointer pl-[2rem] pb-2">
             <Link
-              href="#project"
+              href="/#projects"
               className="nav_link"
               onClick={() =>
                 (document.getElementById("menu__toggle").checked = false)
@@ -128,7 +136,7 @@ function NavBar() {
           </li>
           <li className="cursor-pointer pl-[2rem] pb-2">
             <Link
-              href="#contact"
+              href="/#contact"
               className="nav_link"
               onClick={() =>
                 (document.getElementById("menu__toggle").checked = false)

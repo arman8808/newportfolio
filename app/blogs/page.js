@@ -135,7 +135,7 @@ function BlogPage() {
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative ">
         {/* Page Header */}
         <motion.div
           className="text-center mb-12"

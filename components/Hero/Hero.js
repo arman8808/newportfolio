@@ -152,7 +152,7 @@ function Hero() {
 
   return (
     <section
-      className="overflow- hero relative w-full flex items-center flex-col justify-start pt-20 pb-12 gap-12 min-h-[90vh] bg mobile:min-h-[85vh] mobile:pt-16 mobile:pb-8 mobile:gap-8"
+      className="overflow-hidden hero relative w-full flex items-center flex-col justify-start pt-20 pb-12 gap-12 min-h-[90vh] bg mobile:min-h-[85vh] mobile:pt-16 mobile:pb-8 mobile:gap-8"
       id="home"
     >
       <motion.div
