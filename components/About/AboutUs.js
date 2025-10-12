@@ -141,95 +141,222 @@ function Timeline() {
     {
       title: "Frontend Developer Intern • Branding 360 Neo Pvt Ltd",
       date: "Jul 2022 • Dec 2022",
-      desc:
-        "Built pixel‑perfect pages, component libraries, and responsive layouts while learning production workflows.",
+      desc: "Built pixel‑perfect pages, component libraries, and responsive layouts while learning production workflows.",
+      icon: "💻",
+      category: "internship"
     },
     {
       title: "React Developer • Branding 360 Neo Pvt Ltd",
       date: "Feb 2023 • Sep 2023",
-      desc:
-        "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
+      desc: "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
+      icon: "⚛️",
+      category: "frontend"
     },
     {
       title: "Full‑Stack MERN Developer • Branding 360 Neo Pvt Ltd",
       date: "Sep 2023 • Mar 2025",
-      desc:
-        "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
+      desc: "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
+      icon: "🚀",
+      category: "fullstack"
     },
     {
       title: "Software Developer • WebSultanate Software Technology Pvt Ltd",
       date: "Apr 2025 • Aug 2025",
-      desc:
-        "Contributed to product modules, API integrations, and CI/CD improvements.",
+      desc: "Contributed to product modules, API integrations, and CI/CD improvements.",
+      icon: "👨‍💻",
+      category: "software"
     },
     {
       title: "Product Developer • umwelt.ai",
       date: "Aug 2025 • Present",
-      desc:
-        "Building product features collaboratively with a focus on usability, reliability, and speed.",
+      desc: "Building product features collaboratively with a focus on usability, reliability, and speed.",
+      icon: "🌟",
+      category: "product"
     },
   ];
 
   const container = {
     hidden: {},
     visible: {
-      transition: { staggerChildren: 0.22 }
+      transition: { staggerChildren: 0.25 }
     }
   };
 
   const itemLeft = {
-    hidden: { opacity: 0, x: -40, scale: 0.96 },
-    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" } }
+    hidden: { opacity: 0, x: -60, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      scale: 1, 
+      transition: { 
+        duration: 0.6, 
+        ease: [0.25, 0.46, 0.45, 0.94] 
+      } 
+    }
   };
+
   const itemRight = {
-    hidden: { opacity: 0, x: 40, scale: 0.96 },
-    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" } }
+    hidden: { opacity: 0, x: 60, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      scale: 1, 
+      transition: { 
+        duration: 0.6, 
+        ease: [0.25, 0.46, 0.45, 0.94] 
+      } 
+    }
+  };
+
+  const iconVariants = {
+    hidden: { scale: 0, rotate: -180 },
+    visible: { 
+      scale: 1, 
+      rotate: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 200, 
+        delay: 0.2 
+      } 
+    }
   };
 
   return (
     <motion.div
-      className="relative w-11/12 max-w-6xl py-14"
+      className="relative w-full max-w-6xl py-20 px-4 overflow-hidden"
       variants={container}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.1 }}
     >
-      <div className="pointer-events-none absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-gradient-to-b from-cyan-400 via-blue-500/70 to-cyan-400/30 mobile:hidden" />
+      {/* Animated Center Line */}
+      <motion.div 
+        className="pointer-events-none absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 mobile:hidden"
+        initial={{ scaleY: 0 }}
+        whileInView={{ scaleY: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-400 via-blue-500 to-purple-500 rounded-full" />
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/20 via-blue-500/20 to-purple-500/20 blur-sm" />
+      </motion.div>
 
-      <div className="flex flex-col gap-10">
+      {/* Floating particles */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400/30 rounded-full"
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ 
+              opacity: [0, 1, 0], 
+              scale: [0, 1, 0],
+              y: [0, -40, -80]
+            }}
+            transition={{ 
+              duration: 3, 
+              delay: i * 0.5,
+              repeat: Infinity,
+              repeatDelay: 2
+            }}
+            viewport={{ once: true }}
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + i * 10}%`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-16">
         {items.map((item, idx) => {
           const isLeft = idx % 2 === 0;
+          const isLast = idx === items.length - 1;
+          
           return (
-            <motion.div key={item.title + idx} variants={isLeft ? itemLeft : itemRight}>
-              <div className={(isLeft ? "mr-auto pr-12" : "ml-auto pl-12") + " relative max-w-[640px] mobile:max-w-full mobile:pl-0 mobile:pr-0"}>
-                {/* connector arm to center line */}
-                <div
-                  className={
-                    "absolute top-1/2 h-[2px] w-10 -translate-y-1/2 bg-gradient-to-r mobile:hidden " +
-                    (isLeft ? "from-transparent to-cyan-400 right-0" : "from-cyan-400 to-transparent left-0")
-                  }
-                />
-                {/* center marker dot */}
-                <div
-                  className={
-                    "absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow ring-2 ring-cyan-400 mobile:hidden " +
-                    (isLeft ? "-right-[22px]" : "-left-[22px]")
-                  }
-                />
-                <motion.article
-                  whileHover={{ y: -4 }}
-                  className="relative overflow-hidden rounded-2xl border border-white/30 bg-white/15 p-6 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.12)] ring-1 ring-white/20"
+            <motion.div 
+              key={item.title + idx} 
+              variants={isLeft ? itemLeft : itemRight}
+              className="relative"
+            >
+              <div className={`${isLeft ? "mr-auto pr-16" : "ml-auto pl-16"} relative max-w-2xl mobile:max-w-full mobile:px-0 mobile:py-4`}>
+                
+                {/* Connector Line */}
+                <div className={`absolute top-1/2 h-0.5 w-12 -translate-y-1/2 bg-gradient-to-r mobile:hidden ${
+                  isLeft 
+                    ? "right-0 from-cyan-400/80 to-cyan-400/20" 
+                    : "left-0 from-cyan-400/20 to-cyan-400/80"
+                }`} />
+                
+                {/* Animated Icon Dot */}
+                <motion.div
+                  variants={iconVariants}
+                  className={`absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-white to-gray-100 shadow-lg border border-white/50 mobile:hidden ${
+                    isLeft ? "-right-6" : "-left-6"
+                  }`}
                 >
-                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-cyan-200/10 to-transparent" />
-                  <div aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-white/20 blur-2xl" />
-                  <h4 className="relative text-xl font-semibold text-slate-800">
-                    <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">{item.title}</span>
-                  </h4>
-                  <p className="relative mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
-                  <div className="relative mt-4">
-                    <span className="inline-block rounded-full bg-cyan-500/90 px-4 py-1.5 text-xs font-medium text-white shadow-lg shadow-cyan-500/30">
-                      {item.date}
-                    </span>
+                  <div className="text-xl">{item.icon}</div>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-20" />
+                </motion.div>
+
+                {/* Timeline Card */}
+                <motion.article
+                  whileHover={{ 
+                    y: -8, 
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
+                  className="relative group"
+                >
+                  {/* Background Glow */}
+                  <div className={`absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                    isLeft ? "rotate-2" : "-rotate-2"
+                  }`} />
+                  
+                  {/* Main Card */}
+                  <div className="relative overflow-hidden rounded-2xl border border-white/40 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-2xl shadow-2xl shadow-cyan-500/10 p-8">
+                    
+                    {/* Animated Border Gradient */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    {/* Content */}
+                    <div className="relative z-10">
+                      {/* Title with gradient */}
+                      <h4 className="text-2xl font-bold text-gray-800 mb-3">
+                        <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          {item.title}
+                        </span>
+                      </h4>
+                      
+                      {/* Description */}
+                      <p className="text-gray-600 leading-relaxed text-lg mb-6">
+                        {item.desc}
+                      </p>
+                      
+                      {/* Date Badge */}
+                      <div className="flex items-center justify-between">
+                        <motion.span 
+                          whileHover={{ scale: 1.05 }}
+                          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300"
+                        >
+                          <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                          {item.date}
+                        </motion.span>
+                        
+                        {/* Mobile Icon */}
+                        <div className="flex md:hidden text-2xl">
+                          {item.icon}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Corner Accents */}
+                    <div className={`absolute top-0 w-16 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full ${
+                      isLeft ? "left-0" : "right-0"
+                    }`} />
+                    <div className={`absolute bottom-0 w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full ${
+                      isLeft ? "right-0" : "left-0"
+                    }`} />
                   </div>
                 </motion.article>
               </div>
@@ -237,6 +364,20 @@ function Timeline() {
           );
         })}
       </div>
+
+      {/* Current Position Indicator */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, type: "spring" }}
+        viewport={{ once: true }}
+        className="absolute left-1/2 -translate-x-1/2 -bottom-8 mobile:hidden"
+      >
+        <div className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full px-4 py-2 text-white text-sm font-semibold shadow-lg">
+          <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+          Currently Here
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

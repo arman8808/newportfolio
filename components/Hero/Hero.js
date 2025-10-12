@@ -11,10 +11,12 @@ import {
   useAnimationControls,
 } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
+
 const heroVariant = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: { opacity: 1, scale: 1, transition: { duration: 1 } },
 };
+
 const textVariant = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -27,6 +29,7 @@ const textVariant = {
     },
   },
 };
+
 const textRevealVariant = {
   hidden: { opacity: 0, x: -50 },
   visible: {
@@ -35,6 +38,7 @@ const textRevealVariant = {
     transition: { duration: 0.8, delay: 0.5 },
   },
 };
+
 const headingTextRevealVariant = {
   hidden: { opacity: 0, x: -50 },
   visible: {
@@ -43,12 +47,14 @@ const headingTextRevealVariant = {
     transition: { duration: 1, delay: 0.7 },
   },
 };
+
 const iconVariant = {
   hover: {
     scale: 1.2,
     transition: { duration: 0.3 },
   },
 };
+
 const imageVariant = {
   hidden: { x: 100, opacity: 0 },
   visible: {
@@ -57,6 +63,7 @@ const imageVariant = {
     transition: { duration: 0.8, type: "spring", stiffness: 50 },
   },
 };
+
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
   const mouseX = useMotionValue(0);
@@ -65,7 +72,7 @@ function Hero() {
   const translateX = useTransform(mouseX, [-50, 0, 50], [-12, 0, 12]);
   const translateY = useTransform(mouseY, [-50, 0, 50], [-8, 0, 8]);
 
- const titles = [
+  const titles = [
     "AI-First Full-Stack Developer",
     "Full-Stack Developer",
     "Backend & ML Engineer",
@@ -89,6 +96,7 @@ function Hero() {
     },
     [mouseX, mouseY]
   );
+
   const techStack = [
     {
       src: "/Asset/images/icons8-html-logo-480.png",
@@ -141,30 +149,33 @@ function Hero() {
       url: "https://nestjs.com/",
     },
   ];
+
   return (
     <section
-      className="hero relative w-full flex items-center flex-col justify-center gap-20 py-4 h-screen bg mobile:h-[70vh] overflow-hidden"
+      className="overflow- hero relative w-full flex items-center flex-col justify-start pt-20 pb-12 gap-12 min-h-[90vh] bg mobile:min-h-[85vh] mobile:pt-16 mobile:pb-8 mobile:gap-8"
       id="home"
     >
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -top-40 -right-40 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl"
+        className="pointer-events-none absolute -top-40 -right-40 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl mobile:-top-20 mobile:-right-20 mobile:h-40 mobile:w-40"
         animate={shouldReduceMotion ? undefined : { scale: [1, 1.1, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -bottom-48 -left-36 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl"
+        className="pointer-events-none absolute -bottom-48 -left-36 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl mobile:-bottom-24 mobile:-left-18 mobile:h-48 mobile:w-48"
         animate={shouldReduceMotion ? undefined : { scale: [1, 1.08, 1] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div className="hero_div flex flex-col">
-        <div className="hero_top ">
-          <div className="hero_top_text">
+      
+      <div className="hero_div flex flex-col w-full max-w-6xl px-4 mobile:px-6">
+        <div className="hero_top flex flex-col lg:flex-row items-center justify-between gap-12 mobile:gap-8">
+          <div className="hero_top_text flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
             <motion.h1
               variants={textVariant}
               initial="hidden"
               animate="visible"
+              className="text-4xl lg:text-5xl font-bold mb-4 mobile:text-3xl mobile:mb-3"
             >
               <AnimatePresence mode="wait">
                 <motion.span
@@ -173,24 +184,28 @@ function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                  className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent block"
                 >
                   {titles[titleIndex]}
                 </motion.span>
               </AnimatePresence>
             </motion.h1>
 
-            <motion.p variants={textVariant} initial="hidden" animate="visible">
-              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in
-              India. 📍
+            <motion.p 
+              variants={textVariant} 
+              initial="hidden" 
+              animate="visible"
+              className="text-lg lg:text-xl text-gray-300 mb-6 mobile:text-base mobile:mb-4"
+            >
+              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in India. 📍
             </motion.p>
 
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-3 flex-wrap justify-center mobile:mt-3">
               <motion.a
                 href="#projects"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30"
+                className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 mobile:px-4 mobile:py-2 mobile:text-sm"
               >
                 View Projects
               </motion.a>
@@ -198,26 +213,32 @@ function Hero() {
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-400 hover:bg-cyan-500/10"
+                className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-400 hover:bg-cyan-500/10 mobile:px-4 mobile:py-2 mobile:text-sm"
               >
                 Contact Me
               </motion.a>
             </div>
 
-            <span className="mt-4 flex gap-2">
+            <span className="mt-6 flex gap-4 mobile:mt-4 mobile:gap-3">
               <Link
                 href="https://www.linkedin.com/in/arman-ali-0b7480147/"
                 target="_blank"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
-                <LinkedIn style={{ fontSize: "2.5rem" }} />
+                <LinkedIn style={{ fontSize: "2.5rem" }} className="mobile:!text-3xl" />
               </Link>
-              <Link href="https://github.com/arman8808" target="_blank">
-                <GitHub style={{ fontSize: "2.5rem" }} />
+              <Link 
+                href="https://github.com/arman8808" 
+                target="_blank"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                <GitHub style={{ fontSize: "2.5rem" }} className="mobile:!text-3xl" />
               </Link>
             </span>
           </div>
+          
           <div
-            className="hero_top_image mobile:hidden"
+            className="hero_top_image lg:block hidden"
             onMouseMove={handleMouseMove}
           >
             <motion.div
@@ -225,6 +246,7 @@ function Hero() {
               initial="hidden"
               animate="visible"
               style={{ x: translateX, y: translateY, rotateZ: rotate }}
+              className="relative"
             >
               <Image
                 src="/Asset/images/Frame.png"
@@ -232,6 +254,7 @@ function Hero() {
                 width={500}
                 height={400}
                 priority
+                className="w-full max-w-[400px] lg:max-w-[500px]"
               />
               <motion.div
                 aria-hidden
@@ -248,16 +271,18 @@ function Hero() {
             </motion.div>
           </div>
         </div>
-        <div className="hero_bottom mt-6 flex w-full max-w-4xl flex-col gap-3">
-          <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80">
+        
+        <div className="hero_bottom mt-8 flex w-full flex-col gap-3 mobile:mt-6">
+          <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80 mobile:text-xs">
             Tech Stack
           </p>
           <TechMarquee tech={techStack} reduce={shouldReduceMotion} />
         </div>
       </div>
+      
       <motion.div
         aria-hidden
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cyan-400/70"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cyan-400/70 mobile:bottom-4"
         animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
         transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -312,20 +337,20 @@ function TechMarquee({ tech, reduce }) {
 
   if (isMobile) {
     return (
-      <div className="relative w-full min-h-[120px]">
-        <div className="grid grid-cols-5 gap-3 sm:gap-4">
+      <div className="relative w-full min-h-[100px] mobile:min-h-[80px]">
+        <div className="grid grid-cols-5 gap-2 sm:gap-4">
           {tech.map((t, index) => (
             <a
               key={`tms-${index}`}
               href={t.url}
               target="_blank"
               rel="noreferrer"
-              className="group relative flex flex-col items-center justify-center cursor-pointer p-2 rounded-lg hover:bg-cyan-50/50 transition-colors"
+              className="group relative flex flex-col items-center justify-center cursor-pointer p-1 rounded-lg hover:bg-cyan-50/50 transition-colors mobile:p-1"
             >
               <motion.div
                 whileHover="hover"
                 variants={iconVariant}
-                className="rounded-sm mb-1"
+                className="rounded-sm mb-1 mobile:mb-0"
               >
                 <Image
                   src={t.src}
@@ -333,10 +358,10 @@ function TechMarquee({ tech, reduce }) {
                   width={0}
                   height={0}
                   sizes="48px"
-                  className="h-auto w-12"
+                  className="h-auto w-10 mobile:w-8"
                 />
               </motion.div>
-              <span className="text-xs text-slate-600 text-center leading-tight">
+              <span className="text-xs text-slate-600 text-center leading-tight mobile:text-[10px]">
                 {t.name}
               </span>
             </a>

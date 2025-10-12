@@ -23,7 +23,7 @@ export default function SingleProjectPage({ params }) {
     { img: gallery8 },
   ];
   return (
-    <main className="flex w-full min-h-screen flex-col items-center justify-between gap-4 my-4">
+    <main className=" flex w-full min-h-screen flex-col items-center justify-between gap-4 my-4">
       <div className="w-11/12 flex items-start justify-start flex-col gap-2">
         <h2 className="font-semibold text-mainHeading">
           This is Title Of Project

@@ -39,7 +39,7 @@ function BlogSection() {
 
   return (
     <section
-      className="w-full flex flex-col items-center justify-center gap-8 py-12 px-4 bg-gradient-to-br from-slate-50 to-blue-50"
+      className=" w-full flex flex-col items-center justify-center gap-8 py-12 px-4 bg-gradient-to-br from-slate-50 to-blue-50"
       id="blogs"
     >
       <div className="w-full max-w-6xl flex items-center justify-between mb-6">
