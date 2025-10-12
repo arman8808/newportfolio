@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 function Contact() {
   return (
     <section
-      className=" relative flex items-center justify-center py-14"
+      className="mobile:overflow-hidden relative flex items-center justify-center py-14"
       id="contact"
     >
       <motion.div
