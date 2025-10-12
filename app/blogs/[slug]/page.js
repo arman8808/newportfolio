@@ -81,7 +81,7 @@ function SingleBlogPage() {
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-4xl mx-auto relative ">
         {/* Back Button */}
         <motion.div
           initial="hidden"
@@ -196,7 +196,7 @@ function SingleBlogPage() {
         >
           <motion.div
             variants={fadeUp}
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-gray-100"
+            className="bg-white rounded-2xl p-8 md:p-12  border border-gray-100"
           >
             {/* Content sections with animations */}
             <motion.div
@@ -235,7 +235,7 @@ function SingleBlogPage() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-12"
+          className="bg-white rounded-2xl p-8  border border-gray-100 mb-12"
         >
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 p-1 flex-shrink-0">
@@ -276,7 +276,7 @@ function SingleBlogPage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white text-cyan-600 px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-50 transition-colors duration-200"
+                className="bg-white text-cyan-600 px-8 py-3 rounded-lg font-semibold  hover:bg-gray-50 transition-colors duration-200"
               >
                 Explore More Blogs
               </motion.button>
