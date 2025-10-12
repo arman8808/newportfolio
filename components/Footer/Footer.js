@@ -7,7 +7,7 @@ function Footer() {
   return (
     <footer className="flex items-center justify-center">
       <div className="footer w-full flex items-center justify-between">
-        <h3>Copyright © 2024. All rights are reserved</h3>
+        <h3>Copyright © 2025. All rights are reserved</h3>
         <div className="flex items-center gap-3">
           <Link
             href="https://www.linkedin.com/in/arman-ali-0b7480147/"

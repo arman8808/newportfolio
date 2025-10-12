@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 function Contact() {
   return (
     <section
-      className="relative flex items-center justify-center py-14"
+      className=" relative flex items-center justify-center py-14"
       id="contact"
     >
       <motion.div
@@ -23,7 +23,9 @@ function Contact() {
       />
 
       <div className="flex w-11/12 max-w-5xl flex-col items-center justify-center gap-6">
-        <p className="text-xs uppercase tracking-widest text-cyan-500">Contact</p>
+        <p className="text-xs uppercase tracking-widest text-cyan-500">
+          Contact
+        </p>
         <h3 className="text-center text-3xl font-semibold">
           <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Don't be shy! Hit me up! 👇
@@ -59,7 +61,7 @@ function Contact() {
             </span>
             <div className="contact_info_info flex min-w-0 flex-col items-start">
               <h3 className="text-slate-700">Location</h3>
-              <p className="text-slate-600">Lucknow, India</p>
+              <p className="text-slate-600">Faridabad, India</p>
             </div>
           </motion.a>
           <motion.a
@@ -84,21 +86,34 @@ function Contact() {
                 <path d="M3 7l9 6l9 -6"></path>
               </svg>
             </span>
-            <div className="contact_info_info flex min-w-0 flex-col items-start">
+            <div className="contact_info_info flex min-w-0 flex-1 flex-col items-start">
               <h3 className="text-slate-700">Mail</h3>
-              <p className="break-words text-cyan-600">armanal3066@gmail.com</p>
+              <p className="text-cyan-600 break-all w-full">
+                armanal3066@gmail.com
+              </p>
             </div>
           </motion.a>
         </div>
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          <Link href="mailto:armanal3066@gmail.com" className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 hover:translate-y-[-2px]">
+          <Link
+            href="mailto:armanal3066@gmail.com"
+            className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 hover:translate-y-[-2px]"
+          >
             Email Me
           </Link>
-          <Link href="https://www.linkedin.com/in/arman-ali-0b7480147/" target="_blank" className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-500 hover:bg-cyan-500/10">
+          <Link
+            href="https://www.linkedin.com/in/arman-ali-0b7480147/"
+            target="_blank"
+            className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-500 hover:bg-cyan-500/10"
+          >
             LinkedIn
           </Link>
-          <Link href="https://github.com/arman8808" target="_blank" className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-500 hover:bg-cyan-500/10">
+          <Link
+            href="https://github.com/arman8808"
+            target="_blank"
+            className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-500 hover:bg-cyan-500/10"
+          >
             GitHub
           </Link>
         </div>
