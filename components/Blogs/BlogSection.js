@@ -55,7 +55,7 @@ function BlogSection() {
           href="/blogs"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
-          className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg  text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:shadow-blue-500/40"
+          className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg  text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:bg-cyan-600"
         >
           View All Posts
         </motion.a>
