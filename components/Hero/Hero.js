@@ -65,10 +65,11 @@ function Hero() {
   const translateX = useTransform(mouseX, [-50, 0, 50], [-12, 0, 12]);
   const translateY = useTransform(mouseY, [-50, 0, 50], [-8, 0, 8]);
 
-  const titles = [
+ const titles = [
+    "AI-First Full-Stack Developer",
     "Full-Stack Developer",
-    "UI-Focused Engineer",
-    "Performance Optimizer",
+    "Backend & ML Engineer",
+    "Conversational AI Engineer",
   ];
   const [titleIndex, setTitleIndex] = useState(0);
   useEffect(() => {
