@@ -223,6 +223,18 @@ function Hero() {
               >
                 Contact Me
               </motion.a>
+
+              {/* Download Resume Button - same styling as primary button */}
+              <motion.a
+                href="/Asset/ArmanAliResume.pdf"
+                download="ArmanAli-Resume.pdf"
+                aria-label="Download Resume"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 mobile:px-4 mobile:py-2 mobile:text-sm"
+              >
+                Download Resume
+              </motion.a>
             </div>
 
             <span className="mt-6 flex gap-4 mobile:mt-4 mobile:gap-3">
@@ -314,7 +326,10 @@ function ModernTechMarquee({ tech, reduce }) {
   const topRowTech = [...tech];
   // Bottom row starts from middle to create staggered effect
   const middleIndex = Math.floor(tech.length / 2);
-  const bottomRowTech = [...tech.slice(middleIndex), ...tech.slice(0, middleIndex)];
+  const bottomRowTech = [
+    ...tech.slice(middleIndex),
+    ...tech.slice(0, middleIndex),
+  ];
 
   useEffect(() => {
     const checkMobile = () => {
@@ -414,7 +429,7 @@ function ModernTechMarquee({ tech, reduce }) {
   // Desktop version with dual marquees
   if (!isMobile) {
     return (
-      <div 
+      <div
         className="relative w-full overflow-visible min-h-[180px] py-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -429,10 +444,10 @@ function ModernTechMarquee({ tech, reduce }) {
             gradientWidth={80}
             pauseOnHover={true}
             pauseOnClick={true}
-            style={{ 
-              display: 'flex',
-              alignItems: 'center',
-              overflow: 'hidden' // Prevent scrollbar
+            style={{
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden", // Prevent scrollbar
             }}
           >
             {topRowTech.map((t, index) => (
@@ -455,10 +470,10 @@ function ModernTechMarquee({ tech, reduce }) {
             gradientWidth={80}
             pauseOnHover={true}
             pauseOnClick={true}
-            style={{ 
-              display: 'flex',
-              alignItems: 'center',
-              overflow: 'hidden' // Prevent scrollbar
+            style={{
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden", // Prevent scrollbar
             }}
           >
             {bottomRowTech.map((t, index) => (
@@ -485,10 +500,10 @@ function ModernTechMarquee({ tech, reduce }) {
         gradientWidth={60}
         pauseOnHover={false}
         pauseOnClick={true}
-        style={{ 
-          display: 'flex',
-          alignItems: 'center',
-          overflow: 'hidden' // Prevent scrollbar
+        style={{
+          display: "flex",
+          alignItems: "center",
+          overflow: "hidden", // Prevent scrollbar
         }}
       >
         {tech.map((t, index) => (
@@ -544,4 +559,3 @@ function ModernTechMarquee({ tech, reduce }) {
     </div>
   );
 }
-
