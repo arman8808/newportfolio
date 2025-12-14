@@ -11,7 +11,7 @@ import {
   useAnimationControls,
 } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-
+import Marquee from "react-fast-marquee";
 const heroVariant = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: { opacity: 1, scale: 1, transition: { duration: 1 } },
@@ -148,6 +148,11 @@ function Hero() {
       name: "NestJS",
       url: "https://nestjs.com/",
     },
+    {
+      src: "/Asset/images/react-native.png",
+      name: "React Native",
+      url: "https://reactnative.dev/",
+    },
   ];
 
   return (
@@ -167,7 +172,7 @@ function Hero() {
         animate={shouldReduceMotion ? undefined : { scale: [1, 1.08, 1] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
-      
+
       <div className="hero_div flex flex-col w-full max-w-6xl px-4 mobile:px-6">
         <div className="hero_top flex flex-col lg:flex-row items-center justify-between gap-12 mobile:gap-8">
           <div className="hero_top_text flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
@@ -191,13 +196,14 @@ function Hero() {
               </AnimatePresence>
             </motion.h1>
 
-            <motion.p 
-              variants={textVariant} 
-              initial="hidden" 
+            <motion.p
+              variants={textVariant}
+              initial="hidden"
               animate="visible"
               className="text-lg lg:text-xl text-gray-300 mb-6 mobile:text-base mobile:mb-4"
             >
-              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in India. 📍
+              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in
+              India. 📍
             </motion.p>
 
             <div className="mt-4 flex items-center gap-3 flex-wrap justify-center mobile:mt-3">
@@ -225,18 +231,24 @@ function Hero() {
                 target="_blank"
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
-                <LinkedIn style={{ fontSize: "2.5rem" }} className="mobile:!text-3xl" />
+                <LinkedIn
+                  style={{ fontSize: "2.5rem" }}
+                  className="mobile:!text-3xl"
+                />
               </Link>
-              <Link 
-                href="https://github.com/arman8808" 
+              <Link
+                href="https://github.com/arman8808"
                 target="_blank"
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
-                <GitHub style={{ fontSize: "2.5rem" }} className="mobile:!text-3xl" />
+                <GitHub
+                  style={{ fontSize: "2.5rem" }}
+                  className="mobile:!text-3xl"
+                />
               </Link>
             </span>
           </div>
-          
+
           <div
             className="hero_top_image lg:block hidden"
             onMouseMove={handleMouseMove}
@@ -271,7 +283,7 @@ function Hero() {
             </motion.div>
           </div>
         </div>
-        
+
         <div className="hero_bottom mt-8 flex w-full flex-col gap-3 mobile:mt-6">
           <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80 mobile:text-xs">
             Tech Stack
@@ -279,7 +291,7 @@ function Hero() {
           <ModernTechMarquee tech={techStack} reduce={shouldReduceMotion} />
         </div>
       </div>
-      
+
       <motion.div
         aria-hidden
         className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cyan-400/70 mobile:bottom-4"
@@ -295,62 +307,57 @@ function Hero() {
 export default Hero;
 
 function ModernTechMarquee({ tech, reduce }) {
-  const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const containerRef = useRef(null);
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Create content for seamless scrolling
-  const createRowContent = (direction = 'left') => {
-    const doubleContent = [...tech, ...tech];
-    return (
-      <>
-        {/* First set - visible */}
-        {doubleContent.map((t, index) => (
-          <TechItem key={`${direction}-first-${index}`} t={t} index={index} direction={direction} />
-        ))}
-        {/* Second set - for seamless loop */}
-        {doubleContent.map((t, index) => (
-          <TechItem key={`${direction}-second-${index}`} t={t} index={index} direction={direction} />
-        ))}
-      </>
-    );
-  };
+  // Create arrays with different starting points
+  const topRowTech = [...tech];
+  // Bottom row starts from middle to create staggered effect
+  const middleIndex = Math.floor(tech.length / 2);
+  const bottomRowTech = [...tech.slice(middleIndex), ...tech.slice(0, middleIndex)];
 
-  const TechItem = ({ t, index, direction }) => {
-    const isTopRow = direction === 'left';
-    
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const TechItem = ({ t, isTopRow = true, isMobile = false }) => {
     return (
       <motion.a
         href={t.url}
         target="_blank"
         rel="noreferrer"
-        className="group relative flex flex-col items-center justify-center min-w-[80px] flex-shrink-0"
+        className="group relative flex flex-col items-center justify-center min-w-[80px] mx-4"
         whileHover={{ scale: 1.15, rotateY: 5 }}
         whileTap={{ scale: 0.95 }}
-        transition={{ 
+        transition={{
           duration: 0.15,
           type: "spring",
           stiffness: 400,
-          damping: 15
+          damping: 15,
         }}
       >
-        {/* Glow effect */}
-        <motion.div
-          className="absolute inset-0 rounded-xl blur-lg"
-          style={{
-            backgroundColor: isTopRow ? 'rgba(6, 182, 212, 0.1)' : 'rgba(59, 130, 246, 0.1)'
-          }}
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 0.25 }}
-          transition={{ duration: 0.2 }}
-        />
-        
-        {/* Icon container */}
-        <div className="relative z-10 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200"
-          style={{
-            borderColor: isTopRow ? 'rgba(34, 211, 238, 0.3)' : 'rgba(96, 165, 250, 0.3)',
-          }}
-        >
+        {/* Glow effect - only on desktop */}
+        {!isMobile && (
+          <motion.div
+            className="absolute inset-0 rounded-xl blur-lg"
+            style={{
+              backgroundColor: isTopRow
+                ? "rgba(6, 182, 212, 0.1)"
+                : "rgba(59, 130, 246, 0.1)",
+            }}
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 0.25 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
+
+        {/* Icon container - EXACTLY YOUR ORIGINAL STYLING */}
+        <div className="relative z-10 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 group-hover:border-cyan-400/30 transition-all duration-300">
           <Image
             src={t.src}
             alt={t.name}
@@ -360,90 +367,23 @@ function ModernTechMarquee({ tech, reduce }) {
             className="h-auto w-12 md:w-16"
           />
         </div>
-        
-        {/* Tech name */}
-        <span className="mt-3 text-xs font-medium transition-colors duration-200"
-          style={{
-            color: isTopRow ? 'rgba(103, 232, 249, 0.9)' : 'rgba(147, 197, 253, 0.9)',
-          }}
-        >
+
+        {/* Tech name - EXACTLY YOUR ORIGINAL STYLING */}
+        <span className="mt-3 text-xs font-medium text-cyan-300/90 group-hover:text-cyan-200 transition-colors duration-300">
           {t.name}
         </span>
       </motion.a>
     );
   };
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Desktop marquee
-  if (!isMobile && !reduce) {
+  // If motion is reduced
+  if (reduce) {
     return (
-      <div className="w-full overflow-hidden relative">
-        <div 
-          ref={containerRef}
-          className="relative overflow-visible min-h-[180px] py-4"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          {/* Gradient fade edges */}
-          <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-background via-background to-transparent z-20 pointer-events-none" />
-          <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-background via-background to-transparent z-20 pointer-events-none" />
-
-          {/* Top row - Left to right */}
-          <motion.div
-            className="flex items-center gap-8 mb-6"
-            animate={{
-              x: ["0%", "-50%"], // Scroll only 50% of the duplicated content
-            }}
-            transition={{
-              duration: 40,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{
-              animationPlayState: isHovering ? "paused" : "running",
-            }}
-          >
-            {createRowContent('left')}
-          </motion.div>
-
-          {/* Bottom row - Right to left */}
-          <motion.div
-            className="flex items-center gap-8"
-            animate={{
-              x: ["-50%", "0%"], // Start at -50% and go to 0%
-            }}
-            transition={{
-              duration: 45,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{
-              animationPlayState: isHovering ? "paused" : "running",
-            }}
-          >
-            {createRowContent('right')}
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
-  // Mobile version
-  return (
-    <div className="w-full">
-      <div className="relative min-h-[160px] py-4 mobile:min-h-[140px] mobile:py-3">
+      <div className="relative w-full min-h-[140px] mobile:min-h-[120px] py-4 mobile:py-3">
         <div className="grid grid-cols-5 gap-3 sm:gap-4">
-          {tech.map((t, index) => (
+          {tech.slice(0, 10).map((t, index) => (
             <motion.a
-              key={`mobile-${index}`}
+              key={`static-${index}`}
               href={t.url}
               target="_blank"
               rel="noreferrer"
@@ -461,13 +401,147 @@ function ModernTechMarquee({ tech, reduce }) {
                   className="h-auto w-8 sm:w-10"
                 />
               </div>
-              <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
+              <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center leading-tight">
                 {t.name}
               </span>
             </motion.a>
           ))}
         </div>
       </div>
+    );
+  }
+
+  // Desktop version with dual marquees
+  if (!isMobile) {
+    return (
+      <div 
+        className="relative w-full overflow-visible min-h-[180px] py-4"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        {/* Top row - moves left to right */}
+        <div className="mb-6">
+          <Marquee
+            direction="left"
+            speed={25}
+            gradient={false}
+            gradientColor="hsl(240, 10%, 4%)" // Your background color
+            gradientWidth={80}
+            pauseOnHover={true}
+            pauseOnClick={true}
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              overflow: 'hidden' // Prevent scrollbar
+            }}
+          >
+            {topRowTech.map((t, index) => (
+              <TechItem key={`top-${index}`} t={t} isTopRow={true} />
+            ))}
+            {/* Duplicate for seamless loop */}
+            {topRowTech.map((t, index) => (
+              <TechItem key={`top-dup-${index}`} t={t} isTopRow={true} />
+            ))}
+          </Marquee>
+        </div>
+
+        {/* Bottom row - moves right to left (opposite direction) */}
+        <div>
+          <Marquee
+            direction="right"
+            speed={25}
+            gradient={false}
+            gradientColor="hsl(240, 10%, 4%)" // Your background color
+            gradientWidth={80}
+            pauseOnHover={true}
+            pauseOnClick={true}
+            style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              overflow: 'hidden' // Prevent scrollbar
+            }}
+          >
+            {bottomRowTech.map((t, index) => (
+              <TechItem key={`bottom-${index}`} t={t} isTopRow={false} />
+            ))}
+            {/* Duplicate for seamless loop */}
+            {bottomRowTech.map((t, index) => (
+              <TechItem key={`bottom-dup-${index}`} t={t} isTopRow={false} />
+            ))}
+          </Marquee>
+        </div>
+      </div>
+    );
+  }
+
+  // Mobile version with single marquee
+  return (
+    <div className="relative w-full overflow-visible min-h-[140px] py-4 mobile:py-3">
+      <Marquee
+        direction="left"
+        speed={30}
+        gradient={false}
+        gradientColor="hsl(240, 10%, 4%)" // Your background color
+        gradientWidth={60}
+        pauseOnHover={false}
+        pauseOnClick={true}
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden' // Prevent scrollbar
+        }}
+      >
+        {tech.map((t, index) => (
+          <motion.a
+            key={`mobile-${index}`}
+            href={t.url}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative flex flex-col items-center justify-center min-w-[60px] mx-3"
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="relative z-10 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200">
+              <Image
+                src={t.src}
+                alt={t.name}
+                width={0}
+                height={0}
+                sizes="48px"
+                className="h-auto w-8 sm:w-10"
+              />
+            </div>
+            <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
+              {t.name}
+            </span>
+          </motion.a>
+        ))}
+        {/* Duplicate for seamless loop */}
+        {tech.map((t, index) => (
+          <motion.a
+            key={`mobile-dup-${index}`}
+            href={t.url}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative flex flex-col items-center justify-center min-w-[60px] mx-3"
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="relative z-10 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200">
+              <Image
+                src={t.src}
+                alt={t.name}
+                width={0}
+                height={0}
+                sizes="48px"
+                className="h-auto w-8 sm:w-10"
+              />
+            </div>
+            <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
+              {t.name}
+            </span>
+          </motion.a>
+        ))}
+      </Marquee>
     </div>
   );
 }
+
