@@ -138,33 +138,20 @@ export default AboutUs;
 
 function Timeline() {
   const items = [
-    {
-      title: "Frontend Developer Intern • Branding 360 Neo Pvt Ltd",
-      date: "Jul 2022 • Dec 2022",
-      desc: "Built pixel‑perfect pages, component libraries, and responsive layouts while learning production workflows.",
-      icon: "💻",
-      category: "internship"
-    },
+
     {
       title: "React Developer • Branding 360 Neo Pvt Ltd",
-      date: "Feb 2023 • Sep 2023",
+      date: "July 2022 • Sep 2023",
       desc: "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
       icon: "⚛️",
       category: "frontend"
     },
     {
       title: "Full‑Stack MERN Developer • Branding 360 Neo Pvt Ltd",
-      date: "Sep 2023 • Mar 2025",
+      date: "Sep 2023 • Aug 2025",
       desc: "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
       icon: "🚀",
       category: "fullstack"
-    },
-    {
-      title: "Software Developer • WebSultanate Software Technology Pvt Ltd",
-      date: "Apr 2025 • Aug 2025",
-      desc: "Contributed to product modules, API integrations, and CI/CD improvements.",
-      icon: "👨‍💻",
-      category: "software"
     },
     {
       title: "Product Developer • umwelt.ai",
