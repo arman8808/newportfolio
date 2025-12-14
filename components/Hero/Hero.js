@@ -10,7 +10,7 @@ import {
   useReducedMotion,
   useAnimationControls,
 } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const heroVariant = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -276,7 +276,7 @@ function Hero() {
           <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80 mobile:text-xs">
             Tech Stack
           </p>
-          <TechMarquee tech={techStack} reduce={shouldReduceMotion} />
+          <ModernTechMarquee tech={techStack} reduce={shouldReduceMotion} />
         </div>
       </div>
       
@@ -294,159 +294,180 @@ function Hero() {
 
 export default Hero;
 
-function TechMarquee({ tech, reduce }) {
-  const row1 = [...tech, ...tech];
-  const row2 = [...tech, ...tech];
-  const controls1 = useAnimationControls();
-  const controls2 = useAnimationControls();
+function ModernTechMarquee({ tech, reduce }) {
+  const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef(null);
 
-  const pause = () => {
-    controls1.stop();
-    controls2.stop();
+  // Create content for seamless scrolling
+  const createRowContent = (direction = 'left') => {
+    const doubleContent = [...tech, ...tech];
+    return (
+      <>
+        {/* First set - visible */}
+        {doubleContent.map((t, index) => (
+          <TechItem key={`${direction}-first-${index}`} t={t} index={index} direction={direction} />
+        ))}
+        {/* Second set - for seamless loop */}
+        {doubleContent.map((t, index) => (
+          <TechItem key={`${direction}-second-${index}`} t={t} index={index} direction={direction} />
+        ))}
+      </>
+    );
   };
-  const play = () => {
-    if (reduce || isMobile) return;
-    controls1.start({
-      x: ["0%", "-100%"],
-      transition: { duration: 20, repeat: Infinity, ease: "linear" },
-    });
-    controls2.start({
-      x: ["-100%", "0%"],
-      transition: { duration: 22, repeat: Infinity, ease: "linear" },
-    });
+
+  const TechItem = ({ t, index, direction }) => {
+    const isTopRow = direction === 'left';
+    
+    return (
+      <motion.a
+        href={t.url}
+        target="_blank"
+        rel="noreferrer"
+        className="group relative flex flex-col items-center justify-center min-w-[80px] flex-shrink-0"
+        whileHover={{ scale: 1.15, rotateY: 5 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ 
+          duration: 0.15,
+          type: "spring",
+          stiffness: 400,
+          damping: 15
+        }}
+      >
+        {/* Glow effect */}
+        <motion.div
+          className="absolute inset-0 rounded-xl blur-lg"
+          style={{
+            backgroundColor: isTopRow ? 'rgba(6, 182, 212, 0.1)' : 'rgba(59, 130, 246, 0.1)'
+          }}
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 0.25 }}
+          transition={{ duration: 0.2 }}
+        />
+        
+        {/* Icon container */}
+        <div className="relative z-10 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200"
+          style={{
+            borderColor: isTopRow ? 'rgba(34, 211, 238, 0.3)' : 'rgba(96, 165, 250, 0.3)',
+          }}
+        >
+          <Image
+            src={t.src}
+            alt={t.name}
+            width={0}
+            height={0}
+            sizes="80px"
+            className="h-auto w-12 md:w-16"
+          />
+        </div>
+        
+        {/* Tech name */}
+        <span className="mt-3 text-xs font-medium transition-colors duration-200"
+          style={{
+            color: isTopRow ? 'rgba(103, 232, 249, 0.9)' : 'rgba(147, 197, 253, 0.9)',
+          }}
+        >
+          {t.name}
+        </span>
+      </motion.a>
+    );
   };
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const update = () => setIsMobile(mq.matches);
-    update();
-    mq.addEventListener
-      ? mq.addEventListener("change", update)
-      : mq.addListener(update);
-    return () => {
-      mq.removeEventListener
-        ? mq.removeEventListener("change", update)
-        : mq.removeListener(update);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    play();
-  }, [reduce, isMobile]);
-
-  if (isMobile) {
+  // Desktop marquee
+  if (!isMobile && !reduce) {
     return (
-      <div className="relative w-full min-h-[100px] mobile:min-h-[80px]">
-        <div className="grid grid-cols-5 gap-2 sm:gap-4">
+      <div className="w-full overflow-hidden relative">
+        <div 
+          ref={containerRef}
+          className="relative overflow-visible min-h-[180px] py-4"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {/* Gradient fade edges */}
+          <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-background via-background to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-background via-background to-transparent z-20 pointer-events-none" />
+
+          {/* Top row - Left to right */}
+          <motion.div
+            className="flex items-center gap-8 mb-6"
+            animate={{
+              x: ["0%", "-50%"], // Scroll only 50% of the duplicated content
+            }}
+            transition={{
+              duration: 40,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              animationPlayState: isHovering ? "paused" : "running",
+            }}
+          >
+            {createRowContent('left')}
+          </motion.div>
+
+          {/* Bottom row - Right to left */}
+          <motion.div
+            className="flex items-center gap-8"
+            animate={{
+              x: ["-50%", "0%"], // Start at -50% and go to 0%
+            }}
+            transition={{
+              duration: 45,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              animationPlayState: isHovering ? "paused" : "running",
+            }}
+          >
+            {createRowContent('right')}
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Mobile version
+  return (
+    <div className="w-full">
+      <div className="relative min-h-[160px] py-4 mobile:min-h-[140px] mobile:py-3">
+        <div className="grid grid-cols-5 gap-3 sm:gap-4">
           {tech.map((t, index) => (
-            <a
-              key={`tms-${index}`}
+            <motion.a
+              key={`mobile-${index}`}
               href={t.url}
               target="_blank"
               rel="noreferrer"
-              className="group relative flex flex-col items-center justify-center cursor-pointer p-1 rounded-lg hover:bg-cyan-50/50 transition-colors mobile:p-1"
+              className="group relative flex flex-col items-center justify-center cursor-pointer p-2 sm:p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-cyan-400/30 transition-all duration-200"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <motion.div
-                whileHover="hover"
-                variants={iconVariant}
-                className="rounded-sm mb-1 mobile:mb-0"
-              >
+              <div className="relative z-10">
                 <Image
                   src={t.src}
                   alt={t.name}
                   width={0}
                   height={0}
                   sizes="48px"
-                  className="h-auto w-10 mobile:w-8"
+                  className="h-auto w-8 sm:w-10"
                 />
-              </motion.div>
-              <span className="text-xs text-slate-600 text-center leading-tight mobile:text-[10px]">
+              </div>
+              <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
                 {t.name}
               </span>
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="relative w-full overflow-hidden min-h-[64px]">
-      <motion.div
-        className="flex items-center gap-6 min-h-[56px] md:min-h-[64px]"
-        animate={controls1}
-        onMouseEnter={pause}
-        onMouseLeave={play}
-        drag="x"
-        dragConstraints={{ left: -400, right: 400 }}
-        dragElastic={0.1}
-      >
-        {row1.map((t, index) => (
-          <a
-            key={`tm1-${index}`}
-            href={t.url}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative block cursor-pointer"
-          >
-            <motion.div
-              whileHover="hover"
-              variants={iconVariant}
-              className="rounded-sm"
-            >
-              <Image
-                src={t.src}
-                alt={t.name}
-                width={0}
-                height={0}
-                sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
-                className="h-auto w-16 sm:w-20 md:w-24"
-              />
-            </motion.div>
-            <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded bg-black/70 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-              {t.name}
-            </span>
-          </a>
-        ))}
-      </motion.div>
-      <motion.div
-        className="mt-3 flex items-center gap-6 opacity-80 min-h-[52px] md:min-h-[60px]"
-        animate={controls2}
-        onMouseEnter={pause}
-        onMouseLeave={play}
-        drag="x"
-        dragConstraints={{ left: -400, right: 400 }}
-        dragElastic={0.1}
-      >
-        {row2.map((t, index) => (
-          <a
-            key={`tm2-${index}`}
-            href={t.url}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative block cursor-pointer"
-          >
-            <motion.div
-              whileHover="hover"
-              variants={iconVariant}
-              className="rounded-sm"
-            >
-              <Image
-                src={t.src}
-                alt={t.name}
-                width={0}
-                height={0}
-                sizes="(max-width: 640px) 56px, (max-width: 1024px) 72px, 88px"
-                className="h-auto w-14 sm:w-18 md:w-22"
-              />
-            </motion.div>
-            <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded bg-black/70 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-              {t.name}
-            </span>
-          </a>
-        ))}
-      </motion.div>
     </div>
   );
 }
