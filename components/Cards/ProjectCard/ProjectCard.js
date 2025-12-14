@@ -64,7 +64,7 @@ function ProjectCard({ project, index, onClick }) {
           </div>
 
           {/* Read More - Fixed at bottom */}
-          <div className="mt-auto pt-2">
+          {/* <div className="mt-auto pt-2">
             <div className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 text-sm font-medium group w-fit">
               <span>Read More</span>
               <svg
@@ -83,7 +83,7 @@ function ProjectCard({ project, index, onClick }) {
                 <path d="m12 5 7 7-7 7"></path>
               </svg>
             </div>
-          </div>
+          </div> */}
           
         </div>
       </div>
