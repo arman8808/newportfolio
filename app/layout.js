@@ -1,16 +1,25 @@
 "use client";
 import { Inter } from "next/font/google";
+import ReactQueryProvider from "@providers/ReactQueryProvider";
 import "@styles/globals.css";
 import NavBar from "@components/NavBar/NavBar";
 import Footer from "@components/Footer/Footer";
-import { usePathname } from "@node_modules/next/navigation";
+import { usePathname } from "next/navigation"; 
 
 const inter = Inter({ subsets: ["latin"] });
 // export const metadata = {
 //   title: "Arman Ali",
 //   description: "FrontEnd Develpoer | Full Stack Develpoer | Mern Stack",
 // };
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // const queryClient = new QueryClient();
+
+  // // Example server-side prefetch
+  // await queryClient.prefetchQuery(["todos"], async () => {
+  //   const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+  //   return res.json();
+  // });
+  // const dehydratedState = dehydrate(queryClient);
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
   return (
@@ -18,7 +27,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         {!isAdminRoute && <NavBar />}
 
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         {!isAdminRoute && <Footer />}
       </body>
     </html>
