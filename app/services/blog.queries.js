@@ -1,3 +1,6 @@
+"use client";
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getBlogs,
   getBlogById,
@@ -6,8 +9,6 @@ import {
   deleteBlog,
   getBlogsAdmin,
 } from "./blog.service";
-
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 /* ===================== PUBLIC ===================== */
 
@@ -21,17 +22,25 @@ export const useBlogs = (params) =>
 export const useBlog = (id) =>
   useQuery({
     queryKey: ["blog", id],
-    queryFn: () => getBlogById(id),
+    queryFn: async () => {
+      if (!id) throw new Error("No blog ID provided");
+      const response = await getBlogById(id);
+      return response;
+    },
     enabled: !!id,
+    retry: 1,
+    refetchOnWindowFocus: false,
+    // Important: Disable suspense to prevent async/await issues
+    suspense: false,
   });
 
 /* ===================== ADMIN ===================== */
-
 export const useAdminBlogs = (params) =>
   useQuery({
     queryKey: ["admin-blogs", params],
     queryFn: () => getBlogsAdmin(params),
     keepPreviousData: true,
+
   });
 
 /* ===================== MUTATIONS ===================== */

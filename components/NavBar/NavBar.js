@@ -93,6 +93,13 @@ function NavBar() {
             {/* Add / before # */}
             Contact
           </Link>
+        </li>{" "}
+        <li className="cursor-pointer">
+          <Link href="/blogs" className="nav_link">
+            {" "}
+            {/* Add / before # */}
+            Blogs
+          </Link>
         </li>
       </ul>
       <div className="hamburger-menu hidden mobile:flex tablet:flex">
