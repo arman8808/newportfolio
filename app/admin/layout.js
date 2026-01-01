@@ -16,8 +16,12 @@ import {
   Bell,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { adminLogout } from "@app/(auth)/admin/login/api";
 
 export default function AdminLayout({ children }) {
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isTwoFAEnabled, setIsTwoFAEnabled] = useState(true);
@@ -44,7 +48,12 @@ export default function AdminLayout({ children }) {
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
-
+  const logoutMutation = useMutation({
+    mutationFn: adminLogout,
+    onSuccess: () => {
+      router.push("/admin/login");
+    },
+  });
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* -------------------- Sidebar -------------------- */}
@@ -104,7 +113,7 @@ export default function AdminLayout({ children }) {
             <Settings className="w-4 h-4 text-gray-400 group-hover:rotate-45 transition-transform" />
           </Link>
 
-          <button className="flex items-center w-full p-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+          <button onClick={() => logoutMutation.mutate()} className="flex items-center w-full p-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
             <LogOut className="w-5 h-5 mr-3" />
             Logout
           </button>

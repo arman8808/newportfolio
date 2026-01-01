@@ -5,6 +5,7 @@ import "@styles/globals.css";
 import NavBar from "@components/NavBar/NavBar";
 import Footer from "@components/Footer/Footer";
 import { usePathname } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 // export const metadata = {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
 
         <ReactQueryProvider>{children}</ReactQueryProvider>
         {!isAdminRoute && <Footer />}
+        <Toaster position="top-right" />
       </body>
     </html>
   );
