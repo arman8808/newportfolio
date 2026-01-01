@@ -39,10 +39,12 @@ function BlogPage() {
   };
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    // Ensure page is a number
+    const pageNumber = Number(page);
+
+    setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   // Format date from API response
   const formatDate = (dateString) => {
     const options = { month: "long", day: "numeric", year: "numeric" };
@@ -231,8 +233,6 @@ function BlogPage() {
                 );
               })}
             </motion.div>
-
-            {/* Pagination - Only show if there are multiple pages */}
             {totalPages > 1 && (
               <motion.div
                 className="flex justify-center items-center space-x-2"
@@ -248,10 +248,10 @@ function BlogPage() {
                     currentPage > 1 && handlePageChange(currentPage - 1)
                   }
                   disabled={currentPage === 1}
-                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
                     currentPage === 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-900 text-white hover:bg-black"
+                      ? "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "border-cyan-400/80 bg-transparent text-cyan-600 hover:bg-cyan-50 hover:border-cyan-500 hover:text-cyan-700"
                   }`}
                 >
                   <svg
@@ -271,35 +271,117 @@ function BlogPage() {
                 </motion.button>
 
                 {/* Page Numbers */}
-                {[...Array(totalPages)].map((_, index) => (
-                  <motion.button
-                    key={index + 1}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                      currentPage === index + 1
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                    }`}
-                  >
-                    {index + 1}
-                  </motion.button>
-                ))}
+                {(() => {
+                  const pages = [];
+                  const maxVisiblePages = 5;
+
+                  const currentPageNum = Number(currentPage);
+                  const totalPagesNum = Number(totalPages);
+
+                  let startPage = Math.max(
+                    1,
+                    currentPageNum - Math.floor(maxVisiblePages / 2)
+                  );
+                  let endPage = Math.min(
+                    totalPagesNum,
+                    startPage + maxVisiblePages - 1
+                  );
+
+                  if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                  }
+
+                  // Always show first page
+                  if (startPage > 1) {
+                    pages.push(
+                      <motion.button
+                        key={1}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handlePageChange(1)}
+                        className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          currentPageNum === 1
+                            ? "bg-gradient-to-r from-cyan-400 to-cyan-500 text-white shadow-md shadow-cyan-200"
+                            : "text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 border border-gray-200 hover:border-cyan-300"
+                        }`}
+                      >
+                        1
+                      </motion.button>
+                    );
+
+                    if (startPage > 2) {
+                      pages.push(
+                        <span key="ellipsis1" className="text-gray-400">
+                          ...
+                        </span>
+                      );
+                    }
+                  }
+
+                  // Show pages in range
+                  for (let i = startPage; i <= endPage; i++) {
+                    pages.push(
+                      <motion.button
+                        key={i}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handlePageChange(i)}
+                        className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          currentPageNum === i
+                            ? "bg-gradient-to-r from-cyan-400 to-cyan-500 text-white shadow-md shadow-cyan-200"
+                            : "text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 border border-gray-200 hover:border-cyan-300"
+                        }`}
+                      >
+                        {i}
+                      </motion.button>
+                    );
+                  }
+
+                  // Always show last page
+                  if (endPage < totalPagesNum) {
+                    if (endPage < totalPagesNum - 1) {
+                      pages.push(
+                        <span key="ellipsis2" className="text-gray-400">
+                          ...
+                        </span>
+                      );
+                    }
+
+                    pages.push(
+                      <motion.button
+                        key={totalPagesNum}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handlePageChange(totalPagesNum)}
+                        className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          currentPageNum === totalPagesNum
+                            ? "bg-gradient-to-r from-cyan-400 to-cyan-500 text-white shadow-md shadow-cyan-200"
+                            : "text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 border border-gray-200 hover:border-cyan-300"
+                        }`}
+                      >
+                        {totalPagesNum}
+                      </motion.button>
+                    );
+                  }
+
+                  return pages;
+                })()}
 
                 {/* Next Button */}
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() =>
-                    currentPage < totalPages &&
-                    handlePageChange(currentPage + 1)
-                  }
-                  disabled={currentPage === totalPages}
-                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                    currentPage === totalPages
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-900 text-white hover:bg-black"
+                  onClick={() => {
+                    const nextPage = Number(currentPage) + 1;
+                    if (nextPage <= totalPages) {
+                      handlePageChange(nextPage);
+                    }
+                  }}
+                  disabled={currentPage >= totalPages}
+                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
+                    currentPage >= totalPages
+                      ? "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "border-cyan-400/80 bg-transparent text-cyan-600 hover:bg-cyan-50 hover:border-cyan-500 hover:text-cyan-700"
                   }`}
                 >
                   Next

@@ -119,7 +119,15 @@ const RichTextEditor = ({ content, setContent }) => {
 };
 
 /* -------------------- Blog Modal -------------------- */
-const BlogModal = ({ isOpen, onClose, mode, blog, onSubmit, isLoading }) => {
+const BlogModal = ({ 
+  isOpen, 
+  onClose, 
+  mode, 
+  blog, 
+  onSubmit, 
+  isLoading,
+  resetForm 
+}) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -134,43 +142,60 @@ const BlogModal = ({ isOpen, onClose, mode, blog, onSubmit, isLoading }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
+  // Reset form when modal opens/closes or mode changes
   useEffect(() => {
-    if (mode === "edit" && blog) {
-      setFormData({
-        title: blog.title,
-        description: blog.description || "",
-        category: blog.category,
-        author: blog.author,
-        readTime: blog.readTime?.toString() || "",
-        hashtags: Array.isArray(blog.hashtags)
-          ? blog.hashtags.join(", ")
-          : blog.hashtags || "",
-        content: blog.content || "",
-        status: blog.status,
-      });
-      if (blog.image || blog.imageUrl) {
-        setImagePreview(blog.image || blog.imageUrl);
+    if (isOpen) {
+      if (mode === "edit" && blog) {
+        setFormData({
+          title: blog.title,
+          description: blog.description || "",
+          category: blog.category,
+          author: blog.author,
+          readTime: blog.readTime?.toString() || "",
+          hashtags: Array.isArray(blog.hashtags)
+            ? blog.hashtags.join(", ")
+            : blog.hashtags || "",
+          content: blog.content || "",
+          status: blog.status,
+        });
+        if (blog.image || blog.imageUrl) {
+          setImagePreview(blog.image || blog.imageUrl);
+        }
+      } else {
+        // Reset form for add mode
+        setFormData({
+          title: "",
+          description: "",
+          category: "",
+          author: "",
+          readTime: "",
+          hashtags: "",
+          content: "",
+          status: "draft",
+        });
+        setImageFile(null);
+        setImagePreview(null);
       }
-    } else {
-      // Reset form for add mode
-      setFormData({
-        title: "",
-        description: "",
-        category: "",
-        author: "",
-        readTime: "",
-        hashtags: "",
-        content: "",
-        status: "draft",
-      });
-      setImageFile(null);
-      setImagePreview(null);
     }
-  }, [mode, blog, isOpen]);
+  }, [isOpen, mode, blog]);
+
+  // Clean up image preview URL when component unmounts
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Clean up previous preview URL
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+      
       setImageFile(file);
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
@@ -179,31 +204,15 @@ const BlogModal = ({ isOpen, onClose, mode, blog, onSubmit, isLoading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    onSubmit(formData, imageFile);
+  };
 
-    const form = new FormData();
-
-    // Append all form data
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === "hashtags") {
-        // Handle hashtags array
-        const tags = value
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean);
-        tags.forEach((tag) => form.append("hashtags[]", tag));
-      } else if (key === "readTime" && value) {
-        form.append(key, parseInt(value) || 0);
-      } else {
-        form.append(key, value);
-      }
-    });
-
-    // Append single image with key "image"
-    if (imageFile) {
-      form.append("image", imageFile);
+  const handleClose = () => {
+    // Clean up image preview URL
+    if (imagePreview && imagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(imagePreview);
     }
-
-    onSubmit(form);
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -235,7 +244,7 @@ const BlogModal = ({ isOpen, onClose, mode, blog, onSubmit, isLoading }) => {
               </p>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               disabled={isLoading}
               className="p-2 hover:bg-gray-100 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -422,7 +431,7 @@ const BlogModal = ({ isOpen, onClose, mode, blog, onSubmit, isLoading }) => {
             <div className="flex justify-end gap-3">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 disabled={isLoading}
                 className="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -657,10 +666,10 @@ const BlogTable = ({
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => onPageChange(pagination.page - 1)}
-                disabled={pagination.page <= 1}
+                onClick={() => onPageChange(Number(pagination.page) - 1)}
+                disabled={Number(pagination.page) <= 1}
                 className={`px-3 py-1 rounded-md text-sm font-medium ${
-                  pagination.page <= 1
+                  Number(pagination.page) <= 1
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
@@ -674,12 +683,15 @@ const BlogTable = ({
                     let pageNum;
                     if (pagination.totalPages <= 5) {
                       pageNum = i + 1;
-                    } else if (pagination.page <= 3) {
+                    } else if (Number(pagination.page) <= 3) {
                       pageNum = i + 1;
-                    } else if (pagination.page >= pagination.totalPages - 2) {
+                    } else if (
+                      Number(pagination.page) >=
+                      pagination.totalPages - 2
+                    ) {
                       pageNum = pagination.totalPages - 4 + i;
                     } else {
-                      pageNum = pagination.page - 2 + i;
+                      pageNum = Number(pagination.page) - 2 + i;
                     }
 
                     return (
@@ -687,7 +699,7 @@ const BlogTable = ({
                         key={pageNum}
                         onClick={() => onPageChange(pageNum)}
                         className={`w-8 h-8 rounded-md text-sm font-medium ${
-                          pagination.page === pageNum
+                          Number(pagination.page) === pageNum
                             ? "bg-blue-600 text-white"
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
@@ -699,10 +711,10 @@ const BlogTable = ({
                 )}
               </div>
               <button
-                onClick={() => onPageChange(pagination.page + 1)}
-                disabled={pagination.page >= pagination.totalPages}
+                onClick={() => onPageChange(Number(pagination.page) + 1)}
+                disabled={Number(pagination.page) >= pagination.totalPages}
                 className={`px-3 py-1 rounded-md text-sm font-medium ${
-                  pagination.page >= pagination.totalPages
+                  Number(pagination.page) >= pagination.totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
@@ -749,13 +761,36 @@ export default function AdminBlogsPage() {
     totalPages: 1,
   };
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = (formData, imageFile) => {
+    const form = new FormData();
+
+    // Append all form data
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "hashtags") {
+        // Handle hashtags array
+        const tags = value
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean);
+        tags.forEach((tag) => form.append("hashtags[]", tag));
+      } else if (key === "readTime" && value) {
+        form.append(key, parseInt(value) || 0);
+      } else {
+        form.append(key, value);
+      }
+    });
+
+    // Append single image with key "image"
+    if (imageFile) {
+      form.append("image", imageFile);
+    }
+
     const mutation = modalMode === "add" ? createBlog : updateBlog;
 
     mutation.mutate(
       modalMode === "add"
-        ? formData
-        : { id: selectedBlog._id, payload: formData },
+        ? form
+        : { id: selectedBlog._id, payload: form },
       {
         onMutate: () => {
           toast.loading(
@@ -823,7 +858,22 @@ export default function AdminBlogsPage() {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    const pageNumber = Number(newPage);
+    setCurrentPage(pageNumber);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    // Clear selected blog when modal closes
+    if (modalMode === "edit") {
+      setSelectedBlog(null);
+    }
+  };
+
+  const handleEditBlog = (blog) => {
+    setSelectedBlog(blog);
+    setModalMode("edit");
+    setModalOpen(true);
   };
 
   // Calculate stats
@@ -891,7 +941,7 @@ export default function AdminBlogsPage() {
                 setSelectedBlog(null);
                 setModalOpen(true);
               }}
-              disabled={createBlog.isLoading || updateBlog.isLoading}
+              disabled={createBlog.isLoading || updateBlog.isLoading || deleteBlog.isLoading}
               className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Plus className="w-5 h-5 mr-2" />
@@ -1006,11 +1056,7 @@ export default function AdminBlogsPage() {
         <BlogTable
           blogs={blogs}
           pagination={pagination}
-          onEdit={(blog) => {
-            setSelectedBlog(blog);
-            setModalMode("edit");
-            setModalOpen(true);
-          }}
+          onEdit={handleEditBlog}
           onDelete={handleDelete}
           onPageChange={handlePageChange}
           deleteLoading={deleteBlog.isLoading}
@@ -1019,8 +1065,9 @@ export default function AdminBlogsPage() {
 
         {/* Blog Modal */}
         <BlogModal
+          key={selectedBlog?._id || 'add'}
           isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={handleModalClose}
           mode={modalMode}
           blog={selectedBlog}
           onSubmit={handleSubmit}
