@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import BlogCard from "@components/Blogs/BlogCard";
 import { useBlogs } from "@app/services/blog.queries";
-
-
 function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -58,24 +56,50 @@ function BlogPage() {
 
   if (isLoading) {
     return (
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4 relative overflow-hidden">
+      <section className="min-h-screen bg-white py-12 px-4 md:px-6">
         <div className="max-w-7xl mx-auto relative">
+          {/* Page Header Skeleton */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              Latest Blogs
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Loading blogs...
-            </p>
+            <div className="h-10 bg-gray-100 rounded-full w-48 mx-auto mb-4"></div>
+            <div className="h-6 bg-gray-100 rounded w-3/4 max-w-2xl mx-auto mb-2"></div>
+            <div className="h-6 bg-gray-100 rounded w-1/2 max-w-2xl mx-auto"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 mb-12">
+
+          {/* Grid Skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {[...Array(6)].map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="h-64 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                {/* Image Skeleton */}
+                <div className="h-48 md:h-56 bg-gray-100 rounded-xl mb-4"></div>
+
+                {/* Category Skeleton */}
+                <div className="h-4 bg-gray-100 rounded w-1/4 mb-3"></div>
+
+                {/* Title Skeleton */}
+                <div className="h-6 bg-gray-100 rounded w-full mb-2"></div>
+                <div className="h-6 bg-gray-100 rounded w-3/4 mb-3"></div>
+
+                {/* Description Skeleton */}
+                <div className="h-4 bg-gray-100 rounded w-full mb-2"></div>
+                <div className="h-4 bg-gray-100 rounded w-5/6 mb-2"></div>
+                <div className="h-4 bg-gray-100 rounded w-2/3 mb-4"></div>
+
+                {/* Meta Info Skeleton */}
+                <div className="flex items-center justify-between">
+                  <div className="h-4 bg-gray-100 rounded w-1/3"></div>
+                  <div className="h-8 bg-gray-100 rounded w-20"></div>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* Pagination Skeleton */}
+          <div className="flex justify-center items-center space-x-2 animate-pulse">
+            <div className="w-24 h-10 bg-gray-100 rounded"></div>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="w-10 h-10 bg-gray-100 rounded"></div>
+            ))}
+            <div className="w-20 h-10 bg-gray-100 rounded"></div>
           </div>
         </div>
       </section>
@@ -84,15 +108,36 @@ function BlogPage() {
 
   if (error) {
     return (
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4 relative overflow-hidden">
+      <section className="min-h-screen bg-white py-12 px-4 md:px-6">
         <div className="max-w-7xl mx-auto relative">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              Latest Blogs
-            </h1>
-            <p className="text-lg text-red-600 max-w-2xl mx-auto">
-              Error loading blogs. Please try again later.
+          <div className="text-center py-20">
+            <div className="w-12 h-12 mx-auto mb-4 text-gray-400">
+              <svg
+                className="w-full h-full"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-medium text-gray-800 mb-2">
+              Error Loading Blogs
+            </h2>
+            <p className="text-gray-500 mb-6">
+              Failed to load blogs. Please try again later.
             </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-black transition-colors duration-200"
+            >
+              Try Again
+            </button>
           </div>
         </div>
       </section>
@@ -100,22 +145,8 @@ function BlogPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4 relative overflow-hidden">
-      {/* Hero-style glow effects */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-40 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-48 -left-36 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl"
-        animate={{ scale: [1, 1.08, 1] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <div className="max-w-7xl mx-auto relative ">
+    <section className="min-h-screen bg-white py-12 px-4 md:px-6">
+      <div className="max-w-7xl mx-auto relative">
         {/* Page Header */}
         <motion.div
           className="text-center mb-12"
@@ -127,34 +158,49 @@ function BlogPage() {
             className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
             variants={fadeUp}
           >
-            Latest Blogs
+            Latest Articles
           </motion.h1>
           <motion.p
             className="text-lg text-gray-600 max-w-2xl mx-auto"
             variants={fadeUp}
           >
-            Discover insights, tutorials, and stories from the world of web
-            development and design
-          </motion.p>
-          <motion.p className="text-sm text-gray-500 mt-2" variants={fadeUp}>
-            Showing {blogData.length} of {totalBlogs} total blogs
+            Discover insights, tutorials, and stories from web development,
+            mobile applications, backend systems, and modern software
+            engineering
           </motion.p>
         </motion.div>
 
         {blogData.length === 0 ? (
           <motion.div
-            className="text-center py-12"
+            className="text-center py-20"
             initial="hidden"
             animate="visible"
             variants={fadeUp}
           >
-            <p className="text-lg text-gray-600">No blogs found.</p>
+            <div className="w-16 h-16 mx-auto mb-4 text-gray-300">
+              <svg
+                className="w-full h-full"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-medium text-gray-800 mb-2">
+              No articles yet
+            </h3>
+            <p className="text-gray-500">Check back soon for new content.</p>
           </motion.div>
         ) : (
           <>
             <motion.div
-              className="
-                grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mobile:grid-cols-1 tablet:grid-cols-2 gap-8 mb-12"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
@@ -167,7 +213,6 @@ function BlogPage() {
                   category: blog.category,
                   date: formatDate(blog.createdAt),
                   readTime: formatReadTime(blog.readTime),
-                  // You can add additional fields if your BlogCard needs them
                   description: blog.description,
                   imageUrl: blog.imageUrl,
                   author: blog.author,
@@ -178,10 +223,7 @@ function BlogPage() {
                   <motion.div
                     key={blog._id || blog.id}
                     variants={fadeUp}
-                    whileHover={{
-                      y: -4,
-                      transition: { type: "spring", stiffness: 300 },
-                    }}
+                    whileHover={{ y: -8, transition: { duration: 0.2 } }}
                     className="w-full"
                   >
                     <BlogCard blog={formattedBlog} />
@@ -200,16 +242,16 @@ function BlogPage() {
               >
                 {/* Previous Button */}
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() =>
                     currentPage > 1 && handlePageChange(currentPage - 1)
                   }
                   disabled={currentPage === 1}
-                  className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                     currentPage === 1
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30 hover:bg-cyan-600"
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-900 text-white hover:bg-black"
                   }`}
                 >
                   <svg
@@ -232,13 +274,13 @@ function BlogPage() {
                 {[...Array(totalPages)].map((_, index) => (
                   <motion.button
                     key={index + 1}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handlePageChange(index + 1)}
-                    className={`w-10 h-10 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors duration-200 ${
                       currentPage === index + 1
-                        ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30"
-                        : "text-gray-600 hover:bg-cyan-100 hover:text-cyan-600"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     }`}
                   >
                     {index + 1}
@@ -247,17 +289,17 @@ function BlogPage() {
 
                 {/* Next Button */}
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() =>
                     currentPage < totalPages &&
                     handlePageChange(currentPage + 1)
                   }
                   disabled={currentPage === totalPages}
-                  className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                     currentPage === totalPages
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30 hover:bg-cyan-600"
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-900 text-white hover:bg-black"
                   }`}
                 >
                   Next

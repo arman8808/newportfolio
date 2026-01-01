@@ -356,7 +356,7 @@ function SingleBlogPage() {
               src={blogData.imageUrl}
               alt={blogData.title}
               fill
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "fill" }}
               className="rounded-2xl"
               priority
             />
