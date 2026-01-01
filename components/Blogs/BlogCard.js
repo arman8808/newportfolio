@@ -2,11 +2,16 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const BlogCard = ({ blog }) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const router = useRouter();
+  const handleReadMore = () => {
+    // Navigate to the specific blog page using the blog id
+    router.push(`/blogs/${blog.id}`);
+  };
   // Static fallback data
   const staticBlogData = {
     id: 1,
@@ -58,7 +63,7 @@ const BlogCard = ({ blog }) => {
         >
           <Image
             src={
-              blogData.image ||
+              blogData.imageUrl ||
               "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
             }
             alt={blogData.title}
@@ -146,6 +151,9 @@ const BlogCard = ({ blog }) => {
           className="flex justify-end mt-4"
         >
           <motion.button
+            onClick={handleReadMore}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             className="flex items-center rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 hover:bg-cyan-600 transition-colors duration-200 group font-medium"

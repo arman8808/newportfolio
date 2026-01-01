@@ -4,15 +4,18 @@ import {
   createBlog,
   updateBlog,
   deleteBlog,
+  getBlogsAdmin,
 } from "./blog.service";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+/* ===================== PUBLIC ===================== */
 
 export const useBlogs = (params) =>
   useQuery({
     queryKey: ["blogs", params],
     queryFn: () => getBlogs(params),
+    keepPreviousData: true,
   });
 
 export const useBlog = (id) =>
@@ -22,9 +25,16 @@ export const useBlog = (id) =>
     enabled: !!id,
   });
 
-/**
- * 🔒 Mutations
- */
+/* ===================== ADMIN ===================== */
+
+export const useAdminBlogs = (params) =>
+  useQuery({
+    queryKey: ["admin-blogs", params],
+    queryFn: () => getBlogsAdmin(params),
+    keepPreviousData: true,
+  });
+
+/* ===================== MUTATIONS ===================== */
 
 export const useCreateBlog = () => {
   const queryClient = useQueryClient();
@@ -33,6 +43,7 @@ export const useCreateBlog = () => {
     mutationFn: createBlog,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
     },
   });
 };
@@ -44,6 +55,7 @@ export const useUpdateBlog = () => {
     mutationFn: ({ id, payload }) => updateBlog(id, payload),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
       queryClient.invalidateQueries({ queryKey: ["blog", id] });
     },
   });
@@ -56,6 +68,7 @@ export const useDeleteBlog = () => {
     mutationFn: deleteBlog,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-blogs"] });
     },
   });
 };
