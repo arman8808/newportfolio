@@ -48,6 +48,7 @@ export default function AdminLayout({ children }) {
     { name: "Projects", href: "/admin/projects", icon: Layers },
     { name: "Blogs", href: "/admin/blogs", icon: FileText },
     { name: "About Me", href: "/admin/about", icon: User },
+    { name: "Hero Section", href: "/admin/hero", icon: Shield },
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];

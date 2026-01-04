@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { GitHub, LinkedIn } from "@mui/icons-material";
+import { GitHub, LinkedIn, Instagram, Facebook } from "@mui/icons-material";
 import {
   AnimatePresence,
   motion,
@@ -12,6 +12,8 @@ import {
 } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
+import { getHeroData } from "@app/services/hero.service";
+import { useQuery } from "@tanstack/react-query";
 
 const textVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -59,12 +61,29 @@ function Hero() {
     [mouseX, mouseY]
   );
 
-  const titles = [
+  // Fetch Hero Data
+  const { data: heroData } = useQuery({
+    queryKey: ["hero"],
+    queryFn: async () => {
+      try {
+        const res = await getHeroData();
+        return res.data;
+      } catch (error) {
+        return null;
+      }
+    },
+  });
+
+  const titles = heroData?.titles?.length > 0 ? heroData.titles : [
     "AI-First Full-Stack Developer",
     "Full-Stack Developer",
     "Backend & ML Engineer",
     "Conversational AI Engineer",
   ];
+
+  const resumeUrl = heroData?.resumeUrl || "/Asset/ArmanAliResume.pdf";
+  const socialLinks = heroData?.socialLinks || {};
+
   const [titleIndex, setTitleIndex] = useState(0);
 
   useEffect(() => {
@@ -72,7 +91,7 @@ function Hero() {
       setTitleIndex((i) => (i + 1) % titles.length);
     }, 3000);
     return () => clearInterval(id);
-  }, []);
+  }, [titles]);
 
   const techStack = [
     { src: "/Asset/images/icons8-html-logo-480.png", name: "HTML", url: "https://developer.mozilla.org/docs/Web/HTML" },
@@ -108,8 +127,16 @@ function Hero() {
             width: 400,
             height: 400,
             background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, rgba(0,0,0,0) 70%)",
-            x: useTransform(mouseX, [-0.5, 0.5], [-200, window.innerWidth || 1000]),
-            y: useTransform(mouseY, [-0.5, 0.5], [-200, window.innerHeight || 800]),
+            x: useTransform(
+              mouseX,
+              [-0.5, 0.5],
+              [-200, typeof window !== "undefined" ? window.innerWidth : 1000]
+            ),
+            y: useTransform(
+              mouseY,
+              [-0.5, 0.5],
+              [-200, typeof window !== "undefined" ? window.innerHeight : 800]
+            ),
           }}
         />
       </div>
@@ -182,7 +209,7 @@ function Hero() {
             <ShineButton href="#contact">
               Contact Me
             </ShineButton>
-            <ShineButton href="/Asset/ArmanAliResume.pdf" download isExternal>
+            <ShineButton href={resumeUrl} download isExternal>
               Download CV
             </ShineButton>
           </motion.div>
@@ -194,8 +221,10 @@ function Hero() {
             animate="visible"
             className="flex gap-6 pt-4"
           >
-            <SocialLink href="https://www.linkedin.com/in/arman-ali-0b7480147/" icon={<LinkedIn className="text-3xl" />} />
-            <SocialLink href="https://github.com/arman8808" icon={<GitHub className="text-3xl" />} />
+            {socialLinks.linkedin && <SocialLink href={socialLinks.linkedin} icon={<LinkedIn className="text-3xl" />} />}
+            {socialLinks.github && <SocialLink href={socialLinks.github} icon={<GitHub className="text-3xl" />} />}
+            {socialLinks.instagram && <SocialLink href={socialLinks.instagram} icon={<Instagram className="text-3xl" />} />}
+            {socialLinks.facebook && <SocialLink href={socialLinks.facebook} icon={<Facebook className="text-3xl" />} />}
           </motion.div>
         </div>
 
@@ -312,8 +341,8 @@ function ShineButton({ children, href, primary, download, isExternal }) {
       target={isExternal ? "_blank" : undefined}
       download={download}
       className={`group relative px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg ${primary
-          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-200"
-          : "bg-white text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600"
+        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-200"
+        : "bg-white text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600"
         }`}
     >
       <span className="relative z-10">{children}</span>
