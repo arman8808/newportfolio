@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GitHub, LinkedIn, Instagram, Facebook } from "@mui/icons-material";
+import HeroImage from "./HeroImage";
 import {
   AnimatePresence,
   motion,
@@ -141,7 +142,7 @@ function Hero() {
         />
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
 
         {/* --- Left Column: Text --- */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
@@ -209,9 +210,6 @@ function Hero() {
             <ShineButton href="#contact">
               Contact Me
             </ShineButton>
-            <ShineButton href={resumeUrl} download isExternal>
-              Download CV
-            </ShineButton>
           </motion.div>
 
           {/* Social Links */}
@@ -239,57 +237,9 @@ function Hero() {
             initial="hidden"
             animate="visible"
             variants={imageVariant}
-            className="relative w-[500px] h-[500px]"
+            className="relative w-[600px] h-[500px]"
           >
-            {/* Back glow */}
-            <div
-              className="absolute inset-4 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-[2rem] blur-2xl opacity-40 -z-10 transform translate-z-[-50px]"
-            />
-
-            {/* Main Card */}
-            <div className="relative w-full h-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-[2.5rem] p-4 shadow-2xl transform translate-z-[20px]">
-              <div className="w-full h-full relative overflow-hidden rounded-[2rem] bg-gray-900">
-                <Image
-                  src="/Asset/images/Frame.png"
-                  alt="Arman Ali"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              </div>
-            </div>
-
-            {/* Floating Badge 1 */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-10 -right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/40 transform translate-z-[60px]"
-            >
-              <div className="bg-cyan-100 p-2 rounded-xl text-cyan-600">
-                <span className="text-2xl">🚀</span>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 font-bold uppercase">Experience</p>
-                <p className="text-sm font-bold text-gray-900">3.5+ Years</p>
-              </div>
-            </motion.div>
-
-            {/* Floating Badge 2 */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-20 -left-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/40 transform translate-z-[60px]"
-            >
-              <div className="bg-blue-100 p-2 rounded-xl text-blue-600">
-                <span className="text-2xl">💻</span>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 font-bold uppercase">Projects</p>
-                <p className="text-sm font-bold text-gray-900">10+ Delivered</p>
-              </div>
-            </motion.div>
+            <HeroImage />
           </motion.div>
         </div>
       </div>
@@ -300,7 +250,7 @@ function Hero() {
           <p className="text-sm font-bold uppercase tracking-widest text-cyan-500">Powering Next-Gen Apps With</p>
         </div>
 
-        <div className="relative w-full overflow-hidden bg-white/5 backdrop-blur-sm border-y border-white/10 py-6">
+        <div className="relative w-full overflow-hidden bg-white/5 backdrop-blur-sm border-y border-white/10 py-10">
           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white/80 to-transparent z-10 pointer-events-none" />
 
@@ -309,7 +259,7 @@ function Hero() {
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="flex flex-col items-center justify-center gap-2 mx-8 group cursor-default"
+                className="flex flex-col items-center justify-center gap-2 mx-8 group cursor-default py-4"
               >
                 <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center p-3 transition-all group-hover:border-cyan-300 group-hover:shadow-cyan-100/50">
                   <Image
