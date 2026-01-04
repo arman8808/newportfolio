@@ -114,14 +114,16 @@ function BlogSection() {
       id="blogs"
     >
       <div className="w-full max-w-6xl flex items-center justify-between">
-        <motion.h2
-          className="font-semibold text-cyan-400/80  text-3xl md:text-4xl "
+        <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="visible"
         >
-          Latest Articles
-        </motion.h2>
+          <h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600 text-3xl md:text-4xl mb-2 inline-block">
+            LATEST ARTICLES
+          </h2>
+          <div className="h-1.5 w-20 bg-cyan-500 rounded-full" />
+        </motion.div>
         <Link href="/blogs">
           <motion.button
             whileHover={{ scale: 1.05 }}

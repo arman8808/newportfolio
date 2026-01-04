@@ -44,14 +44,16 @@ function Projects() {
     <section className="w-full flex flex-col items-center justify-center gap-8 py-12 px-4" id="projects">
       {/* Header with View All button at top right */}
       <div className="w-full max-w-6xl flex items-center justify-between">
-        <motion.h2
-          className="font-semibold text-cyan-400/80 text-3xl md:text-4xl"
+        <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="visible"
         >
-          PORTFOLIO
-        </motion.h2>
+          <h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600 text-3xl md:text-4xl mb-2 inline-block">
+            PORTFOLIO
+          </h2>
+          <div className="h-1.5 w-20 bg-cyan-500 rounded-full" />
+        </motion.div>
 
         <motion.a
           href="/Projects"

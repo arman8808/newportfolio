@@ -23,9 +23,17 @@ function Contact() {
       />
 
       <div className="flex w-11/12 max-w-5xl flex-col items-center justify-center gap-6">
-        <p className="text-xs uppercase tracking-widest text-cyan-500">
-          Contact
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center"
+        >
+          <h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600 text-3xl md:text-4xl mb-2 inline-block">
+            CONTACT
+          </h2>
+          <div className="h-1.5 w-20 bg-cyan-500 rounded-full" />
+        </motion.div>
         <h3 className="text-center text-3xl font-semibold">
           <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Don't be shy! Hit me up! 👇

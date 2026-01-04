@@ -2,11 +2,26 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Download, FileText, Code2, Terminal, Cpu, Globe } from "lucide-react";
+import { Download, FileText, Code2, Terminal, Cpu, Globe, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getAboutData } from "@app/services/about.service";
 
 function AboutUs() {
+  const { data: aboutData, isLoading } = useQuery({
+    queryKey: ["about"],
+    queryFn: async () => {
+      try {
+        const res = await getAboutData();
+        return res.data;
+      } catch (error) {
+        return null; // Handle error or return null
+      }
+    },
+  });
+
   function getExperienceYears(startDate) {
+    if (!startDate) return 0;
     let today = new Date();
     let start = new Date(startDate);
 
@@ -17,23 +32,61 @@ function AboutUs() {
       years--;
       months += 12;
     }
-    if (days < 0) {
-      months--;
-      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-    }
-
-    return `${years}.${months}`;
+    return years + (months / 12); // accurate float for calculations
   }
 
-  const experienceStartDate = "2022-07-01";
-  let experience = getExperienceYears(experienceStartDate);
+  // Format for display (e.g., "3.5")
+  const formatExperience = (startDate) => {
+    const years = getExperienceYears(startDate);
+    return years.toFixed(1);
+  };
+
+  // Defaults if no data
+  const experienceStartDate = aboutData?.experienceStartDate || "2022-07-01";
+  const experienceDisplay = formatExperience(experienceStartDate);
+  const skills = aboutData?.skills || ["MERN", "REST APIs", "JWT/Auth", "Docker", "CI/CD", "SSR/Next.js", "TailwindCSS"];
+  // Static Fallback Data
+  const staticTimeline = [
+    {
+      title: "Product Developer • umwelt.ai",
+      date: "Aug 2025 • Present",
+      desc: "Building product features collaboratively with a focus on usability, reliability, and speed.",
+      icon: "🌟",
+      category: "product"
+    },
+    {
+      title: "Full‑Stack MERN Developer • Branding 360 Neo Pvt Ltd",
+      date: "Sep 2023 • Aug 2025",
+      desc: "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
+      icon: "🚀",
+      category: "fullstack"
+    },
+    {
+      title: "React Developer • Branding 360 Neo Pvt Ltd",
+      date: "July 2022 • Sep 2023",
+      desc: "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
+      icon: "⚛️",
+      category: "frontend"
+    }
+  ];
+
+  const timelineItems = (aboutData?.timeline && aboutData.timeline.length > 0) ? aboutData.timeline : staticTimeline;
+  const bio = aboutData?.bio || `Hello, I am Arman Ali, a passionate MERN stack developer with ${experienceDisplay}+ years of experience...`;
+  const profileImage = aboutData?.imageUrl || "/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp";
+  const resumeUrl = aboutData?.resumeUrl || "/Asset/Arman Ali.pdf";
 
   const fadeUp = {
     hidden: { opacity: 0, y: 12 },
     visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.15 * i } })
   };
 
-  const skills = ["MERN", "REST APIs", "JWT/Auth", "Docker", "CI/CD", "SSR/Next.js", "TailwindCSS"];
+  if (isLoading) {
+    return (
+      <section className="w-full h-[60vh] flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-cyan-600" />
+      </section>
+    );
+  }
 
   return (
     <section
@@ -59,17 +112,14 @@ function AboutUs() {
           </motion.div>
 
           <div className="space-y-6 text-lg text-gray-600 leading-relaxed font-medium">
-            <motion.p variants={fadeUp} initial="hidden" whileInView="visible" custom={1} viewport={{ once: true }}>
-              Hello, I am <span className="text-cyan-600 font-bold text-xl">Arman Ali</span>, a passionate MERN stack developer with
-              <span className="font-bold text-gray-800"> {experience}+ years</span> of  experience building
-              high-performance web applications.
-            </motion.p>
-
-            <motion.p variants={fadeUp} initial="hidden" whileInView="visible" custom={2} viewport={{ once: true }}>
-              I thrive on turning complex problems into simple, beautiful, and intuitive interface designs.
-              My expertise lies in <span className="text-cyan-600 font-semibold">MongoDB, Express.js, React.js, and Node.js</span>,
-              where I craft seamless full-stack solutions.
-            </motion.p>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              custom={1}
+              viewport={{ once: true }}
+              dangerouslySetInnerHTML={{ __html: bio.replace(/\n/g, '<br />') }}
+            />
           </div>
 
           <motion.div
@@ -100,7 +150,7 @@ function AboutUs() {
             viewport={{ once: true }}
           >
             <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center gap-1 hover:border-cyan-200 hover:shadow-cyan-100/50 transition-all group">
-              <span className="text-3xl font-black text-cyan-500 group-hover:scale-110 transition-transform duration-300">{experience}+</span>
+              <span className="text-3xl font-black text-cyan-500 group-hover:scale-110 transition-transform duration-300">{Math.floor(experienceDisplay)}+</span>
               <span className="text-xs text-gray-500 font-bold uppercase tracking-wider text-center">Years Exp.</span>
             </div>
 
@@ -110,7 +160,7 @@ function AboutUs() {
             </div>
 
             <Link
-              href="/Asset/ArmanAliResume.pdf"
+              href={resumeUrl}
               target="_blank"
               className="p-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 flex flex-col items-center justify-center gap-1 hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all group cursor-pointer"
             >
@@ -142,7 +192,7 @@ function AboutUs() {
             className="relative w-full max-w-[450px] aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white/50 backdrop-blur-sm"
           >
             <Image
-              src="/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp"
+              src={profileImage}
               alt="Arman Ali portrait"
               fill
               className="object-cover hover:scale-110 transition-transform duration-700"
@@ -166,7 +216,7 @@ function AboutUs() {
           My Professional Journey
         </motion.h3>
 
-        <Timeline />
+        <Timeline items={timelineItems} />
       </div>
     </section>
   );
@@ -174,31 +224,9 @@ function AboutUs() {
 
 export default AboutUs;
 
-function Timeline() {
-  const items = [
-
-    {
-      title: "React Developer • Branding 360 Neo Pvt Ltd",
-      date: "July 2022 • Sep 2023",
-      desc: "Delivered SPA features in React, optimized rendering, and improved UX with modern patterns.",
-      icon: "⚛️",
-      category: "frontend"
-    },
-    {
-      title: "Full‑Stack MERN Developer • Branding 360 Neo Pvt Ltd",
-      date: "Sep 2023 • Aug 2025",
-      desc: "Owned end‑to‑end features across MongoDB, Express, React, and Node.js; focused on performance and DX.",
-      icon: "🚀",
-      category: "fullstack"
-    },
-    {
-      title: "Product Developer • umwelt.ai",
-      date: "Aug 2025 • Present",
-      desc: "Building product features collaboratively with a focus on usability, reliability, and speed.",
-      icon: "🌟",
-      category: "product"
-    },
-  ];
+function Timeline({ items = [] }) {
+  // If no items, show a placeholder or nothing
+  if (!items || items.length === 0) return null;
 
   const container = {
     hidden: {},
@@ -300,7 +328,7 @@ function Timeline() {
 
           return (
             <motion.div
-              key={item.title + idx}
+              key={idx}
               variants={isLeft ? itemLeft : itemRight}
               className="relative"
             >
