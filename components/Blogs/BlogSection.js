@@ -57,19 +57,19 @@ function BlogSection() {
               <div key={index} className="animate-pulse">
                 {/* Image Skeleton */}
                 <div className="h-48 md:h-56 bg-gray-100 rounded-xl mb-4"></div>
-                
+
                 {/* Category Skeleton */}
                 <div className="h-4 bg-gray-100 rounded w-1/4 mb-3"></div>
-                
+
                 {/* Title Skeleton */}
                 <div className="h-6 bg-gray-100 rounded w-full mb-2"></div>
                 <div className="h-6 bg-gray-100 rounded w-3/4 mb-3"></div>
-                
+
                 {/* Description Skeleton */}
                 <div className="h-4 bg-gray-100 rounded w-full mb-2"></div>
                 <div className="h-4 bg-gray-100 rounded w-5/6 mb-2"></div>
                 <div className="h-4 bg-gray-100 rounded w-2/3 mb-4"></div>
-                
+
                 {/* Meta Info Skeleton */}
                 <div className="flex items-center justify-between">
                   <div className="h-4 bg-gray-100 rounded w-1/3"></div>
@@ -113,7 +113,7 @@ function BlogSection() {
       className="w-full flex flex-col items-center justify-center gap-8 py-12 px-4 bg-white"
       id="blogs"
     >
-      <div className="w-full max-w-6xl flex items-center justify-between mb-6">
+      <div className="w-full max-w-6xl flex items-center justify-between">
         <motion.h2
           className="font-semibold text-cyan-400/80  text-3xl md:text-4xl "
           variants={fadeUp}
@@ -127,20 +127,20 @@ function BlogSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg  text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:bg-cyan-600"
-         >
+          >
             View All Posts
           </motion.button>
         </Link>
       </div>
 
       <motion.p
-        className="w-full max-w-6xl text-gray-600 text-lg mb-8"
+        className="w-full max-w-6xl text-gray-600 text-lg"
         variants={fadeUp}
         initial="hidden"
         animate="visible"
         custom={1}
       >
-        Discover insights, tutorials, and stories from web development, 
+        Discover insights, tutorials, and stories from web development,
         mobile applications, backend systems, and modern software engineering
       </motion.p>
 

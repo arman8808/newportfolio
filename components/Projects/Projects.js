@@ -41,52 +41,49 @@ function Projects() {
   }
 
   return (
-    <section className="project flex items-center justify-center pb-24" id="projects">
-      <div className="project_contianer flex items-start justify-start flex-col w-full">
-        {/* Header with View All button at top right - EXACTLY YOUR REFERENCE */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-6">
-          <div className="flex items-start justify-start gap-2 flex-col">
-            <motion.h2
-              className="font-semibold text-cyan-400/80 text-3xl md:text-4xl "
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-            >
-              PORTFOLIO
-            </motion.h2>
-            <motion.p
-              className="w-full max-w-6xl text-gray-600 text-2xl font-[600] mb-8"
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-            >
-              Each project is a Unique Piece of Development 🧩
-            </motion.p>
-          </div>
+    <section className="w-full flex flex-col items-center justify-center gap-8 py-12 px-4" id="projects">
+      {/* Header with View All button at top right */}
+      <div className="w-full max-w-6xl flex items-center justify-between">
+        <motion.h2
+          className="font-semibold text-cyan-400/80 text-3xl md:text-4xl"
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+        >
+          PORTFOLIO
+        </motion.h2>
 
-          <motion.a
-            href="/Projects"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg  text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:bg-cyan-600"
-          >
-            View All Posts
-          </motion.a>
-        </div>
+        <motion.a
+          href="/Projects"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+          className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:bg-cyan-600"
+        >
+          View All Posts
+        </motion.a>
+      </div>
+
+      <motion.p
+        className="w-full max-w-6xl text-gray-600 text-lg"
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={1}
+      >
+        Each project is a Unique Piece of Development 🧩
+      </motion.p>
 
 
-        {/* Three cards in a row using flex - EXACTLY YOUR REFERENCE LAYOUT */}
-        <div className="flex flex-col md:flex-row gap-8 w-full">
-          {featuredProjects?.map((project, index) => (
-            <ProjectCard
-              key={project._id || index}
-              project={project}
-              index={index}
-              onClick={() => router.push(`Projects/${project._id}`)}
-            />
-          ))}
-        </div>
+      {/* Three cards in a row using flex - EXACTLY YOUR REFERENCE LAYOUT */}
+      <div className="w-full max-w-6xl flex flex-col md:flex-row gap-8">
+        {featuredProjects?.map((project, index) => (
+          <ProjectCard
+            key={project._id || index}
+            project={project}
+            index={index}
+            onClick={() => router.push(`Projects/${project._id}`)}
+          />
+        ))}
       </div>
     </section>
   );
