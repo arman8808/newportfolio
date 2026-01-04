@@ -1,165 +1,129 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import Gallery from "@components/Gallery/Gallery";
-import gallery from "../../../public/Asset/images/about.webp";
-import gallery1 from "../../../public/Asset/images/about.webp";
-import gallery2 from "../../../public/Asset/images/about.webp";
-import gallery3 from "../../../public/Asset/images/about.webp";
-import gallery4 from "../../../public/Asset/images/about.webp";
-import gallery5 from "../../../public/Asset/images/about.webp";
-import gallery6 from "../../../public/Asset/images/about.webp";
-import gallery7 from "../../../public/Asset/images/about.webp";
-import gallery8 from "../../../public/Asset/images/about.webp";
-import poster from "../../../public/Asset/video/3048179-uhd_2560_1440_24fps-0.jpg";
-import { Play, ChevronRight, ExternalLink, Github, Zap, Clock, Users, Code } from "lucide-react";
+import { ArrowLeft, Clock, Shield, Tag, Zap, Code, Database, Globe, Layers, Target, CheckCircle2, Lightbulb } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useProject } from "@app/services/project.queries";
+import { projectInfo } from "@components/projectInfo"; // Retain if needed for fallbacks or remove entirely if not used
 
-// Custom components
-const FloatingTechTag = ({ icon: Icon, label, delay = 0 }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+// Helper components
+const TechBadge = ({ label, index }) => (
+  <motion.span
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ delay: 0.2 + index * 0.05 }}
+    className="px-3 py-1.5 bg-cyan-50 text-cyan-700 text-sm font-semibold rounded-lg border border-cyan-100/50 backdrop-blur-sm shadow-sm"
+  >
+    {label}
+  </motion.span>
+);
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={inView ? { scale: 1, opacity: 1 } : {}}
-      transition={{ delay, type: "spring", stiffness: 200 }}
-      whileHover={{ scale: 1.05, y: -4 }}
-      className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-lg"
-    >
-      <Icon className="w-4 h-4" />
-      <span className="text-sm font-medium">{label}</span>
-    </motion.div>
-  );
-};
-
-const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay }}
-      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className="group relative p-6 bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
-    >
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative z-10">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-          <Icon className="w-6 h-6 text-blue-600" />
-        </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  );
-};
-
-const TimelineItem = ({ year, title, description, index }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.3,
-  });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative flex items-center mb-12 last:mb-0"
-    >
-      <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-        {year}
-      </div>
-      <div className="ml-6 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg flex-1">
-        <h4 className="text-xl font-bold text-gray-900 mb-2">{title}</h4>
-        <p className="text-gray-600">{description}</p>
-      </div>
-      {index < 2 && (
-        <div className="absolute left-8 top-16 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500" />
-      )}
-    </motion.div>
-  );
-};
+const OutcomeCard = ({ text, index }) => (
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.1 }}
+    className="flex items-start gap-4 p-4 bg-white rounded-xl border border-green-100 shadow-sm"
+  >
+    <div className="mt-1 text-green-500">
+      <CheckCircle2 className="w-5 h-5" />
+    </div>
+    <p className="text-gray-700 font-medium">{text}</p>
+  </motion.div>
+);
 
 export default function SingleProjectPage({ params }) {
-  const { slug } = params;
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const router = useRouter();
+  const id = decodeURIComponent(params.SingleProjectPage || "");
+  const { data: projectData, isLoading, error } = useProject(id);
+  const project = projectData;
 
-  const itemData = [
-    { img: gallery },
-    { img: gallery1 },
-    { img: gallery2 },
-    { img: gallery3 },
-    { img: gallery4 },
-    { img: gallery5 },
-    { img: gallery6 },
-    { img: gallery7 },
-    { img: gallery8 },
-  ];
+  // Use useEffect only if you have side effects, typically react-query handles fetching
+  // useEffect(() => { ... }, [slug]); <-- REMOVING static logic
 
-  const techStack = [
-    { icon: Code, label: "React" },
-    { icon: Code, label: "Next.js" },
-    { icon: Code, label: "TypeScript" },
-    { icon: Code, label: "Tailwind" },
-    { icon: Code, label: "Node.js" },
-    { icon: Code, label: "MongoDB" },
-  ];
+  // Skeleton Component
+  const ProjectSkeleton = () => (
+    <div className="min-h-screen bg-[#f9f9f9] pb-20">
+      <div className="max-w-6xl mx-auto px-6 py-12 md:py-20 animate-pulse">
+        {/* Back Button Skeleton */}
+        <div className="w-32 h-10 bg-gray-200 rounded-full mb-12" />
 
-  const projectStats = [
-    { icon: Clock, label: "6 Months", value: "Duration" },
-    { icon: Users, label: "4 Members", value: "Team Size" },
-    { icon: Zap, label: "10K+", value: "Active Users" },
-  ];
+        {/* Header Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
+          <div>
+            {/* Badges */}
+            <div className="flex gap-3 mb-6">
+              <div className="w-24 h-6 bg-gray-200 rounded-full" />
+              <div className="w-20 h-6 bg-gray-200 rounded-full" />
+            </div>
+            {/* Title */}
+            <div className="h-12 bg-gray-200 rounded-lg w-3/4 mb-6" />
+            {/* Description */}
+            <div className="space-y-3 mb-8">
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-5/6" />
+            </div>
+            {/* Tech Stack */}
+            <div className="border-t border-gray-200 pt-8">
+              <div className="h-4 bg-gray-200 rounded w-32 mb-4" />
+              <div className="flex gap-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-20 h-8 bg-gray-200 rounded-lg" />
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* Image Skeleton */}
+          <div className="aspect-[4/3] bg-gray-200 rounded-3xl" />
+        </div>
 
-  const features = [
-    {
-      icon: Zap,
-      title: "High Performance",
-      description: "Optimized for maximum speed and efficiency",
-    },
-    {
-      icon: Users,
-      title: "User Friendly",
-      description: "Intuitive interface with seamless experience",
-    },
-    {
-      icon: Code,
-      title: "Modern Stack",
-      description: "Built with cutting-edge technologies",
-    },
-  ];
+        {/* Case Study Skeleton */}
+        <div className="space-y-20">
+          {[1, 2].map((i) => (
+            <div key={i} className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-8 md:gap-12">
+              <div className="w-16 h-16 bg-gray-200 rounded-2xl" />
+              <div>
+                <div className="h-8 bg-gray-200 rounded w-48 mb-6" />
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-200 rounded w-full" />
+                  <div className="h-4 bg-gray-200 rounded w-full" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                </div>
+              </div>
+            </div>
+          ))}
+          {/* Results Skeleton */}
+          <div className="h-64 bg-gray-200 rounded-3xl" />
+        </div>
+      </div>
+    </div>
+  );
 
-  const timeline = [
-    {
-      year: "2023",
-      title: "Research & Planning",
-      description: "Initial concept and market research",
-    },
-    {
-      year: "2024",
-      title: "Development",
-      description: "Core development and testing phases",
-    },
-    {
-      year: "2024",
-      title: "Launch & Scale",
-      description: "Product launch and user acquisition",
-    },
-  ];
+  if (isLoading) return <ProjectSkeleton />;
+
+  if (error || !project) {
+    return (
+      <div className="min-h-screen bg-[#f9f9f9] flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Zap className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h2>
+          <p className="text-gray-500 mb-6">The project you're looking for doesn't exist or has been removed.</p>
+          <button
+            onClick={() => router.push('/Projects')}
+            className="px-6 py-2.5 bg-cyan-600 text-white rounded-lg font-medium hover:bg-cyan-700 transition"
+          >
+            Back to Projects
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AnimatePresence>
@@ -167,260 +131,179 @@ export default function SingleProjectPage({ params }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="relative min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden"
+        className="min-h-screen bg-[#f9f9f9] pb-20"
       >
-        {/* Background decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-blue-500/5 to-purple-500/5 rounded-full -translate-x-1/2 translate-y-1/2" />
+        {/* Background Gradients */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-100/30 blur-[100px] rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/30 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3" />
+        </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          {/* Header */}
-          <motion.header
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="mb-16"
+        <div className="relative max-w-6xl mx-auto px-6 py-12 md:py-20 z-10">
+
+          {/* Back Navigation */}
+          <motion.button
+            onClick={() => router.back()}
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="flex items-center gap-2 text-gray-500 hover:text-cyan-600 transition-colors mb-12 group w-fit"
           >
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-2 h-10 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
-                  Project<span className="text-blue-600">.</span>Title
-                </h1>
-              </div>
-              <div className="flex gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Live Demo
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  <Github className="w-4 h-4" />
-                  Source Code
-                </motion.button>
-              </div>
+            <div className="p-2 rounded-full bg-white shadow-sm border border-gray-100 group-hover:border-cyan-200 transition-colors">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             </div>
-            
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-2xl text-gray-600 max-w-3xl leading-relaxed"
+            <span className="font-medium">Back to Projects</span>
+          </motion.button>
+
+          {/* Header Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              A revolutionary platform transforming how users interact with modern web applications through cutting-edge technology and intuitive design.
-            </motion.p>
-          </motion.header>
-
-          {/* Video Showcase */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative mb-20 group"
-          >
-            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-2xl">
-              <video
-                autoPlay
-                loop
-                muted
-                poster={poster}
-                className="w-full h-full object-cover"
-              >
-                <source
-                  src="/Asset/video/3048179-uhd_2560_1440_24fps.mp4"
-                  type="video/mp4"
-                />
-              </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="absolute inset-0 flex items-center justify-center group"
-                onClick={() => setIsVideoPlaying(!isVideoPlaying)}
-              >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                  <Play className="w-8 h-8 text-white ml-1" />
+              {/* Category Badge & NDA Status */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <div className="px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-[10px] font-bold uppercase tracking-widest border border-amber-100 flex items-center gap-1.5 shadow-sm">
+                  <Shield className="w-3 h-3" />
+                  NDA Protected
                 </div>
-              </motion.button>
-            </div>
-          </motion.div>
+                <span className="text-cyan-600 font-bold uppercase tracking-widest text-xs bg-cyan-50 px-3 py-1 rounded-full border border-cyan-100">
+                  {project.category || "Development"}
+                </span>
+              </div>
 
-          {/* Stats Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
-          >
-            {projectStats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="relative p-8 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg group overflow-hidden"
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1] mb-6">
+                {project.title}
+                <span className="text-cyan-500">.</span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+                {project.subDesc}
+              </p>
+
+              {/* Stack */}
+              <div className="border-t border-gray-200 pt-8">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <Code className="w-4 h-4" />
+                  Technologies Used
+                </h3>
+                <div className="flex flex-wrap gap-2.5">
+                  {project.techStack?.map((tech, i) => (
+                    <TechBadge key={tech} label={tech} index={i} />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Featured Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl group border border-gray-100 bg-white"
+            >
+              <Image
+                src={project.image || project.imageUrl}
+                alt={project.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ objectFit: "cover" }}
+              />
+              <div className="absolute inset-0 ring-1 ring-black/5 rounded-3xl pointer-events-none" />
+            </motion.div>
+          </div>
+
+          {/* Case Study Section */}
+          {project.caseStudy && (
+            <div className="space-y-20">
+
+              {/* Challenge */}
+              <motion.section
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-8 md:gap-12"
               >
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center">
-                      <stat.icon className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-gray-900">{stat.label}</div>
-                      <div className="text-gray-600">{stat.value}</div>
-                    </div>
+                <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 shadow-sm rotate-3">
+                  <Target className="w-8 h-8" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">The Challenge</h2>
+                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl prose prose-cyan"
+                    dangerouslySetInnerHTML={{ __html: project.caseStudy.challenge || "Identifying and resolving complex system bottlenecks while maintaining user experience standards." }}
+                  />
+                </div>
+              </motion.section>
+
+              {/* Solution */}
+              <motion.section
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-8 md:gap-12"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-600 shadow-sm -rotate-2">
+                  <Lightbulb className="w-8 h-8" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Solution</h2>
+                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl mb-8 prose prose-cyan"
+                    dangerouslySetInnerHTML={{ __html: project.caseStudy.solution || "Implementing a modern scalable architecture using the latest web technologies." }}
+                  />
+                </div>
+              </motion.section>
+
+              {/* Impact / Stats */}
+              <motion.section
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-white to-cyan-50/30 rounded-3xl p-8 md:p-12 border border-cyan-100 shadow-[0_10px_40px_-10px_rgba(6,182,212,0.1)] relative overflow-hidden"
+              >
+                {/* Decorative circles */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div>
+                    <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-900">
+                      <Zap className="w-8 h-8 text-cyan-500 fill-cyan-500" />
+                      Key Results
+                    </h2>
+                    <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                      The deployment resulted in significant performance improvements and user engagement metrics, exceeding initial client expectations.
+                    </p>
+                  </div>
+                  <div className="grid gap-4">
+                    {Array.isArray(project.caseStudy.outcomes) ? (
+                      project.caseStudy.outcomes.map((outcome, i) => (
+                        <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                          <div className="w-8 h-8 bg-cyan-50 rounded-full flex items-center justify-center text-cyan-500 shrink-0">
+                            <CheckCircle2 className="w-5 h-5" />
+                          </div>
+                          <span className="font-medium text-lg text-gray-700">{outcome}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <div
+                        className="prose prose-cyan max-w-none text-gray-600 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: project.caseStudy.outcomes || "" }}
+                      />
+                    )}
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </motion.section>
 
-          {/* Features Grid */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-20"
-          >
-            <div className="flex items-center gap-4 mb-12">
-              <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-              <h2 className="text-3xl font-bold text-gray-900">Key Features</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <FeatureCard key={feature.title} {...feature} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.section>
+          )}
 
-          {/* Tech Stack */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-20"
-          >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-              <h2 className="text-3xl font-bold text-gray-900">Technology Stack</h2>
+          {/* Fallback for projects without specific case study data yet */}
+          {!project.caseStudy && (
+            <div className="mt-20 p-12 bg-white rounded-3xl border border-dashed border-gray-200 text-center">
+              <p className="text-gray-500 italic">Detailed case study data is currently being updated for this project.</p>
             </div>
-            <div className="flex flex-wrap gap-4">
-              {techStack.map((tech, index) => (
-                <FloatingTechTag key={tech.label} {...tech} delay={index * 0.05} />
-              ))}
-            </div>
-          </motion.section>
+          )}
 
-          {/* Timeline */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-20"
-          >
-            <div className="flex items-center gap-4 mb-12">
-              <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-              <h2 className="text-3xl font-bold text-gray-900">Project Timeline</h2>
-            </div>
-            <div className="relative">
-              {timeline.map((item, index) => (
-                <TimelineItem key={item.year} {...item} index={index} />
-              ))}
-            </div>
-          </motion.section>
-
-          {/* Gallery */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-20"
-          >
-            <div className="flex items-center justify-between mb-12">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-                <h2 className="text-3xl font-bold text-gray-900">Visual Gallery</h2>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-              >
-                View All
-                <ChevronRight className="w-4 h-4" />
-              </motion.button>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Gallery itemData={itemData} />
-            </motion.div>
-          </motion.section>
-
-          {/* CTA Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-black"
-          >
-            <div className="relative z-10 p-12 text-center">
-              <h2 className="text-4xl font-bold text-white mb-4">
-                Ready to Start Your Project?
-              </h2>
-              <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-                Let's collaborate and build something amazing together. Get in touch for a free consultation.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-xl overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  Start a Conversation
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.button>
-            </div>
-            {/* Animated background particles */}
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{
-                  y: [0, -30, 0],
-                  x: [0, Math.sin(i) * 20, 0],
-                }}
-                transition={{
-                  duration: 3 + i,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute w-32 h-32 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-xl"
-                style={{
-                  top: `${20 + i * 15}%`,
-                  left: `${10 + i * 20}%`,
-                }}
-              />
-            ))}
-          </motion.section>
         </div>
       </motion.main>
     </AnimatePresence>

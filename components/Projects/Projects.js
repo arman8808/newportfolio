@@ -1,12 +1,18 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { projectInfo } from "../../components/projectInfo";
+import { useProjects } from "@app/services/project.queries";
 import ProjectCard from "@components/Cards/ProjectCard/ProjectCard";
 
 function Projects() {
   const router = useRouter();
-  const featuredProjects = projectInfo.slice(0, 3);
+  /* 
+     Integrated API: Fetching latest 3 projects 
+     (limit: 3, sort: '-createdAt' assumed default or handled by backend) 
+  */
+  const { data, isLoading, error } = useProjects({ limit: 3 });
+  const featuredProjects = data?.data || [];
+
   const fadeUp = {
     hidden: { opacity: 0, y: 12 },
     visible: (i = 0) => ({
@@ -15,8 +21,27 @@ function Projects() {
       transition: { duration: 0.6, delay: 0.15 * i },
     }),
   };
+
+  if (isLoading) {
+    return (
+      <section className="project flex items-center justify-center py-20" id="projects">
+        <div className="w-full max-w-6xl flex gap-8 flex-col md:flex-row">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="w-full md:w-1/3 bg-gray-100/50 rounded-2xl h-[400px] animate-pulse border border-gray-100" />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Fallback to empty if error or no data (or handle error UI)
+  if (error) {
+    console.error("Failed to load projects:", error);
+    // Optionally render static fallback or error message
+  }
+
   return (
-    <section className="project flex items-center justify-center" id="projects">
+    <section className="project flex items-center justify-center pb-24" id="projects">
       <div className="project_contianer flex items-start justify-start flex-col w-full">
         {/* Header with View All button at top right - EXACTLY YOUR REFERENCE */}
         <div className="w-full max-w-6xl flex items-center justify-between mb-6">
@@ -41,7 +66,7 @@ function Projects() {
           </div>
 
           <motion.a
-            href="/projects"
+            href="/Projects"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
             className="rounded-lg bg-cyan-500 px-6 py-3 text-white shadow-lg  text-sm font-medium transition-all duration-200 hover:bg-blue-700 hover:bg-cyan-600"
@@ -55,10 +80,10 @@ function Projects() {
         <div className="flex flex-col md:flex-row gap-8 w-full">
           {featuredProjects?.map((project, index) => (
             <ProjectCard
-              key={project.title}
+              key={project._id || index}
               project={project}
               index={index}
-              onClick={() => router.push("Projects/SingleProjectPage")}
+              onClick={() => router.push(`Projects/${project._id}`)}
             />
           ))}
         </div>

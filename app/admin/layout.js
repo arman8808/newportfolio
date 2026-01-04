@@ -14,6 +14,7 @@ import {
   Users,
   Shield,
   Bell,
+  Layers,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -44,6 +45,7 @@ export default function AdminLayout({ children }) {
 
   const navigationItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: Home },
+    { name: "Projects", href: "/admin/projects", icon: Layers },
     { name: "Blogs", href: "/admin/blogs", icon: FileText },
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Settings", href: "/admin/settings", icon: Settings },
