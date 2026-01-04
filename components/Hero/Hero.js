@@ -7,15 +7,11 @@ import {
   motion,
   useMotionValue,
   useTransform,
+  useSpring,
   useReducedMotion,
-  useAnimationControls,
 } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
-const heroVariant = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 1 } },
-};
 
 const textVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -25,52 +21,43 @@ const textVariant = {
     transition: {
       duration: 0.6,
       delayChildren: 0.2,
-      staggerChildren: 0.3,
+      staggerChildren: 0.15,
     },
   },
 };
 
-const textRevealVariant = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.8, delay: 0.5 },
-  },
-};
-
-const headingTextRevealVariant = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 1, delay: 0.7 },
-  },
-};
-
-const iconVariant = {
-  hover: {
-    scale: 1.2,
-    transition: { duration: 0.3 },
-  },
-};
-
 const imageVariant = {
-  hidden: { x: 100, opacity: 0 },
+  hidden: { scale: 0.8, opacity: 0, rotate: -5 },
   visible: {
-    x: 0,
+    scale: 1,
     opacity: 1,
-    transition: { duration: 0.8, type: "spring", stiffness: 50 },
+    rotate: 0,
+    transition: { duration: 1, type: "spring", bounce: 0.4 },
   },
 };
 
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
+
+  // Mouse movement for Spotlight & Tilt
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const rotate = useTransform(mouseX, [-50, 0, 50], [-6, 0, 6]);
-  const translateX = useTransform(mouseX, [-50, 0, 50], [-12, 0, 12]);
-  const translateY = useTransform(mouseY, [-50, 0, 50], [-8, 0, 8]);
+
+  // Smooth out mouse movement for tilt effect
+  const springConfig = { damping: 25, stiffness: 150 };
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), springConfig);
+
+  const handleMouseMove = useCallback(
+    ({ clientX, clientY, currentTarget }) => {
+      const { left, top, width, height } = currentTarget.getBoundingClientRect();
+      const x = (clientX - left) / width - 0.5;
+      const y = (clientY - top) / height - 0.5;
+      mouseX.set(x);
+      mouseY.set(y);
+    },
+    [mouseX, mouseY]
+  );
 
   const titles = [
     "AI-First Full-Stack Developer",
@@ -79,483 +66,272 @@ function Hero() {
     "Conversational AI Engineer",
   ];
   const [titleIndex, setTitleIndex] = useState(0);
+
   useEffect(() => {
     const id = setInterval(() => {
       setTitleIndex((i) => (i + 1) % titles.length);
-    }, 2600);
+    }, 3000);
     return () => clearInterval(id);
   }, []);
 
-  const handleMouseMove = useCallback(
-    (e) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - (rect.left + rect.width / 2);
-      const y = e.clientY - (rect.top + rect.height / 2);
-      mouseX.set(Math.max(-50, Math.min(50, x / 5)));
-      mouseY.set(Math.max(-50, Math.min(50, y / 5)));
-    },
-    [mouseX, mouseY]
-  );
-
   const techStack = [
-    {
-      src: "/Asset/images/icons8-html-logo-480.png",
-      name: "HTML",
-      url: "https://developer.mozilla.org/docs/Web/HTML",
-    },
-    {
-      src: "/Asset/images/icons8-css-logo-400.png",
-      name: "CSS",
-      url: "https://developer.mozilla.org/docs/Web/CSS",
-    },
-    {
-      src: "/Asset/images/icons8-javascript-480.png",
-      name: "JavaScript",
-      url: "https://developer.mozilla.org/docs/Web/JavaScript",
-    },
-    {
-      src: "/Asset/images/icons8-typescript-480.png",
-      name: "TypeScript",
-      url: "https://www.typescriptlang.org/",
-    },
-    {
-      src: "/Asset/images/icons8-node-js-240.png",
-      name: "Node.js",
-      url: "https://nodejs.org/",
-    },
-    {
-      src: "/Asset/images/icons8-tailwind-css-400.png",
-      name: "TailwindCSS",
-      url: "https://tailwindcss.com/",
-    },
-    {
-      src: "/Asset/images/icons8-react-400.png",
-      name: "React",
-      url: "https://react.dev/",
-    },
-    {
-      src: "/Asset/images/next-js.svg",
-      name: "Next.js",
-      url: "https://nextjs.org/",
-    },
-    {
-      src: "/Asset/images/docker-svgrepo-com.svg",
-      name: "Docker",
-      url: "https://www.docker.com/",
-    },
-    {
-      src: "/Asset/images/nestjs.png",
-      name: "NestJS",
-      url: "https://nestjs.com/",
-    },
-    {
-      src: "/Asset/images/react-native.png",
-      name: "React Native",
-      url: "https://reactnative.dev/",
-    },
+    { src: "/Asset/images/icons8-html-logo-480.png", name: "HTML", url: "https://developer.mozilla.org/docs/Web/HTML" },
+    { src: "/Asset/images/icons8-css-logo-400.png", name: "CSS", url: "https://developer.mozilla.org/docs/Web/CSS" },
+    { src: "/Asset/images/icons8-javascript-480.png", name: "JavaScript", url: "https://developer.mozilla.org/docs/Web/JavaScript" },
+    { src: "/Asset/images/icons8-typescript-480.png", name: "TypeScript", url: "https://www.typescriptlang.org/" },
+    { src: "/Asset/images/icons8-node-js-240.png", name: "Node.js", url: "https://nodejs.org/" },
+    { src: "/Asset/images/icons8-tailwind-css-400.png", name: "TailwindCSS", url: "https://tailwindcss.com/" },
+    { src: "/Asset/images/icons8-react-400.png", name: "React", url: "https://react.dev/" },
+    { src: "/Asset/images/next-js.svg", name: "Next.js", url: "https://nextjs.org/" },
+    { src: "/Asset/images/docker-svgrepo-com.svg", name: "Docker", url: "https://www.docker.com/" },
+    { src: "/Asset/images/nestjs.png", name: "NestJS", url: "https://nestjs.com/" },
+    { src: "/Asset/images/react-native.png", name: "React Native", url: "https://reactnative.dev/" },
   ];
 
   return (
     <section
-      className="overflow-hidden hero relative w-full flex items-center flex-col justify-start pt-20 pb-12 gap-12 min-h-[90vh] bg mobile:min-h-[85vh] mobile:pt-16 mobile:pb-8 mobile:gap-8"
+      className="relative w-full overflow-hidden min-h-screen flex flex-col justify-center pt-24 pb-12 gap-16"
       id="home"
+      onMouseMove={handleMouseMove}
     >
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-40 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl mobile:-top-20 mobile:-right-20 mobile:h-40 mobile:w-40"
-        animate={shouldReduceMotion ? undefined : { scale: [1, 1.1, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-48 -left-36 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl mobile:-bottom-24 mobile:-left-18 mobile:h-48 mobile:w-48"
-        animate={shouldReduceMotion ? undefined : { scale: [1, 1.08, 1] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* --- Ambient Background Effects --- */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Top-Right Cyan Glow */}
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-cyan-500/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+        {/* Bottom-Left Blue Glow */}
+        <div className="absolute bottom-[-20%] left-[-10%] w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[100px] mix-blend-screen animate-pulse-slower" />
 
-      <div className="hero_div flex flex-col w-full max-w-6xl px-4 mobile:px-6">
-        <div className="hero_top flex flex-col lg:flex-row items-center justify-between gap-12 mobile:gap-8">
-          <div className="hero_top_text flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
-            <motion.h1
+        {/* Dynamic Spotlight following mouse */}
+        <motion.div
+          className="absolute rounded-full blur-[80px]"
+          style={{
+            width: 400,
+            height: 400,
+            background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, rgba(0,0,0,0) 70%)",
+            x: useTransform(mouseX, [-0.5, 0.5], [-200, window.innerWidth || 1000]),
+            y: useTransform(mouseY, [-0.5, 0.5], [-200, window.innerHeight || 800]),
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+
+        {/* --- Left Column: Text --- */}
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
+          <motion.div
+            variants={textVariant}
+            initial="hidden"
+            animate="visible"
+            className="space-y-4"
+          >
+            {/* Badge */}
+            <motion.div
               variants={textVariant}
-              initial="hidden"
-              animate="visible"
-              className="text-4xl lg:text-5xl font-bold mb-4 mobile:text-3xl mobile:mb-3"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/20 text-cyan-500 text-sm font-medium"
             >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+              Available for Work
+            </motion.div>
+
+            {/* Animated Heading */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1]">
+              <span className="block text-gray-800">Hi, I'm</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-500 animate-gradient-x py-2">
+                Arman Ali
+              </span>
+            </h1>
+
+            {/* Role Switcher */}
+            <div className="h-8 md:h-10 overflow-hidden relative">
               <AnimatePresence mode="wait">
-                <motion.span
+                <motion.p
                   key={titleIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent block"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-xl md:text-2xl font-semibold text-gray-600"
                 >
                   {titles[titleIndex]}
-                </motion.span>
+                </motion.p>
               </AnimatePresence>
-            </motion.h1>
+            </div>
 
             <motion.p
               variants={textVariant}
-              initial="hidden"
-              animate="visible"
-              className="text-lg lg:text-xl text-gray-300 mb-6 mobile:text-base mobile:mb-4"
+              className="text-lg md:text-xl text-gray-500 max-w-lg mx-auto lg:mx-0 leading-relaxed"
             >
-              Hi, I'm Arman Ali. A passionate Full-Stack Developer based in
-              India. 📍
+              Turning complex problems into elegant, scalable solutions.
+              Specialized in <span className="text-cyan-600 font-semibold">Full-Stack Development</span> and <span className="text-blue-600 font-semibold">AI Integration</span>.
             </motion.p>
+          </motion.div>
 
-            <div className="mt-4 flex items-center gap-3 flex-wrap justify-center mobile:mt-3">
-              <motion.a
-                href="#projects"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 mobile:px-4 mobile:py-2 mobile:text-sm"
-              >
-                View Projects
-              </motion.a>
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-md border border-cyan-500 px-5 py-2 text-cyan-400 hover:bg-cyan-500/10 mobile:px-4 mobile:py-2 mobile:text-sm"
-              >
-                Contact Me
-              </motion.a>
-
-              {/* Download Resume Button - same styling as primary button */}
-              <motion.a
-                href="/Asset/ArmanAliResume.pdf"
-                download="ArmanAli-Resume.pdf"
-                aria-label="Download Resume"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-md bg-cyan-500 px-5 py-2 text-white shadow-lg shadow-cyan-500/30 mobile:px-4 mobile:py-2 mobile:text-sm"
-              >
-                Download Resume
-              </motion.a>
-            </div>
-
-            <span className="mt-6 flex gap-4 mobile:mt-4 mobile:gap-3">
-              <Link
-                href="https://www.linkedin.com/in/arman-ali-0b7480147/"
-                target="_blank"
-                className="text-cyan-400 hover:text-cyan-300 transition-colors"
-              >
-                <LinkedIn
-                  style={{ fontSize: "2.5rem" }}
-                  className="mobile:!text-3xl"
-                />
-              </Link>
-              <Link
-                href="https://github.com/arman8808"
-                target="_blank"
-                className="text-cyan-400 hover:text-cyan-300 transition-colors"
-              >
-                <GitHub
-                  style={{ fontSize: "2.5rem" }}
-                  className="mobile:!text-3xl"
-                />
-              </Link>
-            </span>
-          </div>
-
-          <div
-            className="hero_top_image lg:block hidden"
-            onMouseMove={handleMouseMove}
+          {/* Buttons */}
+          <motion.div
+            variants={textVariant}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
           >
-            <motion.div
-              variants={imageVariant}
-              initial="hidden"
-              animate="visible"
-              style={{ x: translateX, y: translateY, rotateZ: rotate }}
-              className="relative"
-            >
-              <Image
-                src="/Asset/images/Frame.png"
-                alt="Arman Ali - Full Stack Developer"
-                width={500}
-                height={400}
-                priority
-                className="w-full max-w-[400px] lg:max-w-[500px]"
-              />
-              <motion.div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-2xl"
-                style={{
-                  background:
-                    "radial-gradient(120px 120px at calc(50% + " +
-                    mouseX.get() +
-                    "px) calc(50% + " +
-                    mouseY.get() +
-                    "px), rgba(34,211,238,0.25), transparent 60%)",
-                }}
-              />
-            </motion.div>
-          </div>
+            <ShineButton href="#projects" primary>
+              View Projects
+            </ShineButton>
+            <ShineButton href="#contact">
+              Contact Me
+            </ShineButton>
+            <ShineButton href="/Asset/ArmanAliResume.pdf" download isExternal>
+              Download CV
+            </ShineButton>
+          </motion.div>
+
+          {/* Social Links */}
+          <motion.div
+            variants={textVariant}
+            initial="hidden"
+            animate="visible"
+            className="flex gap-6 pt-4"
+          >
+            <SocialLink href="https://www.linkedin.com/in/arman-ali-0b7480147/" icon={<LinkedIn className="text-3xl" />} />
+            <SocialLink href="https://github.com/arman8808" icon={<GitHub className="text-3xl" />} />
+          </motion.div>
         </div>
 
-        <div className="hero_bottom mt-8 flex w-full flex-col gap-3 mobile:mt-6">
-          <p className="pl-1 text-sm uppercase tracking-widest text-cyan-400/80 mobile:text-xs">
-            Tech Stack
-          </p>
-          <ModernTechMarquee tech={techStack} reduce={shouldReduceMotion} />
+        {/* --- Right Column: 3D Image --- */}
+        <div className="hidden lg:flex items-center justify-center perspective-[1000px]">
+          <motion.div
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d"
+            }}
+            initial="hidden"
+            animate="visible"
+            variants={imageVariant}
+            className="relative w-[500px] h-[500px]"
+          >
+            {/* Back glow */}
+            <div
+              className="absolute inset-4 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-[2rem] blur-2xl opacity-40 -z-10 transform translate-z-[-50px]"
+            />
+
+            {/* Main Card */}
+            <div className="relative w-full h-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-[2.5rem] p-4 shadow-2xl transform translate-z-[20px]">
+              <div className="w-full h-full relative overflow-hidden rounded-[2rem] bg-gray-900">
+                <Image
+                  src="/Asset/images/Frame.png"
+                  alt="Arman Ali"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+            </div>
+
+            {/* Floating Badge 1 */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-10 -right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/40 transform translate-z-[60px]"
+            >
+              <div className="bg-cyan-100 p-2 rounded-xl text-cyan-600">
+                <span className="text-2xl">🚀</span>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 font-bold uppercase">Experience</p>
+                <p className="text-sm font-bold text-gray-900">3.5+ Years</p>
+              </div>
+            </motion.div>
+
+            {/* Floating Badge 2 */}
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-20 -left-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/40 transform translate-z-[60px]"
+            >
+              <div className="bg-blue-100 p-2 rounded-xl text-blue-600">
+                <span className="text-2xl">💻</span>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 font-bold uppercase">Projects</p>
+                <p className="text-sm font-bold text-gray-900">10+ Delivered</p>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
-      <motion.div
-        aria-hidden
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cyan-400/70 mobile:bottom-4"
-        animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        ↓
-      </motion.div>
+      {/* --- Bottom: Tech Stack Marquee --- */}
+      <div className="w-full mt-auto mb-8">
+        <div className="text-center mb-6">
+          <p className="text-sm font-bold uppercase tracking-widest text-cyan-500">Powering Next-Gen Apps With</p>
+        </div>
+
+        <div className="relative w-full overflow-hidden bg-white/5 backdrop-blur-sm border-y border-white/10 py-6">
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white/80 to-transparent z-10 pointer-events-none" />
+
+          <Marquee gradient={false} speed={40} pauseOnHover>
+            {techStack.map((tech, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.1, y: -5 }}
+                className="flex flex-col items-center justify-center gap-2 mx-8 group cursor-default"
+              >
+                <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center p-3 transition-all group-hover:border-cyan-300 group-hover:shadow-cyan-100/50">
+                  <Image
+                    src={tech.src}
+                    alt={tech.name}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+                <span className="text-xs font-semibold text-gray-400 group-hover:text-cyan-600 transition-colors">{tech.name}</span>
+              </motion.div>
+            ))}
+          </Marquee>
+        </div>
+      </div>
     </section>
   );
 }
 
 export default Hero;
 
-function ModernTechMarquee({ tech, reduce }) {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
+// --- Helper Components ---
 
-  // Create arrays with different starting points
-  const topRowTech = [...tech];
-  // Bottom row starts from middle to create staggered effect
-  const middleIndex = Math.floor(tech.length / 2);
-  const bottomRowTech = [
-    ...tech.slice(middleIndex),
-    ...tech.slice(0, middleIndex),
-  ];
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  const TechItem = ({ t, isTopRow = true, isMobile = false }) => {
-    return (
-      <motion.a
-        href={t.url}
-        target="_blank"
-        rel="noreferrer"
-        className="group relative flex flex-col items-center justify-center min-w-[80px] mx-4"
-        whileHover={{ scale: 1.15, rotateY: 5 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{
-          duration: 0.15,
-          type: "spring",
-          stiffness: 400,
-          damping: 15,
-        }}
-      >
-        {/* Glow effect - only on desktop */}
-        {!isMobile && (
-          <motion.div
-            className="absolute inset-0 rounded-xl blur-lg"
-            style={{
-              backgroundColor: isTopRow
-                ? "rgba(6, 182, 212, 0.1)"
-                : "rgba(59, 130, 246, 0.1)",
-            }}
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 0.25 }}
-            transition={{ duration: 0.2 }}
-          />
-        )}
-
-        {/* Icon container - EXACTLY YOUR ORIGINAL STYLING */}
-        <div className="relative z-10 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 group-hover:border-cyan-400/30 transition-all duration-300">
-          <Image
-            src={t.src}
-            alt={t.name}
-            width={0}
-            height={0}
-            sizes="80px"
-            className="h-auto w-12 md:w-16"
-          />
-        </div>
-
-        {/* Tech name - EXACTLY YOUR ORIGINAL STYLING */}
-        <span className="mt-3 text-xs font-medium text-cyan-300/90 group-hover:text-cyan-200 transition-colors duration-300">
-          {t.name}
-        </span>
-      </motion.a>
-    );
-  };
-
-  // If motion is reduced
-  if (reduce) {
-    return (
-      <div className="relative w-full min-h-[140px] mobile:min-h-[120px] py-4 mobile:py-3">
-        <div className="grid grid-cols-5 gap-3 sm:gap-4">
-          {tech.slice(0, 10).map((t, index) => (
-            <motion.a
-              key={`static-${index}`}
-              href={t.url}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative flex flex-col items-center justify-center cursor-pointer p-2 sm:p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-cyan-400/30 transition-all duration-200"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="relative z-10">
-                <Image
-                  src={t.src}
-                  alt={t.name}
-                  width={0}
-                  height={0}
-                  sizes="48px"
-                  className="h-auto w-8 sm:w-10"
-                />
-              </div>
-              <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center leading-tight">
-                {t.name}
-              </span>
-            </motion.a>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Desktop version with dual marquees
-  if (!isMobile) {
-    return (
-      <div
-        className="relative w-full overflow-visible min-h-[180px] py-4"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {/* Top row - moves left to right */}
-        <div className="mb-6">
-          <Marquee
-            direction="left"
-            speed={25}
-            gradient={false}
-            gradientColor="hsl(240, 10%, 4%)" // Your background color
-            gradientWidth={80}
-            pauseOnHover={true}
-            pauseOnClick={true}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              overflow: "hidden", // Prevent scrollbar
-            }}
-          >
-            {topRowTech.map((t, index) => (
-              <TechItem key={`top-${index}`} t={t} isTopRow={true} />
-            ))}
-            {/* Duplicate for seamless loop */}
-            {topRowTech.map((t, index) => (
-              <TechItem key={`top-dup-${index}`} t={t} isTopRow={true} />
-            ))}
-          </Marquee>
-        </div>
-
-        {/* Bottom row - moves right to left (opposite direction) */}
-        <div>
-          <Marquee
-            direction="right"
-            speed={25}
-            gradient={false}
-            gradientColor="hsl(240, 10%, 4%)" // Your background color
-            gradientWidth={80}
-            pauseOnHover={true}
-            pauseOnClick={true}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              overflow: "hidden", // Prevent scrollbar
-            }}
-          >
-            {bottomRowTech.map((t, index) => (
-              <TechItem key={`bottom-${index}`} t={t} isTopRow={false} />
-            ))}
-            {/* Duplicate for seamless loop */}
-            {bottomRowTech.map((t, index) => (
-              <TechItem key={`bottom-dup-${index}`} t={t} isTopRow={false} />
-            ))}
-          </Marquee>
-        </div>
-      </div>
-    );
-  }
-
-  // Mobile version with single marquee
+function ShineButton({ children, href, primary, download, isExternal }) {
   return (
-    <div className="relative w-full overflow-visible min-h-[140px] py-4 mobile:py-3">
-      <Marquee
-        direction="left"
-        speed={30}
-        gradient={false}
-        gradientColor="hsl(240, 10%, 4%)" // Your background color
-        gradientWidth={60}
-        pauseOnHover={false}
-        pauseOnClick={true}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          overflow: "hidden", // Prevent scrollbar
-        }}
-      >
-        {tech.map((t, index) => (
-          <motion.a
-            key={`mobile-${index}`}
-            href={t.url}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative flex flex-col items-center justify-center min-w-[60px] mx-3"
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="relative z-10 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200">
-              <Image
-                src={t.src}
-                alt={t.name}
-                width={0}
-                height={0}
-                sizes="48px"
-                className="h-auto w-8 sm:w-10"
-              />
-            </div>
-            <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
-              {t.name}
-            </span>
-          </motion.a>
-        ))}
-        {/* Duplicate for seamless loop */}
-        {tech.map((t, index) => (
-          <motion.a
-            key={`mobile-dup-${index}`}
-            href={t.url}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative flex flex-col items-center justify-center min-w-[60px] mx-3"
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="relative z-10 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 transition-all duration-200">
-              <Image
-                src={t.src}
-                alt={t.name}
-                width={0}
-                height={0}
-                sizes="48px"
-                className="h-auto w-8 sm:w-10"
-              />
-            </div>
-            <span className="mt-2 text-[10px] sm:text-xs text-cyan-300/90 font-medium text-center">
-              {t.name}
-            </span>
-          </motion.a>
-        ))}
-      </Marquee>
-    </div>
+    <Link
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      download={download}
+      className={`group relative px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg ${primary
+          ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-200"
+          : "bg-white text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600"
+        }`}
+    >
+      <span className="relative z-10">{children}</span>
+      {/* Shine Effect */}
+      <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0" />
+    </Link>
+  );
+}
+
+function SocialLink({ href, icon }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-cyan-50 hover:text-cyan-600 hover:scale-110 transition-all duration-300 border border-gray-200 hover:border-cyan-200 shadow-sm"
+    >
+      {icon}
+    </a>
   );
 }
