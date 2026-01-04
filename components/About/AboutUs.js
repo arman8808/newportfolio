@@ -1,9 +1,10 @@
 "use client";
-import { OpenInNew } from "@mui/icons-material";
-import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Download, FileText, Code2, Terminal, Cpu, Globe } from "lucide-react";
+import Link from "next/link";
+
 function AboutUs() {
   function getExperienceYears(startDate) {
     let today = new Date();
@@ -36,100 +37,137 @@ function AboutUs() {
 
   return (
     <section
-      className=" w-full flex items-center flex-col justify-center gap-4 about section "
+      className="w-full flex flex-col items-center justify-center gap-16 py-20 px-4"
       id="aboutus"
     >
-      <motion.h2 className="font-semibold text-[#555]" variants={fadeUp} initial="hidden" animate="visible">
-        About me
-      </motion.h2>
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-      <div className="grid grid-cols-2 gap-4 w-9/12 mobile:flex mobile:flex-col-reverse mobile:w-11/12">
-        <div className="about__data bd-grid mobile:text-start">
-          <div className="flex items-start justify-start flex-col gap-1">
-            <motion.span className="text-[1.6rem] font-semibold text-[#147efb]" variants={fadeUp} initial="hidden" animate="visible" custom={1}>
-              Hello, I am <br />
-            </motion.span>
-            <motion.p className="about__description text-[#555] text-[1.1rem] font-medium" variants={fadeUp} initial="hidden" animate="visible" custom={2}>
-              Arman Ali, a passionate and dedicated MERN stack developer with
-              &nbsp;{experience}+ years of hands-on experience in building
-              dynamic and responsive web applications. My journey in web
-              development began with a fascination for creating user-friendly
-              interfaces and scalable backend systems. Over time, I've honed my
-              skills in MongoDB, Express.js, React.js, and Node.js, allowing me
-              to develop full-stack applications that are both efficient and
-              innovative.
-            </motion.p>
-            <motion.p className="about__description text-[#555] text-[1.1rem] font-medium" variants={fadeUp} initial="hidden" animate="visible" custom={3}>
-              Throughout my career, I've had the opportunity to work on various
-              projects that have challenged me to think creatively and push the
-              boundaries of what's possible with web technology. My commitment
-              to continuous learning and staying updated with the latest
-              industry trends ensures that I am always at the forefront of
-              modern web development practices.
+        {/* Left Column: Text & Content */}
+        <div className="order-2 lg:order-1 flex flex-col items-start gap-6 relative z-10">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600 text-3xl md:text-4xl mb-2 inline-block">
+              ABOUT ME
+            </h2>
+            <div className="h-1.5 w-20 bg-cyan-500 rounded-full" />
+          </motion.div>
+
+          <div className="space-y-6 text-lg text-gray-600 leading-relaxed font-medium">
+            <motion.p variants={fadeUp} initial="hidden" whileInView="visible" custom={1} viewport={{ once: true }}>
+              Hello, I am <span className="text-cyan-600 font-bold text-xl">Arman Ali</span>, a passionate MERN stack developer with
+              <span className="font-bold text-gray-800"> {experience}+ years</span> of  experience building
+              high-performance web applications.
             </motion.p>
 
-            <motion.div className="mt-2 flex w-full flex-wrap gap-2" variants={fadeUp} initial="hidden" animate="visible" custom={4}>
-              {skills.map((s) => (
-                <span key={s} className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-600">
-                  {s}
-                </span>
-              ))}
-            </motion.div>
-
-            <motion.div className="flex gap-4 pt-4 w-full items-stretch" variants={fadeUp} initial="hidden" animate="visible" custom={5}>
-              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
-                <strong className=" text text-[2.2rem] text-[#147efb] font-semibold">
-                  {experience}+
-                </strong>
-                <span className="about__achievement text-[#555]">
-                  Years of Experience
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
-                <strong className=" text text-[2.2rem] text-[#147efb] font-semibold">
-                  10+
-                </strong>
-                <span className="about__achievement text-[#555]">
-                  Projects Completed
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-cyan-400/20 bg-white/50 p-3 shadow-sm">
-                <Link
-                  href="/Asset/Arman Ali.pdf"
-                  target="_blank"
-                  passHref
-                  className="about__achievement text-[#555] download_button flex items-center gap-1 text-cyan-600 hover:text-cyan-700"
-                >
-                  Resume
-                  <OpenInNew className="redirect_icon" />
-                </Link>
-              </div>
-            </motion.div>
+            <motion.p variants={fadeUp} initial="hidden" whileInView="visible" custom={2} viewport={{ once: true }}>
+              I thrive on turning complex problems into simple, beautiful, and intuitive interface designs.
+              My expertise lies in <span className="text-cyan-600 font-semibold">MongoDB, Express.js, React.js, and Node.js</span>,
+              where I craft seamless full-stack solutions.
+            </motion.p>
           </div>
+
+          <motion.div
+            className="flex flex-wrap gap-2 pt-2"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            custom={3}
+            viewport={{ once: true }}
+          >
+            {skills.map((s, i) => (
+              <motion.span
+                key={s}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(6,182,212,0.1)" }}
+                className="px-3 py-1.5 rounded-lg bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-200 cursor-default transition-colors hover:text-cyan-600 hover:border-cyan-200"
+              >
+                {s}
+              </motion.span>
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-3 gap-4 w-full mt-4"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            custom={4}
+            viewport={{ once: true }}
+          >
+            <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center gap-1 hover:border-cyan-200 hover:shadow-cyan-100/50 transition-all group">
+              <span className="text-3xl font-black text-cyan-500 group-hover:scale-110 transition-transform duration-300">{experience}+</span>
+              <span className="text-xs text-gray-500 font-bold uppercase tracking-wider text-center">Years Exp.</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center gap-1 hover:border-cyan-200 hover:shadow-cyan-100/50 transition-all group">
+              <span className="text-3xl font-black text-cyan-500 group-hover:scale-110 transition-transform duration-300">10+</span>
+              <span className="text-xs text-gray-500 font-bold uppercase tracking-wider text-center">Projects</span>
+            </div>
+
+            <Link
+              href="/Asset/ArmanAliResume.pdf"
+              target="_blank"
+              className="p-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 flex flex-col items-center justify-center gap-1 hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all group cursor-pointer"
+            >
+              <Download className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-300" />
+              <span className="text-xs font-bold uppercase tracking-wider">Resume</span>
+            </Link>
+          </motion.div>
         </div>
-        <motion.div className="flex items-center justify-center w-full" variants={fadeUp} initial="hidden" animate="visible" custom={2}>
-          <Image
-            src="/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp"
-            alt="Arman Ali portrait"
-            width={600}
-            height={700}
-            className="rounded-2xl w-[90%] h-[85%] object-contain"
-            priority
+
+        {/* Right Column: Image */}
+        <motion.div
+          className="order-1 lg:order-2 flex items-center justify-center relative"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          custom={2}
+          viewport={{ once: true }}
+        >
+          {/* Decorative background blob */}
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+            className="absolute inset-0 bg-gradient-to-br from-cyan-200/40 to-blue-200/40 rounded-[3rem] blur-2xl transform scale-95"
           />
+
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative w-full max-w-[450px] aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white/50 backdrop-blur-sm"
+          >
+            <Image
+              src="/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp"
+              alt="Arman Ali portrait"
+              fill
+              className="object-cover hover:scale-110 transition-transform duration-700"
+              priority
+            />
+
+            {/* Overlay Gradient for depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-60" />
+          </motion.div>
         </motion.div>
       </div>
 
-      <motion.h3
-        className="mt-10 text-3xl font-semibold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        custom={6}
-      >
-        Work Journey
-      </motion.h3>
+      <div className="w-full max-w-6xl mt-12">
+        <motion.h3
+          className="text-3xl font-bold text-center bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent mb-16"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          My Professional Journey
+        </motion.h3>
 
-      <Timeline />
+        <Timeline />
+      </div>
     </section>
   );
 }
@@ -171,40 +209,40 @@ function Timeline() {
 
   const itemLeft = {
     hidden: { opacity: 0, x: -60, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      scale: 1, 
-      transition: { 
-        duration: 0.6, 
-        ease: [0.25, 0.46, 0.45, 0.94] 
-      } 
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
     }
   };
 
   const itemRight = {
     hidden: { opacity: 0, x: 60, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      scale: 1, 
-      transition: { 
-        duration: 0.6, 
-        ease: [0.25, 0.46, 0.45, 0.94] 
-      } 
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
     }
   };
 
   const iconVariants = {
     hidden: { scale: 0, rotate: -180 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       rotate: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 200, 
-        delay: 0.2 
-      } 
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        delay: 0.2
+      }
     }
   };
 
@@ -217,7 +255,7 @@ function Timeline() {
       viewport={{ once: true, amount: 0.1 }}
     >
       {/* Animated Center Line */}
-      <motion.div 
+      <motion.div
         className="pointer-events-none absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 mobile:hidden"
         initial={{ scaleY: 0 }}
         whileInView={{ scaleY: 1 }}
@@ -235,13 +273,13 @@ function Timeline() {
             key={i}
             className="absolute w-2 h-2 bg-cyan-400/30 rounded-full"
             initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ 
-              opacity: [0, 1, 0], 
+            whileInView={{
+              opacity: [0, 1, 0],
               scale: [0, 1, 0],
               y: [0, -40, -80]
             }}
-            transition={{ 
-              duration: 3, 
+            transition={{
+              duration: 3,
               delay: i * 0.5,
               repeat: Infinity,
               repeatDelay: 2
@@ -259,28 +297,26 @@ function Timeline() {
         {items.map((item, idx) => {
           const isLeft = idx % 2 === 0;
           const isLast = idx === items.length - 1;
-          
+
           return (
-            <motion.div 
-              key={item.title + idx} 
+            <motion.div
+              key={item.title + idx}
               variants={isLeft ? itemLeft : itemRight}
               className="relative"
             >
               <div className={`${isLeft ? "mr-auto pr-16" : "ml-auto pl-16"} relative max-w-2xl mobile:max-w-full mobile:px-0 mobile:py-4`}>
-                
+
                 {/* Connector Line */}
-                <div className={`absolute top-1/2 h-0.5 w-12 -translate-y-1/2 bg-gradient-to-r mobile:hidden ${
-                  isLeft 
-                    ? "right-0 from-cyan-400/80 to-cyan-400/20" 
-                    : "left-0 from-cyan-400/20 to-cyan-400/80"
-                }`} />
-                
+                <div className={`absolute top-1/2 h-0.5 w-12 -translate-y-1/2 bg-gradient-to-r mobile:hidden ${isLeft
+                  ? "right-0 from-cyan-400/80 to-cyan-400/20"
+                  : "left-0 from-cyan-400/20 to-cyan-400/80"
+                  }`} />
+
                 {/* Animated Icon Dot */}
                 <motion.div
                   variants={iconVariants}
-                  className={`absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-white to-gray-100 shadow-lg border border-white/50 mobile:hidden ${
-                    isLeft ? "-right-6" : "-left-6"
-                  }`}
+                  className={`absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-white to-gray-100 shadow-lg border border-white/50 mobile:hidden ${isLeft ? "-right-6" : "-left-6"
+                    }`}
                 >
                   <div className="text-xl">{item.icon}</div>
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-20" />
@@ -288,24 +324,23 @@ function Timeline() {
 
                 {/* Timeline Card */}
                 <motion.article
-                  whileHover={{ 
-                    y: -8, 
+                  whileHover={{
+                    y: -8,
                     scale: 1.02,
                     transition: { duration: 0.3 }
                   }}
                   className="relative group"
                 >
                   {/* Background Glow */}
-                  <div className={`absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                    isLeft ? "rotate-2" : "-rotate-2"
-                  }`} />
-                  
+                  <div className={`absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${isLeft ? "rotate-2" : "-rotate-2"
+                    }`} />
+
                   {/* Main Card */}
                   <div className="relative overflow-hidden rounded-2xl border border-white/40 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-2xl shadow-2xl shadow-cyan-500/10 p-8">
-                    
+
                     {/* Animated Border Gradient */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
+
                     {/* Content */}
                     <div className="relative z-10">
                       {/* Title with gradient */}
@@ -314,22 +349,22 @@ function Timeline() {
                           {item.title}
                         </span>
                       </h4>
-                      
+
                       {/* Description */}
                       <p className="text-gray-600 leading-relaxed text-lg mb-6">
                         {item.desc}
                       </p>
-                      
+
                       {/* Date Badge */}
                       <div className="flex items-center justify-between">
-                        <motion.span 
+                        <motion.span
                           whileHover={{ scale: 1.05 }}
                           className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300"
                         >
                           <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                           {item.date}
                         </motion.span>
-                        
+
                         {/* Mobile Icon */}
                         <div className="flex md:hidden text-2xl">
                           {item.icon}
@@ -338,12 +373,10 @@ function Timeline() {
                     </div>
 
                     {/* Corner Accents */}
-                    <div className={`absolute top-0 w-16 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full ${
-                      isLeft ? "left-0" : "right-0"
-                    }`} />
-                    <div className={`absolute bottom-0 w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full ${
-                      isLeft ? "right-0" : "left-0"
-                    }`} />
+                    <div className={`absolute top-0 w-16 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full ${isLeft ? "left-0" : "right-0"
+                      }`} />
+                    <div className={`absolute bottom-0 w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full ${isLeft ? "right-0" : "left-0"
+                      }`} />
                   </div>
                 </motion.article>
               </div>
