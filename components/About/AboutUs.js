@@ -71,7 +71,8 @@ function AboutUs() {
   ];
 
   const timelineItems = (aboutData?.timeline && aboutData.timeline.length > 0) ? aboutData.timeline : staticTimeline;
-  const bio = aboutData?.bio || `Hello, I am Arman Ali, a passionate MERN stack developer with ${experienceDisplay}+ years of experience...`;
+  const staticBio = `I’m a Full Stack Developer with ${experienceDisplay}+ years of experience building scalable, production-ready web applications using the MERN stack and cloud-native technologies.\n\nI specialize in designing role-based systems, multi-vendor platforms, and automation-driven products that solve real business problems. My work spans domains like healthcare, e-commerce, and event platforms, where I’ve built features such as automated billing, real-time workflows, secure authentication, and third-party integrations.\n\nI focus on clean architecture, performance optimization, and maintainable code, with hands-on experience deploying and scaling applications on AWS. I enjoy turning complex requirements into reliable, user-friendly products.`;
+  const bio = staticBio; // aboutData?.bio || staticBio;
   const profileImage = aboutData?.imageUrl || "/Asset/images/pikaso_enhance__custom_2K_Portrait_r100_c15_-_1_.webp";
   const resumeUrl = aboutData?.resumeUrl || "/Asset/Arman Ali.pdf";
 
