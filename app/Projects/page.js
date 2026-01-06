@@ -127,7 +127,7 @@ function AllProjectsPage() {
     }
 
     return (
-        <section className="min-h-screen bg-[#f9f9f9] py-12 px-4 md:px-6">
+        <section className="min-h-screen bg-[#f9f9f9] pt-28 pb-12 px-4 md:px-6">
             {/* Background Gradients */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-100/30 blur-[100px] rounded-full translate-x-1/3 -translate-y-1/3" />

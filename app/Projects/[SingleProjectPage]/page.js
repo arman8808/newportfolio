@@ -139,7 +139,7 @@ export default function SingleProjectPage({ params }) {
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/30 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3" />
         </div>
 
-        <div className="relative max-w-6xl mx-auto px-6 py-12 md:py-20 z-10">
+        <div className="relative max-w-6xl mx-auto px-6 pt-32 pb-12 md:pt-40 md:pb-20 z-10">
 
           {/* Back Navigation */}
           <motion.button
@@ -164,10 +164,12 @@ export default function SingleProjectPage({ params }) {
             >
               {/* Category Badge & NDA Status */}
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-[10px] font-bold uppercase tracking-widest border border-amber-100 flex items-center gap-1.5 shadow-sm">
-                  <Shield className="w-3 h-3" />
-                  NDA Protected
-                </div>
+                {project.isNDA && (
+                  <div className="px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-[10px] font-bold uppercase tracking-widest border border-amber-100 flex items-center gap-1.5 shadow-sm">
+                    <Shield className="w-3 h-3" />
+                    NDA Protected
+                  </div>
+                )}
                 <span className="text-cyan-600 font-bold uppercase tracking-widest text-xs bg-cyan-50 px-3 py-1 rounded-full border border-cyan-100">
                   {project.category || "Development"}
                 </span>
@@ -230,7 +232,7 @@ export default function SingleProjectPage({ params }) {
                 </div>
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-6">The Challenge</h2>
-                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl prose prose-cyan"
+                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl rich-text-content"
                     dangerouslySetInnerHTML={{ __html: project.caseStudy.challenge || "Identifying and resolving complex system bottlenecks while maintaining user experience standards." }}
                   />
                 </div>
@@ -248,7 +250,7 @@ export default function SingleProjectPage({ params }) {
                 </div>
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Solution</h2>
-                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl mb-8 prose prose-cyan"
+                  <div className="text-lg text-gray-600 leading-relaxed max-w-3xl mb-8 rich-text-content"
                     dangerouslySetInnerHTML={{ __html: project.caseStudy.solution || "Implementing a modern scalable architecture using the latest web technologies." }}
                   />
                 </div>
@@ -286,7 +288,7 @@ export default function SingleProjectPage({ params }) {
                       ))
                     ) : (
                       <div
-                        className="prose prose-cyan max-w-none text-gray-600 leading-relaxed"
+                        className="rich-text-content max-w-none text-gray-600 leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: project.caseStudy.outcomes || "" }}
                       />
                     )}

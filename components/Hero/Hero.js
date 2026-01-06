@@ -204,7 +204,7 @@ function Hero() {
             animate="visible"
             className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
           >
-            <ShineButton href="#projects" primary>
+            <ShineButton href="#projects" primary >
               View Projects
             </ShineButton>
             <ShineButton href="#contact">
@@ -254,7 +254,7 @@ function Hero() {
           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white/80 to-transparent z-10 pointer-events-none" />
 
-          <Marquee gradient={false} speed={40} pauseOnHover>
+          <Marquee gradient={false} speed={40} pauseOnHover autoFill>
             {techStack.map((tech, i) => (
               <motion.div
                 key={i}
@@ -290,7 +290,7 @@ function ShineButton({ children, href, primary, download, isExternal }) {
       href={href}
       target={isExternal ? "_blank" : undefined}
       download={download}
-      className={`group relative px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg ${primary
+      className={`group relative px-8 py-4 rounded-xl font-bold text-sm transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg overflow-hidden ${primary
         ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-200"
         : "bg-white text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600"
         }`}

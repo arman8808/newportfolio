@@ -245,7 +245,7 @@ function SingleBlogPage() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4 relative overflow-hidden">
+    <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pt-28 pb-12 px-4 relative overflow-hidden">
       {/* Hero-style glow effects */}
       <motion.div
         aria-hidden
@@ -404,7 +404,7 @@ function SingleBlogPage() {
               <motion.div
                 variants={fadeUp}
                 dangerouslySetInnerHTML={{ __html: blogData.content }}
-                className="text-gray-700 leading-relaxed text-lg blog-content"
+                className="text-gray-700 leading-relaxed text-lg blog-content rich-text-content"
               />
             )}
           </motion.div>
